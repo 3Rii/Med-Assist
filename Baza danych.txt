@@ -1,6 +1,6 @@
 # Tabela z kontami
 
-Create date database 'projekt';
+Create date database `projekt`;
 
 Use `projekt`;
 
