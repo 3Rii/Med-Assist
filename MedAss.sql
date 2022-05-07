@@ -58,3 +58,19 @@ create table vacc
     constraint vacc_accounts_id_fk
         foreign key (id) references accounts (id)
 );
+alter table check_ups
+    add current_status bool null;
+
+alter table check_ups
+    add todo_status bool null;
+
+alter table prevention
+    add current_status bool null;
+
+alter table prevention
+    add todo_status bool null;
+alter table vacc
+    add current_status bool null;
+
+alter table vacc
+    add todo_status bool null;
