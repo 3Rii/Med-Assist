@@ -5,7 +5,7 @@
 {% block sublogin %}Login{% endblock %}
 
 {% block content %}
-     <p>Jebany test</p>
+     <p>Login</p>
 
    <form class="form-group" action="{{ url_for('login') }}" method="post">
     <div class="form-group">
@@ -31,7 +31,6 @@
 
     <input type="checkbox" value="checked"><b>Remember</b>
     <input type="submit" value="Login" class="signinbtn" name="">
-
    </form>
 
    <div id="msg">{{ msg }}</div>

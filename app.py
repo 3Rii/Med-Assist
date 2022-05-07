@@ -71,7 +71,7 @@ def register():
     return render_template('register.html', msg=msg)
 
 
-# http://localhost:5000/home
+# http://localhost:5000/
 @app.route('/', methods=['GET', 'POST'])
 def home():
     conn = mysql.connect()
@@ -79,11 +79,48 @@ def home():
     msg = ''
 
     if 'loggedin' in session:
-        username = cursor.execute('SELECT username FROM accounts WHERE id = %s', [session['id']])
+        username = cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
         account = cursor.fetchone()
-
-        return render_template('home.html', username=session['username'], account=account)
+        return render_template('homepage/home.html', username=session['username'], account=account)
     return redirect(url_for('login'))
+
+
+# http://localhost:5000/basic
+@app.route('/basic', methods=['GET', 'POST'])
+def basicform():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    msg = ''
+
+    if 'loggedin' in session:
+        cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
+        account = cursor.fetchone()
+        if request.method == 'POST':
+
+            age = request.form['age']
+            weight = request.form['weight']
+            height = request.form['height']
+            sex = request.form['sex']
+            smoke = request.form['smoke']
+            drink = request.form['drink']
+            move = request.form['move']
+
+            if not type(age) == int:
+                msg = 'Age must be a number!'
+            elif not type(weight) == int:
+                msg = 'Weight must be a number!'
+            elif not type(height) == int:
+                msg = 'Height must be a number!'
+            else:
+                cursor.execute('INSERT INTO user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s)',
+                               (age, weight, height, sex, smoke, drink, move))
+                conn.commit()
+                msg = 'Form copleted!'
+        elif request.method == 'POST':
+            msg = 'Please fill out the form!'
+        return render_template('homepage/basicform.html', account=account)
+    else:
+        return redirect(url_for('login'))
 
 
 # http://localhost:5000/logout
@@ -93,6 +130,7 @@ def logout():
     session.pop('id', None)
     session.pop('username', None)
     return redirect(url_for('login'))
+
 
 # http://localhost:5000/profile
 @app.route('/profile')
@@ -104,7 +142,9 @@ def profile():
         cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
         account = cursor.fetchone()
         return render_template('profile.html', account=account)
-    return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
