@@ -155,3 +155,18 @@ span.input-group-addon i {
 .menu-header{
 
 }
+.save-btn{
+  background-color: blue;
+  border-radius: 8px;
+  box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  padding: 13px 20px;
+  text-align: center;
+  touch-action: manipulation;
+}
+.radio-group{
+
+}

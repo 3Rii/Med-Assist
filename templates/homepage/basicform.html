@@ -4,8 +4,8 @@
 
 {% block content %}
 <h1>Formularz z informacjami podstawowymi</h1>
-    <div>
-<form action="{{ url_for('register') }}" method="post" autocomplete="off">
+<div>
+    <form action="{{ url_for('register') }}" method="post" autocomplete="off">
     <h2>Uzupełnij</h2>
 
             <div class="form-group">
@@ -82,6 +82,7 @@
             </div>
                 <div class="radio-group">
                <label for="name" class="cols-sm-2 control-label">Aktywność:</label>
+                    <div>
                     <ul>
                         <p>Zaznaczyć "Tak", jeżeli ćwiczysz (mniej/więcej):</p>
                         <li>
@@ -91,7 +92,7 @@
                             <p>Dziennie po 30 minut lub po 200-300 kcal</p>
                         </li>
                     </ul>
-
+                    </div>
                   <div class="input-group-prepend">
                     <input type="radio" value="true">
                       <label>Tak</label>
@@ -101,11 +102,9 @@
                     <input type="radio" value="false">
                     <label>Nie</label>
                   </div>
-
             </div>
-
-
-
-</form>
-    </div>
+    </form>
+</div>
+    <div id="msg">{{ msg }}</div>
+    <div><input type="submit" value="Save" class="save-btn" name="Save"></div>
 {% endblock %}
