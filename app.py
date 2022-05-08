@@ -2,14 +2,18 @@ from flask import Flask, request, session, redirect, url_for, render_template
 from flaskext.mysql import MySQL
 import pymysql
 import re
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, FloatField
+from wtforms.validators import DataRequired
+
 
 app = Flask(__name__)
 
 app.secret_key = 'secret_key'
 
 mysql = MySQL()
-app.config['MYSQL_DATABASE_USER'] = ''
-app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_USER'] = 'harry'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'H4rru5i3k!'
 app.config['MYSQL_DATABASE_DB'] = 'projekt'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -70,7 +74,6 @@ def register():
         msg = 'Please fill out the form!'
     return render_template('register.html', msg=msg)
 
-
 # http://localhost:5000/
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -86,42 +89,65 @@ def home():
 
 
 # http://localhost:5000/basic
-@app.route('/basic', methods=['GET', 'POST'])
-def basicform():
+@app.route('/basic/update', methods=['GET', 'POST'])
+def basicform_update():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     msg = ''
 
     if 'loggedin' in session:
-        cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
-        account = cursor.fetchone()
+    #         cursor.execute('SELECT * FROM user_u WHERE id IN (SELECT id FROM accounts WHERE id = %s)', [session['id']])
+    #         account = cursor.fetchone()
+    #         if not cursor:
+    #             msg = "ormularz pusty"
+    #         return render_template('homepage/basicform_view.html', account=account, msg=msg)
+    # else:
+    #     return redirect(url_for('login'))
+
         if request.method == 'POST':
+            cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
 
             age = request.form['age']
             weight = request.form['weight']
             height = request.form['height']
-            sex = request.form['sex']
-            smoke = request.form['smoke']
-            drink = request.form['drink']
-            move = request.form['move']
+            # radio bool
+            sex = request.form.get("sex")
+            smoke = request.form.get("smoke")
+            drink = request.form.get("drink")
+            move = request.form.get("move")
 
-            if not type(age) == int:
+            if not age.isnumeric():
                 msg = 'Age must be a number!'
-            elif not type(weight) == int:
+            elif not weight.isnumeric():
                 msg = 'Weight must be a number!'
-            elif not type(height) == int:
+            elif not height.isnumeric():
                 msg = 'Height must be a number!'
             else:
-                cursor.execute('INSERT INTO user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s)',
-                               (age, weight, height, sex, smoke, drink, move))
+                cursor.execute('INSERT INTO user_u VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
+                               ([session['id']], age, weight, height, sex, smoke, drink, move))
                 conn.commit()
-                msg = 'Form copleted!'
+                msg = 'Form completed!'
         elif request.method == 'POST':
             msg = 'Please fill out the form!'
-        return render_template('homepage/basicform.html', account=account)
+        return render_template('homepage/basicform_put.html', msg=msg)
+
+@app.route('/basic', methods=['GET', 'POST'])
+def basicform_view():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    msg = ''
+
+    if 'loggedin' in session:
+        cursor.execute('alter table user_u alter column id set default %s', [session['id']])
+        inserted = 'ok'
+        print('ok')
+
+        if inserted == 'ok':
+            cursor.execute('SELECT * FROM user_u WHERE id IN (SELECT id FROM accounts WHERE id = %s)', [session['id']])
+            account = cursor.fetchone()
+        return render_template('homepage/basicform_view.html', msg=msg, account=account)
     else:
         return redirect(url_for('login'))
-
 
 # http://localhost:5000/logout
 @app.route('/logout')
@@ -140,6 +166,7 @@ def profile():
 
     if 'loggedin' in session:
         cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
+
         account = cursor.fetchone()
         return render_template('profile.html', account=account)
     else:

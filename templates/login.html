@@ -31,9 +31,10 @@
 
     <input type="checkbox" value="checked"><b>Remember</b>
     <input type="submit" value="Login" class="signinbtn" name="">
-   </form>
+
 
    <div id="msg">{{ msg }}</div>
    <p>No account yet?</p>
    <p><a href="{{ url_for('register') }}" class="signupbtn">Register</a></p>
+   </form>
 {% endblock %}
