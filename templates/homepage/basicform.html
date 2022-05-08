@@ -4,8 +4,40 @@
 
 {% block content %}
 <h1>Formularz z informacjami podstawowymi</h1>
+
+<table>
+<tr>
+	<td>id</td>
+	<td>account_id</td>
+	<td>wiek</td>
+	<td>waga</td>
+	<td>wzrost</td>
+	<td>plec</td>
+	<td>papierosy</td>
+	<td>alkohol</td>
+	<td>aktywnosc</td>
+	<td>kasowanie</td>
+</tr>
+{% for user in all_data %}
+<tr>
+	<td>{{ user['id'] }}</td>
+	<td>{{ user['account_id'] }}</td>
+	<td>{{ user['wiek'] }}</td>
+	<td>{{ user['waga'] }}</td>
+	<td>{{ user['wzrost'] }}</td>
+	<td>{{ user['plec'] }}</td>
+	<td>{{ user['papierosy'] }}</td>
+	<td>{{ user['alkohol'] }}</td>
+	<td>{{ user['aktywnosc'] }}</td>
+	<td><a href="{{ url_for('BasicInfoDelete', id=user['id']) }}">kasuj</a></td>
+</tr>
+{% endfor %}
+</table>
+
+
+
 <div>
-    <form action="{{ url_for('basicform') }}" method="post" autocomplete="off">
+    <form action="{{ url_for('BasicInfoInsert') }}" method="post" autocomplete="off">
     <h2>Uzupełnij</h2>
 
             <div class="form-group">

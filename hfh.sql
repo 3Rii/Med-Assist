@@ -44,15 +44,17 @@ create table projekt.prevention
 
 create table projekt.user
 (
-    id        int        default 2 not null,
-    wiek      float      default 0 null,
-    waga      float      default 0 null,
-    wzrost    float      default 0 null,
-    plec      tinyint(1) default 0 null,
-    papierosy tinyint(1) default 0 null,
-    alkohol   tinyint(1) default 0 null,
-    aktywnosc tinyint(1) default 0 null,
-    primary key (id),
+    id          int        auto_increment primary key,
+    account_id  int        not null,
+    wiek        float      default 0 null,
+    waga        float      default 0 null,
+    wzrost      float      default 0 null,
+    plec        tinyint(1) default 0 null,
+    papierosy   tinyint(1) default 0 null,
+    alkohol     tinyint(1) default 0 null,
+    aktywnosc   tinyint(1) default 0 null,
+    foreign key (account_id)
+        references accounts(id),
     constraint user_u_id_uindex
         unique (id)
 );

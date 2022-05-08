@@ -12,15 +12,16 @@ app.secret_key = 'secret_key'
 
 # 1 polacznie
 mysql = MySQL()
-app.config['MYSQL_DATABASE_USER'] = ''
-app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_USER'] = 'harry'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'H4rru5i3k!'
 app.config['MYSQL_DATABASE_DB'] = 'projekt'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
 #2 polaczenie
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://user:haslo@localhost:3306/projekt'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://harry:H4rru5i3k!@localhost:3306/projekt'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 #reflection
 Base = db.Table('Date', db.metadata, autoload=True, autoload_with=db.engine)
@@ -28,87 +29,62 @@ results = db.session.query(Base).all()
 #auto-map
 Base = automap_base()
 Base.prepare(db.engine, reflect=True)
-Date = Base.classes.Date
+user = Base.classes.user
 
-# Testowa tabela do CRUD
-@app.route('/test', methods=['GET', 'POST'])
-def Index():
+@app.route('/basic_info', methods=['GET', 'POST'])
+def BasicInfo():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     if 'loggedin' in session:
 
         # reflection
-        Base = db.Table('Date', db.metadata, autoload=True, autoload_with=db.engine)
-        results = db.session.query(Base).all()
+        Base = db.Table('user', db.metadata, autoload=True, autoload_with=db.engine)
+        results = db.session.query(user).all()
         # auto-map
         Base = automap_base()
         Base.prepare(db.engine, reflect=True)
         all_data = results
 
-        cursor.execute('SELECT * FROM Date WHERE id = %s', [session['id']])
-        account = cursor.fetchone()
+#        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
+#        user = cursor.fetchone()
 
-        return render_template("test.html", employees=all_data, account=account)
+        return render_template("homepage/basicform.html", all_data=all_data)
     else:
         return redirect(url_for('login'))
 
-# this route is for inserting data to mysql database via html forms
-@app.route('/test/insert', methods=['GET', 'POST'])
-def insert():
+@app.route('/basic_info/insert', methods=['GET', 'POST'])
+def BasicInfoInsert():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     if 'loggedin' in session:
         if request.method == 'POST':
-            id = session['id']
-            name = request.form['name']
-            email = request.form['email']
-            phone = request.form['phone']
-            cursor.execute('INSERT INTO Date VALUES (%s, %s, %s, %s)', (id, name, email, phone))
+            account_id = session['id']
+            wiek = request.form['age']
+            waga = request.form['weight']
+            wzrost = request.form['height']
+            plec = request.form['sex']
+            papierosy = request.form['smoke']
+            alkohol = request.form['drink']
+            aktywnosc = request.form['move']
+            cursor.execute('INSERT INTO user(account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc))
             conn.commit()
-            # print('insert')
-            # flash("Employee Inserted Successfully")
-            return redirect(url_for('Index'))
+            return redirect(url_for('BasicInfo'))
     else:
         return redirect(url_for('login'))
 
-# this is our update route where we are going to update our employee
-@app.route('/test/update', methods=['GET', 'POST'])
-def update():
-    if 'loggedin' in session:
-        if request.method == 'POST':
-            my_data = db.session.query(Date).get(request.form.get('id'))
-            if my_data is not None:
-                my_data.name = request.form['name']
-                my_data.email = request.form['email']
-                my_data.phone = request.form['phone']
-                db.session.commit()
-                # print('zmien')
-                return redirect(url_for('Index'))
-            else:
-                # print('warun dziala')
-                insert()
-                return redirect(url_for('Index'))
-    else:
-        return redirect(url_for('login'))
-
-
-# This route is for deleting our employee
-@app.route('/delete', methods=['GET', 'POST'])
-def delete():
+@app.route('/basic_info/delete/<id>', methods=['GET', 'POST'])
+def BasicInfoDelete(id):
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     if 'loggedin' in session:
-            print('chcial usunac')
-            # my_data = db.session.query(Date).get(id)
-            # db.session.delete(my_data)
-            # db.session.commit()
+            #my_data = db.session.query(user).get(id)
+            #db.session.delete(my_data)
+            #db.session.commit()
 
-            cursor.execute('DELETE FROM Date WHERE id = %s', (session['id']))
+            cursor.execute('DELETE FROM user WHERE id = %s', (id))
             conn.commit()
 
-            print('usuwa')
-            # flash("Employee Deleted Successfully")
-            return redirect(url_for('Index'))
+            return redirect(url_for('BasicInfo'))
     else:
         return redirect(url_for('login'))
 
