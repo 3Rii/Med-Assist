@@ -1,4 +1,4 @@
-create database projekt;
+use projekt;
 
 create table projekt.accounts
 (
@@ -7,7 +7,7 @@ create table projekt.accounts
     fullname char(50) not null,
     username char(20) not null,
     password char(20) not null,
-    email    char(20) not null
+    email    char(40) not null
 )
     auto_increment = 6;
 
