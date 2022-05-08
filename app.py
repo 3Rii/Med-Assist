@@ -89,8 +89,8 @@ def home():
 
 
 # http://localhost:5000/basic
-@app.route('/basic/update', methods=['GET', 'POST'])
-def basicform_update():
+@app.route('/basic', methods=['GET', 'POST'])
+def basicform_view():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     msg = ''
@@ -131,23 +131,18 @@ def basicform_update():
             msg = 'Please fill out the form!'
         return render_template('homepage/basicform_put.html', msg=msg)
 
-@app.route('/basic', methods=['GET', 'POST'])
-def basicform_view():
-    conn = mysql.connect()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
-    msg = ''
-
-    if 'loggedin' in session:
-        cursor.execute('alter table user_u alter column id set default %s', [session['id']])
-        inserted = 'ok'
-        print('ok')
-
-        if inserted == 'ok':
-            cursor.execute('SELECT * FROM user_u WHERE id IN (SELECT id FROM accounts WHERE id = %s)', [session['id']])
-            account = cursor.fetchone()
-        return render_template('homepage/basicform_view.html', msg=msg, account=account)
-    else:
-        return redirect(url_for('login'))
+# @app.route('/basic/update', methods=['GET', 'POST'])
+# def basicform_update():
+#     conn = mysql.connect()
+#     cursor = conn.cursor(pymysql.cursors.DictCursor)
+#
+#     if 'loggedin' in session:
+#         cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
+#
+#         account = cursor.fetchone()
+#         return render_template('profile.html', account=account)
+#     else:
+#         return redirect(url_for('login'))
 
 # http://localhost:5000/logout
 @app.route('/logout')

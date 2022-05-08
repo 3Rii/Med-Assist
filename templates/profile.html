@@ -1,32 +1,3 @@
-
-{% extends 'mainlayout.html' %}
- 
-{% block title %}Profil{% endblock %}
- 
-{% block content %}
-<h1>Twój Profil</h1>
-<div>
-    <p>Szczegóły twojego konta:</p>
-    <table>
-        <tr>
-            <td>Imię:</td>
-            <td>{{ account['fullname'] }}</td>
-        </tr>
-  <tr>
-            <td>Nazwa użytkownika:</td>
-            <td>{{ account['username'] }}</td>
-        </tr>
-        <tr>
-            <td>Hasło:</td>
-            <td>{{ account['password'] }}</td>
-        </tr>
-        <tr>
-            <td>Email:</td>
-            <td>{{ account['email'] }}</td>
-        </tr>
-    </table>
-</div>
-
 {% extends 'mainlayout.html' %}
  
 {% block title %}Profile{% endblock %}
@@ -54,5 +25,4 @@
         </tr>
     </table>
 </div>
-
 {% endblock %}
