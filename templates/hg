@@ -1,0 +1,31 @@
+        if request.method == 'POST':
+            cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
+            account = cursor.fetchone()
+            age = request.form['age']
+            weight = request.form['weight']
+            height = request.form['height']
+            # radio bool
+            sex = request.form.get("sex")
+            smoke = request.form.get("smoke")
+            drink = request.form.get("drink")
+            move = request.form.get("move")
+
+            if not type(age) == int:
+                msg = 'Age must be a number!'
+            elif not type(weight) == int:
+                msg = 'Weight must be a number!'
+            elif not type(height) == int:
+                msg = 'Height must be a number!'
+            else:
+                cursor.execute('INSERT INTO user_u VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
+                               ([session['id']], age, weight, height, sex, smoke, drink, move))
+                conn.commit()
+                msg = 'Form copleted!'
+        elif request.method == 'POST':
+            msg = 'Please fill out the form!'
+        return render_template('homepage/basicform.html', msg=msg)
+
+            cursor2.execute('INSERT INTO user_u VALUES (%s)',
+                            ([account['id']]))
+            cursor3.execute('INSERT INTO check_ups VALUES (%s)',
+                           ([account['id']]))

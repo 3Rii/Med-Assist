@@ -1,3 +1,4 @@
+
 {% extends 'mainlayout.html' %}
 
 {% block title %}Home{% endblock %}
@@ -10,3 +11,17 @@
                     Informacje podstawowe
                 </a>
 {% endblock %}
+
+{% extends 'mainlayout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Witaj, {{ account['username'] }}!</h1>
+    <p>Aby aplikacja mogła działać poprawnie wymagane jest co najmniej wypełnienie formularza z informacjmi podstawowymi</p>
+                    <a class="nav-link" href="/basic">
+                     <i class="fas fa-file-invoice"></i>
+                    Informacje podstawowe
+                </a>
+{% endblock %}
+
