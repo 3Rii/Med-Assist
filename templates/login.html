@@ -9,6 +9,8 @@
 
    <form class="form-group" action="{{ url_for('login') }}" method="post">
    
+
+	<body class = "loggedin">
     <div class="form-group">
 		<label for="name" class="cols-sm-2 control-label">Nazwa użytkownika</label>
 		<div class="input-group">
@@ -26,12 +28,13 @@
 	</div>
 	
 	&nbsp
-	<input type="checkbox" value="checked"><b>Zapamiętaj mnie</b></br>
+	<input type="checkbox" value="checked"><b> Zapamiętaj mnie</b></br>
 	<div class="buttons">
 		
-		</br><input type="submit" value="Zaloguj" class="signinbtn">
+		</br><input type="submit" value="Zaloguj się" class="signinbtn">
 		</br></br><b>Nie masz konta?</b>
-		<p><a href="{{ url_for('register') }}" class="signupbtn">Zarejestruj</a></p>
+		<p><a href="{{ url_for('register') }}" class="signupbtn">Zarejestruj się </a></p>
 	</div>
+	</body>
    </form>
 {% endblock %}

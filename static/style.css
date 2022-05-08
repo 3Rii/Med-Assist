@@ -1,10 +1,30 @@
-body {
+/*body {
+   width:100%;
+   height:100%;
+   background: linear-gradient(to bottom, whitesmoke 20%, lightsteelblue 100%);
+   background-repeat: no-repeat;
+   background-size: cover;
    background-color: #435165;
    margin: 0;
+   
+   
+}*/
+
+.loggedin
+{
+  
+  background-image: url("/static/background.jpg");
+  background: linear-gradient(to bottom, whitesmoke 20%, lightsteelblue 100%);
+  background-repeat: no-repeat;
+  background-size:cover;
+  margin: 10px;
+  
+  
 }
 
 .login-box
   {
+    
     justify-content: center;
     background: linear-gradient(to bottom, whitesmoke 20%, lightsteelblue 100%);
     text-align: center;
@@ -21,7 +41,7 @@ body {
     text-align: center;
     border-radius: 25px;
     font-size: 35px;
-    background: linear-gradient(to bottom, lightslategrey 0%, darkslategrey 100%);
+    background: linear-gradient(to bottom, lightslategrey 20%, lightsteelblue 100%);
     color:#fff;
     position: relative;
     box-shadow: 1px 3px 14px  rgba(0, 0, 0, .5);
@@ -110,7 +130,7 @@ span.input-group-addon i {
 
 
 .site-header {
-    background-color: rgba(0, 0, 0, .85);
+  background: linear-gradient(to bottom, lightslategrey 20%, lightsteelblue 100%);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     backdrop-filter: saturate(180%) blur(20px);
 }
@@ -118,7 +138,8 @@ span.input-group-addon i {
  color:#fff;
 }
 .signinbtn{
-  background-color: green;
+  background: linear-gradient(to bottom, lightslategrey 20%, lightsteelblue 100%);
+  background-color: lightskyblue;
   border-radius: 8px;
   box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
   box-sizing: border-box;
@@ -132,7 +153,8 @@ span.input-group-addon i {
   
 }
 .signupbtn{
-  background-color: blue;
+  background: linear-gradient(to bottom, lightslategrey 20%, lightsteelblue 100%);
+  background-color: cornflowerblue;
   border-radius: 8px;
   box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
   box-sizing: border-box;
@@ -148,6 +170,7 @@ span.input-group-addon i {
 
 }
 .save-btn{
+  background: linear-gradient(to bottom, lightslategrey 20%, lightsteelblue 100%);
   background-color: blue;
   border-radius: 8px;
   box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
