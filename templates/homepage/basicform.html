@@ -1,3 +1,110 @@
+
+{% extends 'mainlayout.html' %}
+
+{% block title %}Informacje podstawowe{% endblock %}
+
+{% block content %}
+<h1>Formularz z informacjami podstawowymi</h1>
+<div>
+    <form action="{{ url_for('basicform') }}" method="post" autocomplete="off">
+    <h2>Uzupełnij</h2>
+
+            <div class="form-group">
+               <label for="name" class="cols-sm-2 control-label">Twój wiek:</label>
+                <div class="input-group">
+
+                 <input type="text" class="form-control" name="age" id="age"  placeholder="Wiek"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+               <label for="name" class="cols-sm-2 control-label">Twoja waga:</label>
+                <div class="input-group">
+
+                 <input type="text" class="form-control" name="weight" id="weight"  placeholder="Waga"/>
+                </div>
+            </div>
+            <div class="form-group">
+               <label for="name" class="cols-sm-2 control-label">Twój wzrost:</label>
+                <div class="input-group">
+
+                 <input type="text" class="form-control" name="age" id="age"  placeholder="Wiek"/>
+                </div>
+            </div>
+			
+            
+            <label for="name" class="cols-sm-2 control-label">Płeć:</label>
+
+                  <div class="input-group-prepend">
+                    <input type="radio" value="true">
+                    <label>Kobieta</label>
+                  </div>
+
+                  <div class="input-group-prepend">
+                    <input type="radio" value="false">
+                    <label>Mężczyzna</label>
+                  </div>
+
+
+            <div class="radio-group">
+               <label for="name" class="cols-sm-2 control-label">Papierosy:</label>
+
+                  <div class="input-group-prepend">
+                    <input type="radio" value="true">
+                    <label>Tak</label>
+                  </div>
+
+                  <div class="input-group-prepend">
+                    <input type="radio" value="false">
+                    <label>Nie</label>
+                  </div>
+
+            </div>
+
+            <div class="radio-group">
+               <label for="name" class="cols-sm-2 control-label">Alkohol:</label>
+
+                  <div class="input-group-prepend">
+                    <input type="radio" value="true">
+                    <label>Tak</label>
+                  </div>
+
+
+                  <div class="input-group-prepend">
+                    <input type="radio" value="false">
+                    <label>Nie</label>
+                  </div>
+
+            </div>
+                <div class="radio-group">
+               <label for="name" class="cols-sm-2 control-label">Aktywność:</label>
+                    <div>
+                    <ul>
+                        <p>Zaznaczyć "Tak", jeżeli ćwiczysz (mniej/więcej):</p>
+                        <li>
+                            <p>Minimalnie 3-4 razy w tygodniu po 45-90 minut lub około 1 000 kcal</p>
+                        </li>
+                        <li>
+                            <p>Dziennie po 30 minut lub po 200-300 kcal</p>
+                        </li>
+                    </ul>
+                    </div>
+                  <div class="input-group-prepend">
+                    <input type="radio" value="true">
+                      <label>Tak</label>
+                  </div>
+
+                  <div class="input-group-prepend">
+                    <input type="radio" value="false">
+                    <label>Nie</label>
+                  </div>
+            </div>
+
+    <div id="msg">{{ msg }}</div>
+    <div><input type="submit" value="Save" class="save-btn" name="Zapisz"></div>
+    </form>
+</div>
+
 {% extends 'mainlayout.html' %}
 
 {% block title %}Home{% endblock %}
@@ -107,4 +214,5 @@
 </div>
     <div id="msg">{{ msg }}</div>
     <div><input type="submit" value="Save" class="save-btn" name="Save"></div>
+
 {% endblock %}

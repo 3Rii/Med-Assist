@@ -1,3 +1,53 @@
+
+{% extends 'prevlayout.html' %}
+
+{% block title %}Med-Ass Rejestracja{% endblock %}
+
+{% block sublogin %}Zarejestruj się{% endblock %}
+
+{% block content %}
+     <form action="{{ url_for('register') }}" method="post" autocomplete="off">
+
+      <div class="form-group">
+       <label>Imię</label>
+        <div class="input-group">
+         <span class="input-group-addon"><i class="fa fa-user fa"></i></span>
+         <input type="text" class="form-control" name="fullname" id="fullname"  placeholder="Wprowadź swoje imię"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+       <label>Email</label>
+        <div class="input-group">
+         <span class="input-group-addon"><i class="fa fa-envelope fa"></i></span>
+         <input type="text" class="form-control" name="email" id="email"  placeholder="Wprowadź swój email"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+       <label>Nazwa użytkownika</label>
+        <div class="input-group">
+         <span class="input-group-addon"><i class="fa fa-users fa"></i></span>
+         <input type="text" class="form-control" name="username" id="username" placeholder="Wprowadź nazwę użytkownika" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+       <label>Hasło</label>
+        <div class="input-group">
+         <span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span>
+         <input type="password" class="form-control" name="password" placeholder="Wprowadź swoje hasło" id="password" required  placeholder="Enter your Password"/>
+        </div>
+      </div>
+
+       <div id="msg">{{ msg }}</div>
+
+       <input type="submit" value="Zarejestruj" class="signupbtn" name="Register">
+       </br></br><a href="{{ url_for('login') }}"><u>Powrót do logowania</u></a>
+     </form>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 {% extends 'prevlayout.html' %}
 
 {% block title %}Med-Ass Registration{% endblock %}
@@ -55,4 +105,5 @@
      </form>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 {% endblock %}

@@ -1,3 +1,194 @@
+
+/*body {
+   width:100%;
+   height:100%;
+   background: linear-gradient(to bottom, whitesmoke 20%, lightsteelblue 100%);
+   background-repeat: no-repeat;
+   background-size: cover;
+   background-color: #435165;
+   margin: 0;
+   
+   
+}*/
+
+.loggedin
+{
+  
+  background-image: url("/static/background.jpg");
+  background: linear-gradient(to bottom, whitesmoke 20%, lightsteelblue 100%);
+  background-repeat: no-repeat;
+  background-size:cover;
+  margin: 10px;
+  
+  
+}
+
+.login-box
+  {
+    
+    justify-content: center;
+    background: linear-gradient(to bottom, whitesmoke 20%, lightsteelblue 100%);
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+    margin-top: 50px;
+    border-radius: 25px;
+    box-shadow: inset 0 0 1em darkslategrey, 0 0 1em dimgrey;
+    width: 30%;
+  }
+
+  .login-header
+  {
+    text-align: center;
+    border-radius: 25px;
+    font-size: 35px;
+    background: linear-gradient(to bottom, lightslategrey 20%, lightsteelblue 100%);
+    color:#fff;
+    position: relative;
+    box-shadow: 1px 3px 14px  rgba(0, 0, 0, .5);
+  }
+  .login-body
+  {
+   padding: 20px;
+   line-height: 2;
+  }
+
+.msg {
+ color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+ padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+.main{
+  margin-top:50px;
+}
+
+.h1.title {
+ font-size: 50px;
+ font-family: 'Passion One', cursive;
+ font-weight: 400;
+}
+
+hr{
+ width: 10%;
+ color: #fff;
+}
+
+.form-group{
+ margin-bottom: 15px;
+ text-align: left;
+}
+
+label{
+ margin-bottom: 15px;
+}
+
+input,
+input::-webkit-input-placeholder {
+    font-size: 11px;
+    padding-top: 3px;
+}
+
+.main-login{
+  background-color: #fff;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+
+}
+.form-control {
+    height: auto!important;
+padding: 8px 12px !important;
+}
+.input-group {
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+    -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+}
+.main-center{
+  margin-top: 30px;
+  margin: 0 auto;
+  max-width: 400px;
+    padding: 10px 40px;
+ background:#009edf;
+     color: #FFF;
+    text-shadow: none;
+ -webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+-moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+
+}
+span.input-group-addon i {
+    color: #fff;
+    font-size: 17px;padding:10px;
+}
+
+
+.site-header {
+  background: linear-gradient(to bottom, lightslategrey 20%, lightsteelblue 100%);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+}
+.site-header a {
+ color:#fff;
+}
+.signinbtn{
+  background: linear-gradient(to bottom, lightslategrey 20%, lightsteelblue 100%);
+  background-color: lightskyblue;
+  border-radius: 8px;
+  box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  padding: 13px 20px;
+  position: relative;
+  text-align: center;
+  width:150px;
+  
+}
+.signupbtn{
+  background: linear-gradient(to bottom, lightslategrey 20%, lightsteelblue 100%);
+  background-color: cornflowerblue;
+  border-radius: 8px;
+  box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  padding: 13px 20px;
+  position: relative;
+  text-align: center;
+
+}
+.menu-header{
+
+}
+.save-btn{
+  background: linear-gradient(to bottom, lightslategrey 20%, lightsteelblue 100%);
+  background-color: blue;
+  border-radius: 8px;
+  box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  padding: 13px 20px;
+  text-align: center;
+}
+.radio-group{
+
+}
+
+.buttons{
+	text-align:center;
+
 body {
    background-color: #435165;
    margin: 0;
@@ -168,5 +359,6 @@ span.input-group-addon i {
   touch-action: manipulation;
 }
 .radio-group{
+
 
 }
