@@ -5,30 +5,33 @@ body {
 
 .login-box
   {
-   height: 50%;
-   width: 30%;
-   border: 1px solid grey;
-   margin-left: 35%;
-   margin-top: 10%;
-   position: relative;
-        box-shadow: 21px 12px 24px 10px rgba(0, 0, 0, .5);
-        background: #dadada;
+    justify-content: center;
+    background: linear-gradient(to bottom, whitesmoke 20%, lightsteelblue 100%);
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+    margin-top: 50px;
+    border-radius: 25px;
+    box-shadow: inset 0 0 1em darkslategrey, 0 0 1em dimgrey;
+    width: 30%;
   }
+
   .login-header
   {
-   text-align: center;
-   font-family: "vardhana",cursive;
-   font-size: 35px;
-   background: linear-gradient(to bottom, #00bfff 0%, #0000ff 100%);
-   color:#fff;
-   position: relative;
-        box-shadow: 1px 3px 14px  rgba(0, 0, 0, .5);
+    text-align: center;
+    border-radius: 25px;
+    font-size: 35px;
+    background: linear-gradient(to bottom, lightslategrey 0%, darkslategrey 100%);
+    color:#fff;
+    position: relative;
+    box-shadow: 1px 3px 14px  rgba(0, 0, 0, .5);
   }
   .login-body
   {
    padding: 20px;
    line-height: 2;
   }
+
 .msg {
  color: #721c24;
     background-color: #f8d7da;
@@ -42,7 +45,7 @@ body {
   margin-top:50px;
 }
 
-h1.title {
+.h1.title {
  font-size: 50px;
  font-family: 'Passion One', cursive;
  font-weight: 400;
@@ -55,6 +58,7 @@ hr{
 
 .form-group{
  margin-bottom: 15px;
+ text-align: left;
 }
 
 label{
@@ -69,7 +73,6 @@ input::-webkit-input-placeholder {
 
 .main-login{
   background-color: #fff;
-    /* shadows and rounded borders */
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
@@ -105,14 +108,6 @@ span.input-group-addon i {
     font-size: 17px;padding:10px;
 }
 
-.login-button{
- margin-top: 5px;
-}
-
-.login-register{
- font-size: 11px;
- text-align: center;
-}
 
 .site-header {
     background-color: rgba(0, 0, 0, .85);
@@ -121,4 +116,52 @@ span.input-group-addon i {
 }
 .site-header a {
  color:#fff;
+}
+.signinbtn{
+  background-color: green;
+  border-radius: 8px;
+  box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  padding: 13px 20px;
+  position: relative;
+  text-align: center;
+  width:150px;
+  
+}
+.signupbtn{
+  background-color: blue;
+  border-radius: 8px;
+  box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  padding: 13px 20px;
+  position: relative;
+  text-align: center;
+
+}
+.menu-header{
+
+}
+.save-btn{
+  background-color: blue;
+  border-radius: 8px;
+  box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  padding: 13px 20px;
+  text-align: center;
+}
+.radio-group{
+
+}
+
+.buttons{
+	text-align:center;
 }
