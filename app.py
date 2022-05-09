@@ -12,26 +12,29 @@ app.secret_key = 'secret_key'
 
 # 1 polacznie
 mysql = MySQL()
-app.config['MYSQL_DATABASE_USER'] = ''
-app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_USER'] =
+app.config['MYSQL_DATABASE_PASSWORD'] =
 app.config['MYSQL_DATABASE_DB'] = 'projekt'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
 #2 polaczenie
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://:@localhost:3306/projekt'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://@localhost:3306/projekt'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # reflection Tables
-Base = db.Table('Date', db.metadata, autoload=True, autoload_with=db.engine)
-results = db.session.query(Base).all()
+# Base = db.Table('Date', db.metadata, autoload=True, autoload_with=db.engine)
+# results = db.session.query(Base).all()
 
 Acc = db.Table('accounts', db.metadata, autoload=True, autoload_with=db.engine)
 acc_res = db.session.query(Acc).all()
 
-User = db.Table('uzytkownik', db.metadata, autoload=True, autoload_with=db.engine)
+User = db.Table('user', db.metadata, autoload=True, autoload_with=db.engine)
 user_res = db.session.query(User).all()
+
+User = db.Table('uzytkownik', db.metadata, autoload=True, autoload_with=db.engine)
+user_resyy = db.session.query(User).all()
 
 Chck = db.Table('check_ups', db.metadata, autoload=True, autoload_with=db.engine)
 check_res = db.session.query(Chck).all()
@@ -53,16 +56,16 @@ uuu = Base.classes.uzytkownik
 chck = Base.classes.check_ups
 prev = Base.classes.prevention
 vacc = Base.classes.vacc
-Date = Base.classes.Date
+# Date = Base.classes.Date
 
-# Testowa tabela do CRUD
+# Basic Form CRUD
 @app.route('/basic', methods=['GET', 'POST'])
 def Basic():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     if 'loggedin' in session:
 
-        cursor.execute('SELECT * FROM uzytkownik WHERE id = %s', [session['id']])
+        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
         account = cursor.fetchone()
         return render_template("forms/basicform.html", user=account)
 
@@ -77,13 +80,14 @@ def BasicUpdate():
     msg = ''
 
     if 'loggedin' in session:
-        cursor.execute('SELECT * FROM uzytkownik WHERE id = %s', (session['id']))
+        cursor.execute('SELECT * FROM user WHERE id = %s', (session['id']))
         account = cursor.fetchone()
 
         if request.method == 'POST':
-            my_data = db.session.query(uuu).get(request.form.get('id'))
+            my_data = db.session.query(user).get(request.form.get('id'))
+
             if my_data is not None:
-                my_data.wiek = round(int(request.form['wiek']))
+                my_data.wiek = request.form['wiek']
                 my_data.waga = request.form['waga']
                 my_data.wzrost = request.form['wzrost']
                 my_data.plec = request.form['plec']
@@ -92,18 +96,18 @@ def BasicUpdate():
                 my_data.aktywnosc = request.form['aktywnosc']
                 db.session.commit()
                 # print('zmien')
-                # return redirect(url_for('Basic'))
+                return redirect(url_for('Basic'))
             else:
                 # print('warun dziala')
                 account_id = session['id']
-                wiek = round(int(request.form['wiek']))
+                wiek = request.form['wiek']
                 waga = request.form['waga']
                 wzrost = request.form['wzrost']
                 plec = request.form['plec']
                 papierosy = request.form['papierosy']
                 alkohol = request.form['alkohol']
                 aktywnosc = request.form['aktywnosc']
-                cursor.execute('INSERT INTO uzytkownik VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc))
+                cursor.execute('INSERT INTO user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)', (account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc))
                 conn.commit()
                 return redirect(url_for('Basic'))
     else:
@@ -117,7 +121,7 @@ def BasicDelete():
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     if 'loggedin' in session:
 
-            cursor.execute('DELETE FROM uzytkownik WHERE id = %s', (session['id']))
+            cursor.execute('DELETE FROM user WHERE id = %s', (session['id']))
             conn.commit()
             return redirect(url_for('Basic'))
     else:
@@ -126,6 +130,7 @@ def BasicDelete():
 # http://localhost:5000/login/
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
+
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     msg = ''
