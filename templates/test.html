@@ -46,7 +46,7 @@
                         <td>{{account['phone']}}</td>
                         <td>
                             <a href="/update/{{account['id']}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{account['id']}}">Edit</a>
-                            <a href="/delete" class="btn btn-danger btn-xs" action="{{url_for('insert')}}" method="POST" onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
+                            <a href="/delete" class="btn btn-danger btn-xs" action="{{url_for('BasicUpdate')}}" method="POST" onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
                         </td>
                     </tr>
                   <!-- Modal Edit Employee-->
@@ -108,7 +108,7 @@
          </div>
          <div class="modal-body">
 
-            <form action="{{url_for('insert')}}" method="POST">
+            <form action="{{url_for('BasicUpdate')}}" method="POST">
 
 
                <div class="form-group">

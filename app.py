@@ -48,7 +48,7 @@ def BasicInfo():
 #        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
 #        user = cursor.fetchone()
 
-        return render_template("homepage/../templates/forms/basicform.html", all_data=all_data)
+        return render_template("homepage/basicform.html", all_data=all_data)
     else:
         return redirect(url_for('login'))
 
@@ -191,7 +191,7 @@ def basicform():
                 msg = 'Form completed!'
         elif request.method == 'POST':
             msg = 'Please fill out the form!'
-        return render_template('homepage/../templates/forms/basicform.html', msg=msg)
+        return render_template('homepage/basicform.html', msg=msg)
     else:
         return redirect(url_for('login'))
 
