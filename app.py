@@ -12,14 +12,14 @@ app.secret_key = 'secret_key'
 
 # 1 polacznie
 mysql = MySQL()
-app.config['MYSQL_DATABASE_USER'] =
-app.config['MYSQL_DATABASE_PASSWORD'] =
+app.config['MYSQL_DATABASE_USER'] = 'harry'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'H4rru5i3k!'
 app.config['MYSQL_DATABASE_DB'] = 'projekt'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
 #2 polaczenie
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://@localhost:3306/projekt'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://harry:H4rru5i3k!@localhost:3306/projekt'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
