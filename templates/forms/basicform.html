@@ -1,0 +1,242 @@
+{% extends 'forms/base.html' %}
+
+{% block title %} Home {% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+
+            <div class="jumbotron p-3">
+                <h2>Formularz <b>Informacje Podstawowe</b></h2>
+
+                <table class="table table-hover table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Wiek</th>
+                        <th>Waga</th>
+                        <th>Wzrost</th>
+                        <th>Płeć</th>
+                        <th>Papierosy</th>
+                        <th>Alkohol</th>
+                        <th>Aktywność</th>
+                    </tr>
+                    <tr>
+                        <td>{{ user['id']}}</td>
+                        <td>{{ user['wiek']}}</td>
+                        <td>{{ user['waga']}}</td>
+                        <td>{{ user['wzrost']}}</td>
+                        <td>{{ user['plec']}}</td>
+                        <td>{{ user['papierosy']}}</td>
+                        <td>{{ user['alkohol']}}</td>
+                        <td>{{ user['aktywnosc']}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="basic/update" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{ user['id']}}">Edit</a>
+                            <a href="basic/delete" class="btn btn-danger btn-xs" action="{{url_for('BasicDelete')}}" method="POST" onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
+                        </td>
+                    </tr>
+
+                  <!-- Modal Edit Employee-->
+<div id="modaledit{{ user['id']}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+
+      <div class="modal-content">
+
+         <div class="modal-header">
+            <h4 class="modal-title">Update Information</h4>
+         </div>
+         <div class="modal-body">
+
+
+            <form action="{{url_for('BasicUpdate')}}" method="POST">
+
+               <div class="form-group">
+                  <label for="wiek">Wiek:</label>
+                   <input type="hidden"  name="id" value="{{ user['id']}}">
+                  <input type="text" class="form-control" name="wiek" value="{{ user['wiek']}}" placeholder="{{ user['wiek']}}">
+               </div>
+
+               <div class="form-group">
+                  <label for="waga">Waga:</label>
+                  <input type="text" class="form-control" name="waga" value="{{ user['waga']}}" placeholder="{{ user['waga']}}">
+               </div>
+
+               <div class="form-group">
+                  <label for="wzrost">Wzrost:</label>
+                  <input type="text" class="form-control" name="wzrost" value="{{ user['wzrost']}}" placeholder="{{ user['wzrost']}}">
+               </div>
+
+               <label for="plec" class="cols-sm-2 control-label">Płeć:</label>
+
+                  <div class="input-group-prepend">
+                    <input type="radio" name="plec" id="plec" value="1">
+                    <label>Kobieta</label>
+                  </div>
+
+                  <div >
+                    <input type="radio" name="plec" id="plec" value="0">
+                    <label>Mężczyzna</label>
+                  </div>
+
+
+               <div class="radio-group">
+               <label for="papierosy" class="cols-sm-2 control-label">Papierosy:</label>
+
+                  <div class="input-group-prepend">
+                    <input type="radio" name="papierosy" id="papierosy" value="1">
+                    <label>Tak</label>
+                  </div>
+
+                  <div class="input-group-prepend">
+                    <input type="radio" name="papierosy" id="papierosy" value="0">
+                    <label>Nie</label>
+                  </div>
+            </div>
+
+            <div class="radio-group">
+               <label for="alkohol" class="cols-sm-2 control-label">Alkohol:</label>
+
+                  <div class="input-group-prepend">
+                    <input type="radio" name="alkohol" id="alkohol" value="1">
+                    <label>Tak</label>
+                  </div>
+
+
+                  <div class="input-group-prepend">
+                    <input type="radio" name="alkohol" id="alkohol" value="0">
+                    <label>Nie</label>
+                  </div>
+
+            </div>
+                <div class="radio-group">
+               <label for="aktywnosc" class="cols-sm-2 control-label">Aktywność:</label>
+                    <div>
+                    <ul>
+                        <p>Zaznaczyć "Tak", jeżeli ćwiczysz (mniej/więcej):</p>
+                        <li>
+                            <p>Minimalnie 3-4 razy w tygodniu po 45-90 minut lub około 1 000 kcal</p>
+                        </li>
+                        <li>
+                            <p>Dziennie po 30 minut lub po 200-300 kcal</p>
+                        </li>
+                    </ul>
+                    </div>
+                  <div class="input-group-prepend">
+                    <input type="radio" name="aktywnosc" id="aktywnosc" value="1">
+                      <label>Tak</label>
+                  </div>
+
+                  <div class="input-group-prepend">
+                    <input type="radio" name="aktywnosc" id="aktywnosc" value="0">
+                    <label>Nie</label>
+                  </div>
+            </div>
+
+                <div id="msg">{{ msg }}</div>
+               <div class="form-group">
+                  <button class="btn btn-primary" type="submit">Update</button>
+               </div>
+
+            </form>
+         </div>
+
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
+</div>
+                </table>
+            </div>
+
+{#                  <!-- Modal Add Employee-->#}
+{#        #}
+{#<div id="mymodal" class="modal fade" role="dialog">#}
+{#   <div class="modal-dialog">#}
+{#      <div class="modal-content">#}
+{#         <div class="modal-header">#}
+{##}
+{#            <h4 class="modal-title">Add Employee</h4>#}
+{#         </div>#}
+{#         <div class="modal-body">#}
+{##}
+{#            <form action="{{url_for('BasicUpdate')}}" method="POST">#}
+{##}
+{##}
+{#               <div class="form-group">#}
+{##}
+{#                  <label>Name:</label>#}
+{#                  <input type="text" class="form-control" name="name" required="1">#}
+{##}
+{##}
+{#               </div>#}
+{##}
+{##}
+{#                <div class="form-group">#}
+{##}
+{##}
+{#                  <label>Email:</label>#}
+{#                  <input type="email" class="form-control" name="email" required="1">#}
+{##}
+{##}
+{#               </div>#}
+{##}
+{##}
+{#                <div class="form-group">#}
+{##}
+{##}
+{#                  <label>Phone:</label>#}
+{#                  <input type="number" class="form-control" name="phone" required="1">#}
+{##}
+{##}
+{#               </div>#}
+{##}
+{##}
+{##}
+{#               <div class="form-group">#}
+{##}
+{##}
+{#                  <button class="btn btn-primary" type="submit">Add Employee</button>#}
+{##}
+{##}
+{#               </div>#}
+{##}
+{##}
+{#            </form>#}
+{##}
+{##}
+{#         </div>#}
+{##}
+{##}
+{#         <div class="modal-footer">#}
+{##}
+{##}
+{#            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
+{##}
+{##}
+{#         </div>#}
+
+
+      </div>
+
+
+   </div>
+
+
+</div>
+
+
+
+
+
+{#        </div>#}
+{##}
+{#    </div>#}
+{##}
+{##}
+{#</div>#}
+
+
+{% endblock %}
