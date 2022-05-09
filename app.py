@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 import pymysql
 pymysql.install_as_MySQLdb()
 from sqlalchemy.ext.automap import automap_base
-from sqlalchemy import insert
+
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
@@ -22,10 +22,6 @@ mysql.init_app(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://harry:H4rru5i3k!@localhost:3306/projekt'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-
-# reflection Tables
-# Base = db.Table('Date', db.metadata, autoload=True, autoload_with=db.engine)
-# results = db.session.query(Base).all()
 
 Acc = db.Table('accounts', db.metadata, autoload=True, autoload_with=db.engine)
 acc_res = db.session.query(Acc).all()
@@ -49,14 +45,13 @@ vacc_res = db.session.query(Vacc).all()
 Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
-# date = Base.classes.Date
 acc = Base.classes.accounts
 user = Base.classes.user
 uuu = Base.classes.uzytkownik
 chck = Base.classes.check_ups
 prev = Base.classes.prevention
 vacc = Base.classes.vacc
-# Date = Base.classes.Date
+
 
 # Basic Form CRUD
 @app.route('/basic', methods=['GET', 'POST'])
@@ -72,7 +67,6 @@ def Basic():
     else:
         return redirect(url_for('login'))
 
-# this is our update route where we are going to update our employee
 @app.route('/basic/update', methods=['GET', 'POST'])
 def BasicUpdate():
     conn = mysql.connect()
@@ -81,7 +75,6 @@ def BasicUpdate():
 
     if 'loggedin' in session:
         cursor.execute('SELECT * FROM user WHERE id = %s', (session['id']))
-        account = cursor.fetchone()
 
         if request.method == 'POST':
             my_data = db.session.query(user).get(request.form.get('id'))
@@ -95,10 +88,8 @@ def BasicUpdate():
                 my_data.alkohol = request.form['alkohol']
                 my_data.aktywnosc = request.form['aktywnosc']
                 db.session.commit()
-                # print('zmien')
                 return redirect(url_for('Basic'))
             else:
-                # print('warun dziala')
                 account_id = session['id']
                 wiek = request.form['wiek']
                 waga = request.form['waga']
@@ -113,7 +104,6 @@ def BasicUpdate():
     else:
         return redirect(url_for('login'))
 
-# This route is for deleting our employee
 @app.route('/basic/delete/', methods=['GET', 'POST'])
 def BasicDelete():
 
@@ -192,7 +182,7 @@ def home():
     if 'loggedin' in session:
         username = cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
         account = cursor.fetchone()
-        return render_template('homepage/home.html', username=session['username'], account=account)
+        return render_template('home.html', username=session['username'], account=account)
     return redirect(url_for('login'))
 
 # http://localhost:5000/logout
