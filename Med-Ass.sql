@@ -21,14 +21,6 @@ create table projekt.check_ups
     constraint check_ups_id_uindex
         unique (id)
 );
-create table projekt.Date
-(
-    id    int          not null,
-    name  varchar(100) null,
-    email varchar(100) null,
-    phone varchar(100) null,
-    primary key (id)
-);
 
 create table projekt.prevention
 (

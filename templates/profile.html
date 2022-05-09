@@ -1,26 +1,27 @@
 {% extends 'mainlayout.html' %}
  
-{% block title %}Profile{% endblock %}
+{% block title %}Profil{% endblock %}
  
 {% block content %}
-<h1>Profile Page</h1>
+<h1>Mój profil</h1>
+
 <div>
-    <p>Your account details are below:</p>
+    <p>Dane użytkownika:</p>
     <table>
         <tr>
-            <td>Name:</td>
+            <td>Imię:</td>
             <td>{{ account['fullname'] }}</td>
         </tr>
   <tr>
-            <td>Username:</td>
+            <td>Nazwa Użytkownika:</td>
             <td>{{ account['username'] }}</td>
         </tr>
         <tr>
-            <td>Password:</td>
+            <td>Hasło:</td>
             <td>{{ account['password'] }}</td>
         </tr>
         <tr>
-            <td>Email:</td>
+            <td>E-mail:</td>
             <td>{{ account['email'] }}</td>
         </tr>
     </table>
