@@ -9,10 +9,11 @@
 
             <div class="jumbotron p-3">
                 <h2>Formularz <b>Informacje Podstawowe</b></h2>
+                <br>
 
-                <table class="table table-hover table-dark">
+                <table class="table">
                     <tr>
-                        <th>ID</th>
+                        <th></th>
                         <th>Wiek</th>
                         <th>Waga</th>
                         <th>Wzrost</th>
@@ -22,7 +23,7 @@
                         <th>Aktywność</th>
                     </tr>
                     <tr>
-                        <td>{{ user['id']}}</td>
+                        <td></td>
                         <td>{{ user['wiek']}}</td>
                         <td>{{ user['waga']}}</td>
                         <td>{{ user['wzrost']}}</td>
@@ -31,12 +32,12 @@
                         <td>{{ user['alkohol']}}</td>
                         <td>{{ user['aktywnosc']}}</td>
                     </tr>
-                    <tr>
-                        <td>
+
+                        <div style="float: right">
                             <a href="basic/update" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{ user['id']}}">Edit</a>
                             <a href="basic/delete" class="btn btn-danger btn-xs" action="{{url_for('BasicDelete')}}" method="POST" onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
-                        </td>
-                    </tr>
+                        </div>
+
 
                   <!-- Modal Edit Employee-->
 <div id="modaledit{{ user['id']}}" class="modal fade" role="dialog">
@@ -150,93 +151,10 @@
 </div>
                 </table>
             </div>
-
-{#                  <!-- Modal Add Employee-->#}
-{#        #}
-{#<div id="mymodal" class="modal fade" role="dialog">#}
-{#   <div class="modal-dialog">#}
-{#      <div class="modal-content">#}
-{#         <div class="modal-header">#}
-{##}
-{#            <h4 class="modal-title">Add Employee</h4>#}
-{#         </div>#}
-{#         <div class="modal-body">#}
-{##}
-{#            <form action="{{url_for('BasicUpdate')}}" method="POST">#}
-{##}
-{##}
-{#               <div class="form-group">#}
-{##}
-{#                  <label>Name:</label>#}
-{#                  <input type="text" class="form-control" name="name" required="1">#}
-{##}
-{##}
-{#               </div>#}
-{##}
-{##}
-{#                <div class="form-group">#}
-{##}
-{##}
-{#                  <label>Email:</label>#}
-{#                  <input type="email" class="form-control" name="email" required="1">#}
-{##}
-{##}
-{#               </div>#}
-{##}
-{##}
-{#                <div class="form-group">#}
-{##}
-{##}
-{#                  <label>Phone:</label>#}
-{#                  <input type="number" class="form-control" name="phone" required="1">#}
-{##}
-{##}
-{#               </div>#}
-{##}
-{##}
-{##}
-{#               <div class="form-group">#}
-{##}
-{##}
-{#                  <button class="btn btn-primary" type="submit">Add Employee</button>#}
-{##}
-{##}
-{#               </div>#}
-{##}
-{##}
-{#            </form>#}
-{##}
-{##}
-{#         </div>#}
-{##}
-{##}
-{#         <div class="modal-footer">#}
-{##}
-{##}
-{#            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
-{##}
-{##}
-{#         </div>#}
-
-
       </div>
-
-
    </div>
-
-
 </div>
 
-
-
-
-
-{#        </div>#}
-{##}
-{#    </div>#}
-{##}
-{##}
-{#</div>#}
 
 
 {% endblock %}
