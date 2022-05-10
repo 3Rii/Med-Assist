@@ -26,10 +26,10 @@
                         <td>{{ user['wiek']}}</td>
                         <td>{{ user['waga']}}</td>
                         <td>{{ user['wzrost']}}</td>
-                        <td>{{ user['plec']}}</td>
-                        <td>{{ user['papierosy']}}</td>
-                        <td>{{ user['alkohol']}}</td>
-                        <td>{{ user['aktywnosc']}}</td>
+			<td>{% if user['plec'] %}Kobieta{% else %}Mężczyzna{% endif %}</td>
+			<td>{% if user['papierosy'] %}Tak{% else %}Nie{% endif %}</td>
+                        <td>{% if user['alkohol'] %}Tak{% else %}Nie{% endif %}</td>
+                        <td>{% if user['aktywnosc'] %}Tak{% else %}Nie{% endif %}</td>
                     </tr>
                     <tr>
                         <td>
@@ -68,50 +68,45 @@
                   <input type="text" class="form-control" name="wzrost" value="{{ user['wzrost']}}" placeholder="{{ user['wzrost']}}">
                </div>
 
-               <label for="plec" class="cols-sm-2 control-label">Płeć:</label>
-
-                  <div class="input-group-prepend">
-                    <input type="radio" name="plec" id="plec" value="1">
-                    <label>Kobieta</label>
-                  </div>
-
-                  <div >
-                    <input type="radio" name="plec" id="plec" value="0">
-                    <label>Mężczyzna</label>
-                  </div>
-
 
                <div class="radio-group">
-               <label for="papierosy" class="cols-sm-2 control-label">Papierosy:</label>
-
+                  <label for="plec" class="cols-sm-2 control-label">Płeć:</label>
                   <div class="input-group-prepend">
-                    <input type="radio" name="papierosy" id="papierosy" value="1">
-                    <label>Tak</label>
+			  <input type="radio" name="plec" id="plec" value="1" {% if user['plec'] %}checked{% endif %}/>
+                          <label>Kobieta</label>
                   </div>
-
                   <div class="input-group-prepend">
-                    <input type="radio" name="papierosy" id="papierosy" value="0">
-                    <label>Nie</label>
+			  <input type="radio" name="plec" id="plec" value="0" {% if not user['plec'] %}checked{% endif %}/>
+                          <label>Mezczyzna</label>
                   </div>
-            </div>
+               </div>
 
-            <div class="radio-group">
-               <label for="alkohol" class="cols-sm-2 control-label">Alkohol:</label>
-
+               <div class="radio-group">
+		  <label for="papierosy" class="cols-sm-2 control-label">Papierosy:</label>
                   <div class="input-group-prepend">
-                    <input type="radio" name="alkohol" id="alkohol" value="1">
-                    <label>Tak</label>
+			  <input type="radio" name="papierosy" id="papierosy" value="1" {% if user['papierosy'] %}checked{% endif %}/>
+                          <label>Tak</label>
                   </div>
-
-
                   <div class="input-group-prepend">
-                    <input type="radio" name="alkohol" id="alkohol" value="0">
-                    <label>Nie</label>
+			  <input type="radio" name="papierosy" id="papierosy" value="0" {% if not user['papierosy'] %}checked{% endif %}/>
+                          <label>Nie</label>
                   </div>
+               </div>
 
-            </div>
-                <div class="radio-group">
-               <label for="aktywnosc" class="cols-sm-2 control-label">Aktywność:</label>
+               <div class="radio-group">
+		  <label for="alkohol" class="cols-sm-2 control-label">Alkohol:</label>
+                  <div class="input-group-prepend">
+			  <input type="radio" name="alkohol" id="alkohol" value="1" {% if user['alkohol'] %}checked{% endif %}/>
+                          <label>Tak</label>
+                  </div>
+                  <div class="input-group-prepend">
+			  <input type="radio" name="alkohol" id="alkohol" value="0" {% if not user['alkohol'] %}checked{% endif %}/>
+                          <label>Nie</label>
+                  </div>
+               </div>
+
+               <div class="radio-group">
+		  <label for="aktywnosc" class="cols-sm-2 control-label">Aktywność:</label>
                     <div>
                     <ul>
                         <p>Zaznaczyć "Tak", jeżeli ćwiczysz (mniej/więcej):</p>
@@ -124,15 +119,15 @@
                     </ul>
                     </div>
                   <div class="input-group-prepend">
-                    <input type="radio" name="aktywnosc" id="aktywnosc" value="1">
-                      <label>Tak</label>
+			  <input type="radio" name="aktywnosc" id="aktywnosc" value="1" {% if user['aktywnosc'] %}checked{% endif %}/>
+                          <label>Tak</label>
                   </div>
-
                   <div class="input-group-prepend">
-                    <input type="radio" name="aktywnosc" id="aktywnosc" value="0">
-                    <label>Nie</label>
+			  <input type="radio" name="aktywnosc" id="aktywnosc" value="0" {% if not user['aktywnosc'] %}checked{% endif %}/>
+                          <label>Nie</label>
                   </div>
-            </div>
+               </div>
+
 
                 <div id="msg">{{ msg }}</div>
                <div class="form-group">
