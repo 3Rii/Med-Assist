@@ -1,82 +1,40 @@
-
 {% extends 'prevlayout.html' %}
 
-{% block title %}Med-Ass Login{% endblock %}
+{% block title %}Med-Assistent Login{% endblock %}
 
-{% block sublogin %}Logowanie{% endblock %}
-
-{% block content %}
-     
-
-   <form class="form-group" action="{{ url_for('login') }}" method="post">
-   
-
-	<body class = "loggedin">
-    <div class="form-group">
-		<label for="name" class="cols-sm-2 control-label">Nazwa użytkownika</label>
-		<div class="input-group">
-			<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-			<input type="text" class="form-control" name="username" placeholder="Nazwa" id="username" required>
-		</div>
-	</div>
-
-	<div class="form-group">
-       <label for="password" class="cols-sm-2 control-label">Hasło</label>
-       <div class="input-group">
-			<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-			<input type="password" class="form-control" name="password" placeholder="Hasło" id="password" required>
-		</div>
-	</div>
-	
-	&nbsp
-	<input type="checkbox" value="checked"><b> Zapamiętaj mnie</b></br>
-	<div class="buttons">
-		
-		</br><input type="submit" value="Zaloguj się" class="signinbtn">
-		</br></br><b>Nie masz konta?</b>
-		<p><a href="{{ url_for('register') }}" class="signupbtn">Zarejestruj się </a></p>
-	</div>
-	</body>
-   </form>
-
-{% extends 'prevlayout.html' %}
-
-{% block title %}Med-Ass Login{% endblock %}
-
-{% block sublogin %}Login{% endblock %}
+{% block sublogin %}Zaloguj się{% endblock %}
 
 {% block content %}
-     <p>Login</p>
 
    <form class="form-group" action="{{ url_for('login') }}" method="post">
     <div class="form-group">
-    <label for="name" class="cols-sm-2 control-label">Username</label>
+    <label for="name" class="cols-sm-2 control-label">Nazwa użytkownika</label>
     <div class="cols-sm-10">
     <div class="input-group">
     <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-    <input type="text" class="form-control" name="username" placeholder="Username" id="username" required>
+    <input type="text" class="form-control" name="username" placeholder="Nazwa użytkownika" id="username" required>
           </div>
        </div>
       </div>
 
        <div class="form-group">
-       <label for="password" class="cols-sm-2 control-label">Password</label>
+       <label for="password" class="cols-sm-2 control-label">Hasło</label>
        <div class="cols-sm-10">
         <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-    <input type="password" class="form-control" name="password" placeholder="Password" id="password" required>
+    <input type="password" class="form-control" name="password" placeholder="Hasło" id="password" required>
             </div>
        </div>
       </div>
 
 
-    <input type="checkbox" value="checked"><b>Remember</b>
-    <input type="submit" value="Login" class="signinbtn" name="">
+    <input type="checkbox" value="checked"><b> Zapamiętaj</b>
+    <hr>
+    <input type="submit" value="Zaloguj się" class="signinbtn" name="">
 
 
    <div id="msg">{{ msg }}</div>
-   <p>No account yet?</p>
-   <p><a href="{{ url_for('register') }}" class="signupbtn">Register</a></p>
+   <p> Nie masz konta? </p>
+   <p><a href="{{ url_for('register') }}" class="signupbtn">Zarejestruj</a></p>
    </form>
-
 {% endblock %}
