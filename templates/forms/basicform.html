@@ -8,11 +8,11 @@
         <div class="col md-12">
 
             <div class="jumbotron p-3">
-                <h2>Formularz <b>Informacje Podstawowe</b></h2>
+                <h2 style="justify-content: center"><i class="fas fa-file-invoice" style="color: slategrey"></i><b style="color: darkblue"><i> Informacje Podstawowe</i></b></h2>
 
-                <table class="table table-hover">
+                <table class="table table-hover table-borderless align-items-center text-dark text-center">
                     <tr>
-                        <th>ID</th>
+
                         <th>Wiek</th>
                         <th>Waga</th>
                         <th>Wzrost</th>
@@ -22,33 +22,60 @@
                         <th>Aktywność</th>
                     </tr>
                     <tr>
-                        <td>{{ user['id']}}</td>
+
                         <td>{{ user['wiek']}}</td>
                         <td>{{ user['waga']}}</td>
                         <td>{{ user['wzrost']}}</td>
-			<td>{% if user['plec'] %}Kobieta{% else %}Mężczyzna{% endif %}</td>
-			<td>{% if user['papierosy'] %}Tak{% else %}Nie{% endif %}</td>
-                        <td>{% if user['alkohol'] %}Tak{% else %}Nie{% endif %}</td>
-                        <td>{% if user['aktywnosc'] %}Tak{% else %}Nie{% endif %}</td>
+                            <td>
+                                {% if user['plec'] == 1 %}
+                                    Kobieta
+                                {% elif user['plec'] == 0 %}
+                                    Mężczyzna
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user['papierosy'] == 1 %}
+                                    Tak
+                                {% elif user['papierosy'] == 0 %}
+                                    Nie
+                                {% endif %}
+                            </td>
+                        <td>
+                                {% if user['alkohol'] == 1 %}
+                                    Tak
+                                {% elif user['alkohol'] == 0 %}
+                                    Nie
+                                {% endif %}
+                        </td>
+                        <td>
+                                {% if user['aktywnosc'] == 1 %}
+                                    Tak
+                                {% elif user['aktywnosc'] == 0 %}
+                                    Nie
+                                {% endif %}
+                        </td>
                     </tr>
                     <tr>
-                        <td>
-                            <a href="basic/update" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{ user['id']}}">Edit</a>
-                            <a href="basic/delete" class="btn btn-danger btn-xs" action="{{url_for('BasicDelete')}}" method="POST" onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
+                        <td colspan="7">
+                            {% if user %}
+                            <a href="basic/update" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{ user['id']}}">Zmień</a>
+                            <a href="basic/delete" class="btn btn-danger btn-xs" action="{{url_for('BasicDelete')}}" method="POST" onclick="return confirm('Are You Sure To Delete ?')">Wyczyść</a>
+                            {% else %}
+                            <a href="basic/update" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modaledit{{ user['id']}}">Uzupełnij</a>
+                            {% endif %}
                         </td>
                     </tr>
 
-                  <!-- Modal Edit Employee-->
+
 <div id="modaledit{{ user['id']}}" class="modal fade" role="dialog">
    <div class="modal-dialog">
 
       <div class="modal-content">
 
          <div class="modal-header">
-            <h4 class="modal-title">Update Information</h4>
+            <h4 class="modal-title">Uzupełnij wszystkie pola</h4>
          </div>
          <div class="modal-body">
-
 
             <form action="{{url_for('BasicUpdate')}}" method="POST">
 
@@ -68,15 +95,23 @@
                   <input type="text" class="form-control" name="wzrost" value="{{ user['wzrost']}}" placeholder="{{ user['wzrost']}}">
                </div>
 
-
                <div class="radio-group">
                   <label for="plec" class="cols-sm-2 control-label">Płeć:</label>
+
                   <div class="input-group-prepend">
-			  <input type="radio" name="plec" id="plec" value="1" {% if user['plec'] %}checked{% endif %}/>
-                          <label>Kobieta</label>
+			         <input type="radio" name="plec" id="plec" value="1"
+                        {% if user['plec'] == 1 %}
+                            checked
+                            {% else  %}
+
+                        {% endif %}>
+                      <label>Kobieta</label>
                   </div>
                   <div class="input-group-prepend">
-			  <input type="radio" name="plec" id="plec" value="0" {% if not user['plec'] %}checked{% endif %}/>
+			  <input type="radio" name="plec" id="plec" value="0"
+                     {% if user['plec'] == 0 %}
+                     checked
+                     {% endif %}>
                           <label>Mezczyzna</label>
                   </div>
                </div>
@@ -84,11 +119,17 @@
                <div class="radio-group">
 		  <label for="papierosy" class="cols-sm-2 control-label">Papierosy:</label>
                   <div class="input-group-prepend">
-			  <input type="radio" name="papierosy" id="papierosy" value="1" {% if user['papierosy'] %}checked{% endif %}/>
+			  <input type="radio" name="papierosy" id="papierosy" value="1"
+                     {% if user['papierosy'] == 1 %}
+                     checked
+                     {% endif %}>
                           <label>Tak</label>
                   </div>
                   <div class="input-group-prepend">
-			  <input type="radio" name="papierosy" id="papierosy" value="0" {% if not user['papierosy'] %}checked{% endif %}/>
+			  <input type="radio" name="papierosy" id="papierosy" value="0"
+                     {% if user['papierosy'] == 0 %}
+                     checked
+                      {% endif %}>
                           <label>Nie</label>
                   </div>
                </div>
@@ -96,11 +137,17 @@
                <div class="radio-group">
 		  <label for="alkohol" class="cols-sm-2 control-label">Alkohol:</label>
                   <div class="input-group-prepend">
-			  <input type="radio" name="alkohol" id="alkohol" value="1" {% if user['alkohol'] %}checked{% endif %}/>
+			  <input type="radio" name="alkohol" id="alkohol" value="1"
+                     {% if user['alkohol'] == 1 %}
+                     checked
+                     {% endif %}/>
                           <label>Tak</label>
                   </div>
                   <div class="input-group-prepend">
-			  <input type="radio" name="alkohol" id="alkohol" value="0" {% if not user['alkohol'] %}checked{% endif %}/>
+			  <input type="radio" name="alkohol" id="alkohol" value="0"
+                     {% if user['alkohol'] == 0 %}
+                     checked
+                     {% endif %}>
                           <label>Nie</label>
                   </div>
                </div>
@@ -119,11 +166,17 @@
                     </ul>
                     </div>
                   <div class="input-group-prepend">
-			  <input type="radio" name="aktywnosc" id="aktywnosc" value="1" {% if user['aktywnosc'] %}checked{% endif %}/>
+			  <input type="radio" name="aktywnosc" id="aktywnosc" value="1"
+                     {% if user['aktywnosc'] == 1%}
+                     checked
+                     {% endif %}>
                           <label>Tak</label>
                   </div>
                   <div class="input-group-prepend">
-			  <input type="radio" name="aktywnosc" id="aktywnosc" value="0" {% if not user['aktywnosc'] %}checked{% endif %}/>
+			  <input type="radio" name="aktywnosc" id="aktywnosc" value="0"
+                     {% if user['aktywnosc'] == 0 %}
+                     checked
+                     {% endif %}>
                           <label>Nie</label>
                   </div>
                </div>
@@ -145,93 +198,8 @@
 </div>
                 </table>
             </div>
-
-{#                  <!-- Modal Add Employee-->#}
-{#        #}
-{#<div id="mymodal" class="modal fade" role="dialog">#}
-{#   <div class="modal-dialog">#}
-{#      <div class="modal-content">#}
-{#         <div class="modal-header">#}
-{##}
-{#            <h4 class="modal-title">Add Employee</h4>#}
-{#         </div>#}
-{#         <div class="modal-body">#}
-{##}
-{#            <form action="{{url_for('BasicUpdate')}}" method="POST">#}
-{##}
-{##}
-{#               <div class="form-group">#}
-{##}
-{#                  <label>Name:</label>#}
-{#                  <input type="text" class="form-control" name="name" required="1">#}
-{##}
-{##}
-{#               </div>#}
-{##}
-{##}
-{#                <div class="form-group">#}
-{##}
-{##}
-{#                  <label>Email:</label>#}
-{#                  <input type="email" class="form-control" name="email" required="1">#}
-{##}
-{##}
-{#               </div>#}
-{##}
-{##}
-{#                <div class="form-group">#}
-{##}
-{##}
-{#                  <label>Phone:</label>#}
-{#                  <input type="number" class="form-control" name="phone" required="1">#}
-{##}
-{##}
-{#               </div>#}
-{##}
-{##}
-{##}
-{#               <div class="form-group">#}
-{##}
-{##}
-{#                  <button class="btn btn-primary" type="submit">Add Employee</button>#}
-{##}
-{##}
-{#               </div>#}
-{##}
-{##}
-{#            </form>#}
-{##}
-{##}
-{#         </div>#}
-{##}
-{##}
-{#         <div class="modal-footer">#}
-{##}
-{##}
-{#            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
-{##}
-{##}
-{#         </div>#}
-
-
       </div>
-
-
    </div>
-
-
 </div>
-
-
-
-
-
-{#        </div>#}
-{##}
-{#    </div>#}
-{##}
-{##}
-{#</div>#}
-
 
 {% endblock %}
