@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html style="background-image: url('/static/background.jpg');">
+
  <head>
   <meta charset="utf-8">
   <title>{% block title %}{% endblock %}</title>
@@ -10,7 +11,8 @@
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
  </head>
- <body class="loggedin">
+
+<body class="loggedin">
  <nav class="site-header sticky-top py-1">
       <div class="container d-flex flex-column flex-md-row justify-content-between">
   <a class="py-2 d-none d-md-inline-block" href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a>
@@ -21,37 +23,36 @@
 
  <div class="container-fluid">
       <div class="row">
+<nav class="col-md-2 d-none d-md-block sidebar" id="skubaniec">
+          <div class="sidebar-sticky" >
 
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-          <div class="sidebar-sticky">
-
-            <div class="menu-header"><h2><i class="fas fa-file-invoice"></i>Menu</h2></div>
+{#            <div class="menu-header"><h2><i class="fas fa-file-invoice"></i>Menu</h2></div>#}
 
               <div class="menu">
 
-              <li class="nav-item">
-                <a class="nav-link" href="/basic">
+              <li class="nav-item" id="tekstsk" >
+                <a class="nav-link" href="/basic" id="tekstsk">
                      <i class="fas fa-file-invoice"></i>
                     Informacje podstawowe
                 </a>
               </li>
 
-              <li class="nav-item">
-                <a class="nav-link" href="#vaccines">
+              <li class="nav-item" id="tekstsk">
+                <a class="nav-link" href="#vaccines" id="tekstsk">
                   <i class="fas fa-syringe"></i>
                   Szczepienia
                 </a>
               </li>
 
-              <li class="nav-item">
-                <a class="nav-link" href="#check_ups">
+              <li class="nav-item" id="tekstsk">
+                <a class="nav-link" href="#check_ups" id="tekstsk">
                   <i class="fas fa-check-double"></i>
                   Badania okresowe
                 </a>
               </li>
 
-              <li class="nav-item">
-                <a class="nav-link" href="#prevention">
+              <li class="nav-item" >
+                <a class="nav-link" href="#prevention" id="tekstsk">
                   <i class="fas fa-stethoscope"></i>
                   Profilaktyka
                 </a>
