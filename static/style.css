@@ -245,7 +245,7 @@ ul li{
     border-image-repeat: stretch stretch;
     border-image-source: url("/static/frame.jpg");
 }
-.menu {
+.menu li{
     position:relative;
     top:5px;
     background: none;
@@ -253,12 +253,20 @@ ul li{
     text-align: left;
   display: flex;
   flex-wrap: wrap;
-
+border-radius: 30px;
 }
-li a:hover, li a.focus{
+.menu li a:hover, .menu li a.focus{
   box-shadow:10px 10px 7px rgba(0,0,0,.7);
   transform: scale(1.25);
   position:relative;
   z-index:5;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 30px;
+    background: #76d5cb;
+}
+#hedermenu {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    text-align: center;
+    font-palette: dark;
 }
