@@ -4,48 +4,26 @@
 
 {% block content %}
 
+    <div class="hometable" style="background-image: url(/static/header.jpeg)">
 
-    <div class="hometable" style="background-image: url(/static/korek.jpg)">
+    <div class="container py-5 text-center">
+        <h1 class="display-4 font-weight-bold">Twój Asystent proponuje:</h1>
 
-                 <header>
-                <div class="overlay">
-                            <h1 class="display-4 font-weight-bold">Witaj, {{ username }}!</h1>
-                <h2 class="display-4 font-weight-bold">Twój Asystent proponuje:</h2>
-                </div>
-                </header>
+</div>
+</div>
 
+<div class="hometable" style="background-image: url(/static/korek.jpg)">
 
     <ul class="kartki" style="list-style: none;">
-              <li>
-                <a class="odnosniki" href="#" contenteditable>
-                  <h2>Title #1</h2>
-                  <p>Text Content #1</p>
-                </a>
-              </li>
-
-              <li>
-                <a class="odnosniki" href="#" contenteditable>
-                  <h2>Title #2</h2>
-                  <p>Text Content #2</p>
-                </a>
-              </li>
-
-              <li>
-                <a class="odnosniki" href="#" contenteditable>
-                  <h2>Title #3</h2>
-                  <p>Text Content #3</p>
-                </a>
-              </li>
-
-              <li>
-                <a class="odnosniki" href="#" contenteditable>
-                  <h2>Title #4</h2>
-                  <p>Text Content #4</p>
-                </a>
-              </li>
-
+      <li>
+        <a class="odnosniki" href="#" contenteditable>
+          <h2>Title #1</h2>
+          <p>Text Content #1</p>
+        </a>
+      </li>
     </ul>
-    </div>
+
+</div>
 
 {% endblock %}
 
