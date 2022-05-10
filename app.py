@@ -29,9 +29,6 @@ acc_res = db.session.query(Acc).all()
 User = db.Table('user', db.metadata, autoload=True, autoload_with=db.engine)
 user_res = db.session.query(User).all()
 
-User = db.Table('uzytkownik', db.metadata, autoload=True, autoload_with=db.engine)
-user_resyy = db.session.query(User).all()
-
 Chck = db.Table('check_ups', db.metadata, autoload=True, autoload_with=db.engine)
 check_res = db.session.query(Chck).all()
 
@@ -47,7 +44,6 @@ Base.prepare(db.engine, reflect=True)
 
 acc = Base.classes.accounts
 user = Base.classes.user
-uuu = Base.classes.uzytkownik
 chck = Base.classes.check_ups
 prev = Base.classes.prevention
 vacc = Base.classes.vacc
