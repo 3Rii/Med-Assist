@@ -52,6 +52,19 @@ chck = Base.classes.check_ups
 prev = Base.classes.prevention
 vacc = Base.classes.vacc
 
+# Wyniki do wyswietlenia ///bez wpisywania do tabeli // todo
+def Vacc():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute('SELECT * FROM user WHERE id = %s', session['id'])
+
+    wn = cursor.fetchone()
+    var1 = wn['plec']
+    var2 = wn['wiek']
+    if var1 == 1 and var2 > 12:
+        result1 = print ('Rozyczka')
+        return result1
+    return 0
 
 # Basic Form CRUD
 @app.route('/basic', methods=['GET', 'POST'])
