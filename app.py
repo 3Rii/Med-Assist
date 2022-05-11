@@ -219,7 +219,7 @@ def BasicDelete():
         return redirect(url_for('login'))
 
 # SZCZEPIENIA
-#//// dodawanie po uzupełnieniu formularza basic
+#//// dodawanie po uzupełnieniu formularza basic todo todo todo
 def InsertVacc(id):
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -263,13 +263,13 @@ def InsertVacc(id):
     else:
         return redirect(url_for('login'))
 
-# http://localhost:5000/vaccines - dziala
+# http://localhost:5000/vaccines - dziala!
 @app.route('/vaccines', methods=['GET', 'POST'])
 def Vacc():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-    if 'loggedin' in session:
 
+    if 'loggedin' in session:
 
         cursor.execute('SELECT * FROM vacc WHERE id_user = %s', [session['id']])
         account = cursor.fetchall()
@@ -277,42 +277,42 @@ def Vacc():
     else:
         return redirect(url_for('login'))
 
-# http://localhost:5000/vaccines/done - todo
-@app.route('/vaccines/done/<id>', methods=['GET', 'POST'])
-def VaccDONE(id):
+# http://localhost:5000/vaccines/update - dziala!
+@app.route('/vaccines/update/<id>', methods=['GET', 'POST'])
+def VaccChoice(id):
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
     if 'loggedin' in session:
+        cur = cursor.execute('SELECT current_status FROM vacc WHERE id_user = %s', id)
+        tod = cursor.execute('SELECT todo_status FROM vacc WHERE id_user = %s', id)
+        current = request.form.get('current_status')
+        todo = request.form.get('todo_status')
+        print('w tablicy cur: ', cur)
+        print('w tablicy tod: ', tod)
+        print('w form cur: ', current)
+        print('w form tod: ', todo)
 
         if request.method == 'POST':
-            my_data = db.session.query(vacc).get(request.form.get(id))
-            my_data.current = request.form['current']
-            print('check DONE')
+            if current == 'on':
+                cursor.execute(""" UPDATE vacc SET current_status=%s WHERE id=%s""", (1, id))
+                conn.commit()
+            else:
+                cursor.execute(""" UPDATE vacc SET current_status=%s WHERE id=%s""", (0, id))
+                conn.commit()
 
-            db.session.commit()
-            return redirect(url_for('Vacc'))
+            if todo == 'on':
+                cursor.execute(""" UPDATE vacc SET todo_status=%s WHERE id=%s""", (1, id))
+                conn.commit()
+            else:
+                cursor.execute(""" UPDATE vacc SET todo_status=%s WHERE id=%s""", (0, id))
+                conn.commit()
+
+        return redirect(url_for('Vacc'))
     else:
         return redirect(url_for('login'))
 
-# http://localhost:5000/vaccines/tab - todo
-@app.route('/vaccines/tab/<id>', methods=['GET', 'POST'])
-def VaccTAB(id):
-    conn = mysql.connect()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
-
-    if 'loggedin' in session:
-
-        if request.method == 'POST':
-            my_data = db.session.query(vacc).get(request.form.get(id))
-            my_data.todo = request.form['todo']
-            print('check TAB')
-            db.session.commit()
-            return redirect(url_for('Vacc'))
-    else:
-        return redirect(url_for('login'))
-
-# http://127.0.0.1:5000/vaccines/delete/ redirect -> /vaccines -dziala
+# http://127.0.0.1:5000/vaccines/delete/ redirect -> /vaccines -dziala!
 @app.route('/vaccines/delete/<id>', methods=['GET', 'POST'])
 def VaccClear(id):
 

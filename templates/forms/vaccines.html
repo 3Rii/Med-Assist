@@ -10,7 +10,10 @@
 
             <div class="jumbotron p-3" style="background: transparent; opacity: 0.90">
                 <h2 style="justify-content: center"><i class="fas fa-syringe" style="color: slategrey"></i><b>Proponowane </b><b style="color: darkblue"><i>szczepienia</i></b></h2>
-                    <form>
+                    <form
+                    {% for v in vacc %}
+                    action="{{ url_for('VaccChoice', id=v.id) }}"
+                    {% endfor %} method="POST">
 
                         <table class="table align-middle text-center table-bordered" style="border-style: groove">
                         <tr>
@@ -32,14 +35,12 @@
 
                               <div>
                                     <div>
-                                         <input type="checkbox" name="current" id="current" action="{{url_for('VaccDONE', id=v.id)}}" method="POST"
-
-                                        {% if  v.current_status  == 1 %}
+                                         <input type="checkbox" name="current_status" id="current_status"
+                                        {% if  v.current_status == 1 %}
                                             checked
-                                            value = "1"
-                                        {% else %}
-                                            value = "0"
+{#                                            value = "0"#}
                                         {% endif %}>
+
                                      </div>
                               </div>
 
@@ -59,17 +60,17 @@
                             </td>
 
                             <td style="vertical-align: center; text-align: center">
+
                               <div>
                                     <div>
-                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('VaccTAB', id=v.id)}}" method="POST"
-                                        {% if  v.todo_status  == 1 %}
+                                         <input type="checkbox" name="todo_status" id="todo_status"
+                                        {% if  v.todo_status == 1 %}
                                             checked
-                                            value = "1"
-                                        {% elif v.todo_status  == 0 %}
-                                            value = "0"
+{#                                            value = "0"#}
                                         {% endif %}>
-                                    </div>
+                                     </div>
                               </div>
+
                             </td>
                         </tr>
 {% endfor %}
