@@ -289,7 +289,6 @@ def VaccClear(id):
     else:
         return redirect(url_for('login'))
 
-
 # todo
 # http://localhost:5000/check_ups
 @app.route('/check_ups', methods=['GET', 'POST'])

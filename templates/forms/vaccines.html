@@ -34,7 +34,7 @@
                                     <div class="input-group-prepend justify-content-center align-middle">
                                          <input type="checkbox" name="current" id="current" action="{{url_for('VaccDONE')}}" method="POST"
 
-                                        {% if  v.vacc  == 1 %}
+                                        {% if  v.current_status  == 1 %}
                                             checked
                                         {% endif %}>
                                      </div>
@@ -50,12 +50,16 @@
                         </tr>
                         <tr>
                             <td>
-                                <label>Na <span style="color: darkblue">tablicę  </span></label>
+                                <label>Na <span style="color: darkblue">tablicę</span></label>
                             </td>
                             <td>
                               <div class="radio-group ">
                                     <div class="input-group-prepend justify-content-center">
-                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('VaccTAB')}}" method="POST">
+                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('VaccTAB')}}" method="POST"
+
+                                        {% if  v.todo_status  == 1 %}
+                                            checked
+                                        {% endif %}>
                                     </div>
                               </div>
                             </td>
