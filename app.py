@@ -185,6 +185,9 @@ def BasicUpdate():
                 my_data.alkohol = request.form['alkohol']
                 my_data.aktywnosc = request.form['aktywnosc']
                 db.session.commit()
+
+                InsertVacc()
+
                 return redirect(url_for('Basic'))
             else:
                 account_id = session['id']
@@ -197,9 +200,11 @@ def BasicUpdate():
                 aktywnosc = request.form['aktywnosc']
                 cursor.execute('INSERT INTO user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)', (account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc))
                 conn.commit()
+
+                InsertVacc()
+
                 return redirect(url_for('Basic'))
 
-        InsertVacc()
 
     else:
         return redirect(url_for('login'))
@@ -220,47 +225,42 @@ def BasicDelete():
         return redirect(url_for('login'))
 
 # SZCZEPIENIA
-#//// dodawanie po uzupełnieniu formularza basic todo todo todo
+#//// dodawanie po uzupełnieniu formularza basic - dziala!
+@app.route('/analyze', methods=['GET', 'POST'])
 def InsertVacc():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
+    nazwa = 'def'
+    typ = 'def'
+    current = 0
+    todo = 1
 
     if 'loggedin' in session:
-        cursor.execute('SELECT * FROM user WHERE id = %s', [session['id']])
-        wn = cursor.fetchone()
-        my_data = db.session.query(vacc).get(request.form.get(id))
+        id_user = session['id']
 
-        nazwa = ''
-        typ = ''
-        current = ''
-        todo = ''
+        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
+        wn = cursor.fetchone()
+
+        cursor.execute('SELECT * FROM vacc WHERE id_user = %s', [session['id']])
+        nony = cursor.fetchall()
 
         # Różyczka
         if wn['plec'] == 1 and wn['wiek'] > 1:
             nazwa = "Przeciwko Różyczce"
             typ = "Obowiązkowe"
-            current = 0
-            todo = 1
-            return nazwa, typ, current, todo
+            print('liczyl')
+
+            cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, typ, current, todo, nazwa))
+            conn.commit()
 
         # Gruźlica
         if wn['wiek'] > 1:
             nazwa = "Przeciwko Gruźlicy"
             typ = "Obowiązkowe"
-            current = 0
-            todo = 1
-            return nazwa, typ, current, todo
 
-        if my_data is not None:
-            cursor.execute("""UPDATE vacc SET current_status=%s, todo_status=%s WHERE id=%s
-            """, (current, todo, id))
+            cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, typ, current, todo, nazwa))
             conn.commit()
-            return 0
-        else:
-            cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)',
-                           (nazwa, typ, current, todo, session['id']))
-            conn.commit()
-            return 0
+        return redirect(url_for('Basic'))
     else:
         return redirect(url_for('login'))
 
@@ -278,7 +278,7 @@ def Vacc():
     else:
         return redirect(url_for('login'))
 
-# http://localhost:5000/vaccines/update - dziala!
+# http://localhost:5000/vaccines/update - dziala ale nie do konca todo
 @app.route('/vaccines/update/<id>', methods=['GET', 'POST'])
 def VaccChoice(id):
     conn = mysql.connect()
@@ -331,11 +331,12 @@ def VaccClear(id):
 def Check():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
+
     if 'loggedin' in session:
 
-        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
-        account = cursor.fetchone()
-        return render_template("forms/check_ups.html", user=account)
+        cursor.execute('SELECT * FROM check_ups WHERE id_user = %s', [session['id']])
+        account = cursor.fetchall()
+        return render_template("forms/check_ups.html", check=account)
     else:
         return redirect(url_for('login'))
 
@@ -344,11 +345,12 @@ def Check():
 def Prev():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
+
     if 'loggedin' in session:
 
-        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
-        account = cursor.fetchone()
-        return render_template("forms/prevention.html", user=account)
+        cursor.execute('SELECT * FROM prevention WHERE id_user = %s', [session['id']])
+        account = cursor.fetchall()
+        return render_template("forms/prevention.html", prev=account)
     else:
         return redirect(url_for('login'))
 

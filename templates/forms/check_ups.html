@@ -31,9 +31,9 @@
 
                               <div>
                                     <div>
-                                         <input type="checkbox" name="current" id="current" action="{{url_for('VaccDONE', id=v.id)}}" method="POST"
+                                         <input type="checkbox" name="current" id="current" action="{{url_for('VaccChoice', id=c.id)}}" method="POST"
 
-                                        {% if  v.current_status  == 1 %}
+                                        {% if  c.current_status  == 1 %}
                                             checked
                                             value = "1"
                                         {% else %}
@@ -48,7 +48,7 @@
                             <td rowspan="2" style="vertical-align: center; text-align: center">
 
                                     <div class="justify-content-center">
-                                        <a href="{{ url_for('VaccClear', id=v.id) }}" class="btn btn-danger btn-xs" action="{{url_for('VaccClear', id=v.id)}}" method="POST" onclick="return confirm('Czy na pewno chcesz usunąć tę propozycję?')">Usuń</a>
+                                        <a href="{{ url_for('VaccClear', id=c.id) }}" class="btn btn-danger btn-xs" action="{{url_for('VaccClear', id=c.id)}}" method="POST" onclick="return confirm('Czy na pewno chcesz usunąć tę propozycję?')">Usuń</a>
                                         <button class="btn btn-success justify-content-center" type="submit">Zatwierdź!</button>
                                     </div>
                             </td>
@@ -62,11 +62,11 @@
                             <td style="vertical-align: center; text-align: center">
                               <div>
                                     <div>
-                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('VaccTAB', id=v.id)}}" method="POST"
-                                        {% if  v.todo_status  == 1 %}
+                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('VaccChoice', id=c.id)}}" method="POST"
+                                        {% if  c.todo_status  == 1 %}
                                             checked
                                             value = "1"
-                                        {% elif v.todo_status  == 0 %}
+                                        {% elif c.todo_status  == 0 %}
                                             value = "0"
                                         {% endif %}>
                                     </div>
