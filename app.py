@@ -215,5 +215,44 @@ def profile():
     else:
         return redirect(url_for('login'))
 
+# http://localhost:5000/vaccines
+@app.route('/vaccines', methods=['GET', 'POST'])
+def Vacc():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    if 'loggedin' in session:
+
+        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
+        account = cursor.fetchone()
+        return render_template("forms/vaccines.html", user=account)
+    else:
+        return redirect(url_for('login'))
+
+# http://localhost:5000/check_ups
+@app.route('/check_ups', methods=['GET', 'POST'])
+def Check():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    if 'loggedin' in session:
+
+        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
+        account = cursor.fetchone()
+        return render_template("forms/check_ups.html", user=account)
+    else:
+        return redirect(url_for('login'))
+
+# http://localhost:5000/prevention
+@app.route('/prevention', methods=['GET', 'POST'])
+def Prev():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    if 'loggedin' in session:
+
+        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
+        account = cursor.fetchone()
+        return render_template("forms/prevention.html", user=account)
+    else:
+        return redirect(url_for('login'))
+
 if __name__ == '__main__':
     app.run(debug=True)
