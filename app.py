@@ -212,7 +212,7 @@ def BasicDelete():
         return redirect(url_for('login'))
 
 # SZCZEPIENIA
-# http://localhost:5000/vaccines
+# http://localhost:5000/vaccines - dziala
 @app.route('/vaccines', methods=['GET', 'POST'])
 def Vacc():
     conn = mysql.connect()
@@ -226,7 +226,7 @@ def Vacc():
     else:
         return redirect(url_for('login'))
 
-# http://localhost:5000/vaccines/done
+# http://localhost:5000/vaccines/done - todo
 @app.route('/vaccines/done', methods=['GET', 'POST'])
 def VaccDONE():
     conn = mysql.connect()
@@ -249,7 +249,7 @@ def VaccDONE():
     else:
         return redirect(url_for('login'))
 
-# http://localhost:5000/vaccines/tab
+# http://localhost:5000/vaccines/tab - todo
 @app.route('/vaccines/tab', methods=['GET', 'POST'])
 def VaccTAB():
     # conn = mysql.connect()
@@ -272,7 +272,7 @@ def VaccTAB():
     else:
         return redirect(url_for('login'))
 
-# http://127.0.0.1:5000/vaccines/delete/ redirect -> /vaccines
+# http://127.0.0.1:5000/vaccines/delete/ redirect -> /vaccines -todo
 @app.route('/vaccines/delete/', methods=['GET', 'POST'])
 def VaccClear(id):
 
@@ -289,6 +289,8 @@ def VaccClear(id):
     else:
         return redirect(url_for('login'))
 
+
+# todo
 # http://localhost:5000/check_ups
 @app.route('/check_ups', methods=['GET', 'POST'])
 def Check():

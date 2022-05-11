@@ -21,11 +21,9 @@
                         </tr>
 
 {% for v in vacc %}
-    <p>{{ v.id }} toooo {{ vacc['id'] }} jest?</p>
-
                         <tr>
-                            <td rowspan="2">{{ v.nazwa}}</td>
-                            <td rowspan="2">{{ v.typ}}</td>
+                            <td rowspan="2">{{ v.nazwa }}</td>
+                            <td rowspan="2">{{ v.typ }}</td>
 
                             <td>
                                 <label>Zakończone</label>
@@ -34,15 +32,19 @@
                             <td>
                               <div class="radio-group">
                                     <div class="input-group-prepend justify-content-center align-middle">
-                                         <input type="checkbox" name="current" id="current" action="{{url_for('VaccDONE')}}" method="POST">
+                                         <input type="checkbox" name="current" id="current" action="{{url_for('VaccDONE')}}" method="POST"
+
+                                        {% if  v.vacc  == 1 %}
+                                            checked
+                                        {% endif %}>
                                      </div>
                               </div>
                             </td>
 
                             <td rowspan="2">
 {#                                Tutaj ignoruje id#}
-{#                                <input type="hidden"  name="id" value="{{ v.id }}">#}
-                                <a href="{{ url_for('VaccClear', id=vacc['id']) }}" class="btn btn-danger btn-xs" action="{{url_for('VaccClear')}}" method="POST" onclick="return confirm('Czy na pewno chcesz usunąć tę propozycję?')">Usuń</a>
+{#                                DELETE NIE DZIALA#}
+                                <a href="{{ url_for('VaccClear', id=v.id) }}" id="{{ v.id }}" class="btn btn-danger btn-xs" action="{{url_for('VaccClear')}}" method="POST" onclick="return confirm('Czy na pewno chcesz usunąć tę propozycję?')">Usuń</a>
                             </td>
 
                         </tr>
