@@ -220,8 +220,72 @@ def Vacc():
     if 'loggedin' in session:
 
         cursor.execute('SELECT * FROM vacc WHERE id_user = %s', [session['id']])
-        account = cursor.fetchone()
+        account = cursor.fetchall()
+
         return render_template("forms/vaccines.html", vacc=account)
+    else:
+        return redirect(url_for('login'))
+
+# http://localhost:5000/vaccines/done
+@app.route('/vaccines/done', methods=['GET', 'POST'])
+def VaccDONE():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+
+        if request.method == 'POST':
+            my_data = db.session.query(vacc).get(request.form.get('id'))
+            my_data.current = request.form['current']
+
+            db.session.commit()
+            return redirect(url_for('Vacc'))
+
+            # else:
+            #     id_user = session['id']
+            #     cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)', ("SZCZEPIEIE", "TYP", 0, 1, id_user))
+            #     conn.commit()
+            #     return redirect(url_for('Vacc'))
+    else:
+        return redirect(url_for('login'))
+
+# http://localhost:5000/vaccines/tab
+@app.route('/vaccines/tab', methods=['GET', 'POST'])
+def VaccTAB():
+    # conn = mysql.connect()
+    # cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+
+        if request.method == 'POST':
+            my_data = db.session.query(vacc).get(request.form.get('id'))
+            my_data.current = request.form['current']
+
+            db.session.commit()
+            return redirect(url_for('Vacc'))
+
+            # else:
+            #     id_user = session['id']
+            #     cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)', ("SZCZEPIEIE", "TYP", 0, 1, id_user))
+            #     conn.commit()
+            #     return redirect(url_for('Vacc'))
+    else:
+        return redirect(url_for('login'))
+
+# http://127.0.0.1:5000/vaccines/delete/ redirect -> /vaccines
+@app.route('/vaccines/delete/', methods=['GET', 'POST'])
+def VaccClear(id):
+
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+            # my_data = db.session.query(Vacc).get(id)
+            # db.session.delete(my_data)
+            # db.session.commit()
+            cursor.execute('DELETE FROM vacc WHERE id = %s', (id))
+            conn.commit()
+            return redirect(url_for('Vacc'))
     else:
         return redirect(url_for('login'))
 

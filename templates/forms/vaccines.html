@@ -10,53 +10,58 @@
 
             <div class="jumbotron p-3">
                 <h2 style="justify-content: center"><i class="fas fa-syringe" style="color: slategrey"></i><b style="color: darkblue"><i>Proponowane szczepienia</i></b></h2>
-                <table class="table table-hover align-items-center text-dark text-center table-bordered">
-                    <form action="{{url_for('BasicUpdate')}}" method="POST">
+                    <form>
 
+                        <table class="table align-items-center text-dark text-center">
                         <tr>
                             <th>Szczepienia</th>
                             <th>Typ</th>
-                            <th>Już wykonane</th>
-                            <th>Umieść na liście "<span style="color: darkblue">todo</span>"</th>
+                            <th colspan="4">Status</th>
+                            <th></th>
                         </tr>
 
+{% for v in vacc %}
+    <p>{{ v.id }} toooo {{ vacc['id'] }} jest?</p>
+
                         <tr>
-                            <td>{{ vacc['nazwa']}}</td>
-                            <td>{{ vacc['typ']}}</td>
+                            <td rowspan="2">{{ v.nazwa}}</td>
+                            <td rowspan="2">{{ v.typ}}</td>
 
                             <td>
-
-                              <div class="radio-group">
-                                    <div class="input-group-prepend">
-                                         <input type="radio" name="current" id="current" value="1">
-                                     </div>
-                              </div>
-
+                                <label>Zakończone</label>
                             </td>
-                            {% if %}
-                            <td>
 
+                            <td>
                               <div class="radio-group">
-                                    <div class="input-group-prepend">
-                                         <input type="radio" name="todo" id="todo" value="1">
+                                    <div class="input-group-prepend justify-content-center align-middle">
+                                         <input type="checkbox" name="current" id="current" action="{{url_for('VaccDONE')}}" method="POST">
                                      </div>
                               </div>
                             </td>
-                            {% else %}
 
-{#                            <td>{{ vacc['current_status']}}</td>#}
-{#                            <td>{{ vacc['todo_status']}}</td>#}
-                            {% endif %}
+                            <td rowspan="2">
+{#                                Tutaj ignoruje id#}
+{#                                <input type="hidden"  name="id" value="{{ v.id }}">#}
+                                <a href="{{ url_for('VaccClear', id=vacc['id']) }}" class="btn btn-danger btn-xs" action="{{url_for('VaccClear')}}" method="POST" onclick="return confirm('Czy na pewno chcesz usunąć tę propozycję?')">Usuń</a>
+                            </td>
+
                         </tr>
-
                         <tr>
-                            <td colspan="4">
-                                <a href="basic/delete" class="btn btn-danger btn-xs" action="{{url_for('BasicDelete')}}" method="POST" onclick="return confirm('Are You Sure To Delete ?')">Wyczyść</a>
+                            <td>
+                                <label>Na <span style="color: darkblue">tablicę  </span></label>
+                            </td>
+                            <td>
+                              <div class="radio-group ">
+                                    <div class="input-group-prepend justify-content-center">
+                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('VaccTAB')}}" method="POST">
+                                    </div>
+                              </div>
                             </td>
                         </tr>
+{% endfor %}
+                </table>
 
                     </form>
-                </table>
             </div>
       </div>
    </div>
