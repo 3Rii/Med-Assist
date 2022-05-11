@@ -1,208 +1,84 @@
 {% extends 'layouts/formlayout.html' %}
 
-{% block title %} Basic Form {% endblock %}
+{% block title %} Prevention Programs {% endblock %}
+
 {% block content %}
 
 <div class="container">
     <div class="row">
         <div class="col md-12">
 
-            <div class="jumbotron p-3">
-                <h2 style="justify-content: center"><i class="fas fa-file-invoice" style="color: slategrey"></i><b style="color: darkblue"><i> Informacje Podstawowe</i></b></h2>
+            <div class="jumbotron p-3" style="background: transparent; opacity: 0.90">
+                <h2 style="justify-content: center"><i class="fas fa-stethoscope" style="color: slategrey"></i><b>Proponowane </b><b style="color: darkblue"><i>badania profilaktyczne</i></b></h2>
+                    <form>
 
-                <table class="table table-hover table-borderless align-items-center text-dark text-center">
-                    <tr>
+                        <table class="table align-middle text-center table-bordered" style="border-style: groove">
 
-                        <th>Wiek</th>
-                        <th>Waga</th>
-                        <th>Wzrost</th>
-                        <th>Płeć</th>
-                        <th>Papierosy</th>
-                        <th>Alkohol</th>
-                        <th>Aktywność</th>
-                    </tr>
-                    <tr>
+                        <tr>
+                            <th>Program</th>
+                            <th>Link gov</th>
+                            <th colspan="4">Status</th>
+                            <th></th>
+                        </tr>
 
-                        <td>{{ user['wiek']}}</td>
-                        <td>{{ user['waga']}}</td>
-                        <td>{{ user['wzrost']}}</td>
+        {% for p in prev %}
+
+                        <tr>
+                            <td style="vertical-align: center; text-align: center" rowspan="2"><h4>{{ p.nazwa }}</h4></td>
+                            <td><a href="http://{{ p.link.gov }}">Kliknij</a></td>
                             <td>
-                                {% if user['plec'] == 1 %}
-                                    Kobieta
-                                {% elif user['plec'] == 0 %}
-                                    Mężczyzna
-                                {% endif %}
+                                <label>Zakończone</label>
                             </td>
+
+                            <td style="vertical-align: center; text-align: center">
+
+                              <div>
+                                    <div>
+                                         <input type="checkbox" name="current" id="current" action="{{url_for('VaccDONE', id=v.id)}}" method="POST"
+
+                                        {% if  v.current_status  == 1 %}
+                                            checked
+                                            value = "1"
+                                        {% else %}
+                                            value = "0"
+                                        {% endif %}>
+
+                                     </div>
+                              </div>
+
+                            </td>
+
+                            <td rowspan="2" style="vertical-align: center; text-align: center">
+
+                                    <div class="justify-content-center">
+                                        <a href="{{ url_for('VaccClear', id=v.id) }}" class="btn btn-danger btn-xs" action="{{url_for('VaccClear', id=v.id)}}" method="POST" onclick="return confirm('Czy na pewno chcesz usunąć tę propozycję?')">Usuń</a>
+                                        <button class="btn btn-success justify-content-center" type="submit">Zatwierdź!</button>
+                                    </div>
+                            </td>
+
+                        </tr>
+                        <tr>
                             <td>
-                                {% if user['papierosy'] == 1 %}
-                                    Tak
-                                {% elif user['papierosy'] == 0 %}
-                                    Nie
-                                {% endif %}
+                                <label>Na <span style="color: darkblue">tablicę</span></label>
                             </td>
-                        <td>
-                                {% if user['alkohol'] == 1 %}
-                                    Tak
-                                {% elif user['alkohol'] == 0 %}
-                                    Nie
-                                {% endif %}
-                        </td>
-                        <td>
-                                {% if user['aktywnosc'] == 1 %}
-                                    Tak
-                                {% elif user['aktywnosc'] == 0 %}
-                                    Nie
-                                {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="7">
-                            {% if user %}
-                            <a href="basic/update" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{ user['id']}}">Zmień</a>
-                            <a href="basic/delete" class="btn btn-danger btn-xs" action="{{url_for('BasicDelete')}}" method="POST" onclick="return confirm('Are You Sure To Delete ?')">Wyczyść</a>
-                            {% else %}
-                            <a href="basic/update" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modaledit{{ user['id']}}">Uzupełnij</a>
-                            {% endif %}
-                        </td>
-                    </tr>
 
-
-<div id="modaledit{{ user['id']}}" class="modal fade" role="dialog">
-   <div class="modal-dialog">
-
-      <div class="modal-content">
-
-         <div class="modal-header">
-
-             {% if user %}
-                <h1 >Edycja formularza</h1><br>
-             {% else %}
-                <h1 >Uzupełnienie formularza</h1><br>
-             {% endif %}
-         </div>
-                <p><i>(Pamiętaj, żeby uzupełnić wszystkie pola)</i></p>
-         <div class="modal-body">
-
-            <form action="{{url_for('BasicUpdate')}}" method="POST">
-
-               <div class="form-group">
-                  <label for="wiek">Wiek:</label>
-                   <input type="hidden"  name="id" value="{{ user['id']}}">
-                  <input type="text" class="form-control" name="wiek" value="{{ user['wiek']}}" placeholder="{{ user['wiek']}}">
-               </div>
-
-               <div class="form-group">
-                  <label for="waga">Waga:</label>
-                  <input type="text" class="form-control" name="waga" value="{{ user['waga']}}" placeholder="{{ user['waga']}}">
-               </div>
-
-               <div class="form-group">
-                  <label for="wzrost">Wzrost:</label>
-                  <input type="text" class="form-control" name="wzrost" value="{{ user['wzrost']}}" placeholder="{{ user['wzrost']}}">
-               </div>
-
-               <div class="radio-group">
-                  <label for="plec" class="cols-sm-2 control-label">Płeć:</label>
-
-                  <div class="input-group-prepend">
-			         <input type="radio" name="plec" id="plec" value="1"
-                        {% if user['plec'] == 1 %}
-                            checked
-                            {% else  %}
-
-                        {% endif %}>
-                      <label>Kobieta</label>
-                  </div>
-                  <div class="input-group-prepend">
-			  <input type="radio" name="plec" id="plec" value="0"
-                     {% if user['plec'] == 0 %}
-                     checked
-                     {% endif %}>
-                          <label>Mezczyzna</label>
-                  </div>
-               </div>
-
-               <div class="radio-group">
-		  <label for="papierosy" class="cols-sm-2 control-label">Papierosy:</label>
-                  <div class="input-group-prepend">
-			  <input type="radio" name="papierosy" id="papierosy" value="1"
-                     {% if user['papierosy'] == 1 %}
-                     checked
-                     {% endif %}>
-                          <label>Tak</label>
-                  </div>
-                  <div class="input-group-prepend">
-			  <input type="radio" name="papierosy" id="papierosy" value="0"
-                     {% if user['papierosy'] == 0 %}
-                     checked
-                      {% endif %}>
-                          <label>Nie</label>
-                  </div>
-               </div>
-
-               <div class="radio-group">
-		  <label for="alkohol" class="cols-sm-2 control-label">Alkohol:</label>
-                  <div class="input-group-prepend">
-			  <input type="radio" name="alkohol" id="alkohol" value="1"
-                     {% if user['alkohol'] == 1 %}
-                     checked
-                     {% endif %}/>
-                          <label>Tak</label>
-                  </div>
-                  <div class="input-group-prepend">
-			  <input type="radio" name="alkohol" id="alkohol" value="0"
-                     {% if user['alkohol'] == 0 %}
-                     checked
-                     {% endif %}>
-                          <label>Nie</label>
-                  </div>
-               </div>
-
-               <div class="radio-group">
-		  <label for="aktywnosc" class="cols-sm-2 control-label">Aktywność:</label>
-                    <div>
-                    <ul>
-                        <p>Zaznaczyć "Tak", jeżeli ćwiczysz (mniej/więcej):</p>
-                        <li>
-                            <p>Minimalnie 3-4 razy w tygodniu po 45-90 minut lub około 1 000 kcal</p>
-                        </li>
-                        <li>
-                            <p>Dziennie po 30 minut lub po 200-300 kcal</p>
-                        </li>
-                    </ul>
-                    </div>
-                  <div class="input-group-prepend">
-			  <input type="radio" name="aktywnosc" id="aktywnosc" value="1"
-                     {% if user['aktywnosc'] == 1%}
-                     checked
-                     {% endif %}>
-                          <label>Tak</label>
-                  </div>
-                  <div class="input-group-prepend">
-			  <input type="radio" name="aktywnosc" id="aktywnosc" value="0"
-                     {% if user['aktywnosc'] == 0 %}
-                     checked
-                     {% endif %}>
-                          <label>Nie</label>
-                  </div>
-               </div>
-
-
-                <div id="msg">{{ msg }}</div>
-               <div class="form-group">
-                  <button class="btn btn-primary" type="submit">Update</button>
-               </div>
-
-            </form>
-         </div>
-
-         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-         </div>
-      </div>
-   </div>
-</div>
+                            <td style="vertical-align: center; text-align: center">
+                              <div>
+                                    <div>
+                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('VaccTAB', id=v.id)}}" method="POST"
+                                        {% if  v.todo_status  == 1 %}
+                                            checked
+                                            value = "1"
+                                        {% elif v.todo_status  == 0 %}
+                                            value = "0"
+                                        {% endif %}>
+                                    </div>
+                              </div>
+                            </td>
+                        </tr>
+{% endfor %}
                 </table>
+                </form>
             </div>
       </div>
    </div>
