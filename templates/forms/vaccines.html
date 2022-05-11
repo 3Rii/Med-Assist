@@ -20,31 +20,37 @@
                             <th></th>
                         </tr>
 
-{% for v in vacc %}
+        {% for v in vacc %}
+
                         <tr>
                             <td rowspan="2">{{ v.nazwa }}</td>
                             <td rowspan="2">{{ v.typ }}</td>
-
                             <td>
                                 <label>Zakończone</label>
                             </td>
-
                             <td>
+
                               <div class="radio-group">
                                     <div class="input-group-prepend justify-content-center align-middle">
-                                         <input type="checkbox" name="current" id="current" action="{{url_for('VaccDONE')}}" method="POST"
+                                         <input type="checkbox" name="current" id="current" action="{{url_for('VaccDONE', id=v.id)}}" method="POST"
 
                                         {% if  v.current_status  == 1 %}
                                             checked
+                                            value = "1"
+                                        {% else %}
+                                            value = "0"
                                         {% endif %}>
                                      </div>
                               </div>
+
                             </td>
 
                             <td rowspan="2">
+
 {#                                Tutaj ignoruje id#}
 {#                                DELETE NIE DZIALA#}
-                                <a href="{{ url_for('VaccClear', id=v.id) }}" id="{{ v.id }}" class="btn btn-danger btn-xs" action="{{url_for('VaccClear')}}" method="POST" onclick="return confirm('Czy na pewno chcesz usunąć tę propozycję?')">Usuń</a>
+
+                                <a href="{{ url_for('VaccClear', id=v.id) }}" class="btn btn-danger btn-xs" action="{{url_for('VaccClear', id=v.id)}}" method="POST" onclick="return confirm('Czy na pewno chcesz usunąć tę propozycję?')">Usuń</a>
                             </td>
 
                         </tr>
@@ -55,10 +61,12 @@
                             <td>
                               <div class="radio-group ">
                                     <div class="input-group-prepend justify-content-center">
-                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('VaccTAB')}}" method="POST"
-
+                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('VaccTAB', id=v.id)}}" method="POST"
                                         {% if  v.todo_status  == 1 %}
                                             checked
+                                            value = "1"
+                                        {% elif v.todo_status  == 0 %}
+                                            value = "0"
                                         {% endif %}>
                                     </div>
                               </div>
