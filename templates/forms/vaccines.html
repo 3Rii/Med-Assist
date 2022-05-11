@@ -8,11 +8,11 @@
     <div class="row">
         <div class="col md-12">
 
-            <div class="jumbotron p-3">
+            <div class="jumbotron p-3" style="background: transparent; opacity: 0.90">
                 <h2 style="justify-content: center"><i class="fas fa-syringe" style="color: slategrey"></i><b style="color: darkblue"><i>Proponowane szczepienia</i></b></h2>
                     <form>
 
-                        <table class="table align-items-center text-dark text-center">
+                        <table class="table align-middle text-center table-bordered" style="border-style: groove">
                         <tr>
                             <th>Szczepienia</th>
                             <th>Typ</th>
@@ -20,31 +20,36 @@
                             <th></th>
                         </tr>
 
-{% for v in vacc %}
-                        <tr>
-                            <td rowspan="2">{{ v.nazwa }}</td>
-                            <td rowspan="2">{{ v.typ }}</td>
+        {% for v in vacc %}
 
+                        <tr>
+                            <td style="vertical-align: center; text-align: center" rowspan="2"><h4>{{ v.nazwa }}</h4></td>
+                            <td style="vertical-align: center; text-align: center" rowspan="2"><h4>{{ v.typ }}</h4></td>
                             <td>
                                 <label>Zakończone</label>
                             </td>
+                            <td style="vertical-align: center; text-align: center">
 
-                            <td>
-                              <div class="radio-group">
-                                    <div class="input-group-prepend justify-content-center align-middle">
-                                         <input type="checkbox" name="current" id="current" action="{{url_for('VaccDONE')}}" method="POST"
+                              <div>
+                                    <div>
+                                         <input type="checkbox" name="current" id="current" action="{{url_for('VaccDONE', id=v.id)}}" method="POST"
 
                                         {% if  v.current_status  == 1 %}
                                             checked
+                                            value = "1"
+                                        {% else %}
+                                            value = "0"
                                         {% endif %}>
                                      </div>
                               </div>
-                            </td>
 
-                            <td rowspan="2">
-{#                                Tutaj ignoruje id#}
-{#                                DELETE NIE DZIALA#}
-                                <a href="{{ url_for('VaccClear', id=v.id) }}" id="{{ v.id }}" class="btn btn-danger btn-xs" action="{{url_for('VaccClear')}}" method="POST" onclick="return confirm('Czy na pewno chcesz usunąć tę propozycję?')">Usuń</a>
+                            </td>
+                            <td rowspan="2" style="vertical-align: center; text-align: center">
+
+                                    <div class="justify-content-center">
+                                        <a href="{{ url_for('VaccClear', id=v.id) }}" class="btn btn-danger btn-xs" action="{{url_for('VaccClear', id=v.id)}}" method="POST" onclick="return confirm('Czy na pewno chcesz usunąć tę propozycję?')">Usuń</a>
+                                        <button class="btn btn-success justify-content-center" type="submit">Zatwierdź!</button>
+                                    </div>
                             </td>
 
                         </tr>
@@ -52,13 +57,16 @@
                             <td>
                                 <label>Na <span style="color: darkblue">tablicę</span></label>
                             </td>
-                            <td>
-                              <div class="radio-group ">
-                                    <div class="input-group-prepend justify-content-center">
-                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('VaccTAB')}}" method="POST"
 
+                            <td style="vertical-align: center; text-align: center">
+                              <div>
+                                    <div>
+                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('VaccTAB', id=v.id)}}" method="POST"
                                         {% if  v.todo_status  == 1 %}
                                             checked
+                                            value = "1"
+                                        {% elif v.todo_status  == 0 %}
+                                            value = "0"
                                         {% endif %}>
                                     </div>
                               </div>
@@ -66,8 +74,7 @@
                         </tr>
 {% endfor %}
                 </table>
-
-                    </form>
+                </form>
             </div>
       </div>
    </div>

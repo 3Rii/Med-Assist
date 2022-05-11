@@ -8,6 +8,8 @@ from sqlalchemy.ext.automap import automap_base
 
 
 app = Flask(__name__)
+
+# //////////////////// USTAWIENIA
 app.secret_key = 'secret_key'
 
 # pymysql
@@ -47,6 +49,7 @@ user = Base.classes.user
 chck = Base.classes.check_ups
 prev = Base.classes.prevention
 vacc = Base.classes.vacc
+
 
 # /////////////////// FUNKCJONALNOSC PODSTAWOWA - REJESTRACJA, LOGOWANIE, STRONA GŁÓWNA
 # http://localhost:5000/login/
@@ -104,7 +107,6 @@ def register():
         msg = 'Please fill out the form!'
     return render_template('register.html', msg=msg)
 
-
 # http://localhost:5000
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -142,7 +144,7 @@ def profile():
 
 #/////////////////////////////// ZAKLADKI
 
-# INFORMACJE PODSTAWOWE
+# ///INFORMACJE PODSTAWOWE///
 # Wyswietlanie
 # http://127.0.0.1:5000/basic
 @app.route('/basic', methods=['GET', 'POST'])
@@ -180,6 +182,7 @@ def BasicUpdate():
                 my_data.alkohol = request.form['alkohol']
                 my_data.aktywnosc = request.form['aktywnosc']
                 db.session.commit()
+                # InsertVacc()
                 return redirect(url_for('Basic'))
             else:
                 account_id = session['id']
@@ -192,6 +195,7 @@ def BasicUpdate():
                 aktywnosc = request.form['aktywnosc']
                 cursor.execute('INSERT INTO user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)', (account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc))
                 conn.commit()
+                # InsertVacc()
                 return redirect(url_for('Basic'))
     else:
         return redirect(url_for('login'))
@@ -212,6 +216,50 @@ def BasicDelete():
         return redirect(url_for('login'))
 
 # SZCZEPIENIA
+#//// dodawanie po uzupełnieniu formularza basic
+def InsertVacc(id):
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+        cursor.execute('SELECT * FROM user WHERE id = %s', [session['id']])
+        wn = cursor.fetchone()
+        my_data = db.session.query(vacc).get(request.form.get(id))
+
+        nazwa = ''
+        typ = ''
+        current = ''
+        todo = ''
+
+        # Różyczka
+        if wn['plec'] == 1 and wn['wiek'] > 1:
+            nazwa = "Przeciwko Różyczce"
+            typ = "Obowiązkowe"
+            current = 0
+            todo = 1
+            return nazwa, typ, current, todo
+
+        # Gruźlica
+        if wn['wiek'] > 1:
+            nazwa = "Przeciwko Gruźlicy"
+            typ = "Obowiązkowe"
+            current = 0
+            todo = 1
+            return nazwa, typ, current, todo
+
+        if my_data is not None:
+            cursor.execute("""UPDATE vacc SET current_status=%s, todo_status=%s WHERE id=%s
+            """, (current, todo, id))
+            conn.commit()
+            return 0
+        else:
+            cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)',
+                           (nazwa, typ, current, todo, session['id']))
+            conn.commit()
+            return 0
+    else:
+        return redirect(url_for('login'))
+
 # http://localhost:5000/vaccines - dziala
 @app.route('/vaccines', methods=['GET', 'POST'])
 def Vacc():
@@ -227,53 +275,42 @@ def Vacc():
         return redirect(url_for('login'))
 
 # http://localhost:5000/vaccines/done - todo
-@app.route('/vaccines/done', methods=['GET', 'POST'])
-def VaccDONE():
+@app.route('/vaccines/done/<id>', methods=['GET', 'POST'])
+def VaccDONE(id):
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
     if 'loggedin' in session:
 
         if request.method == 'POST':
-            my_data = db.session.query(vacc).get(request.form.get('id'))
+            my_data = db.session.query(vacc).get(request.form.get(id))
             my_data.current = request.form['current']
+            print('check DONE')
 
             db.session.commit()
             return redirect(url_for('Vacc'))
-
-            # else:
-            #     id_user = session['id']
-            #     cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)', ("SZCZEPIEIE", "TYP", 0, 1, id_user))
-            #     conn.commit()
-            #     return redirect(url_for('Vacc'))
     else:
         return redirect(url_for('login'))
 
 # http://localhost:5000/vaccines/tab - todo
-@app.route('/vaccines/tab', methods=['GET', 'POST'])
-def VaccTAB():
-    # conn = mysql.connect()
-    # cursor = conn.cursor(pymysql.cursors.DictCursor)
+@app.route('/vaccines/tab/<id>', methods=['GET', 'POST'])
+def VaccTAB(id):
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
 
     if 'loggedin' in session:
 
         if request.method == 'POST':
-            my_data = db.session.query(vacc).get(request.form.get('id'))
-            my_data.current = request.form['current']
-
+            my_data = db.session.query(vacc).get(request.form.get(id))
+            my_data.todo = request.form['todo']
+            print('check TAB')
             db.session.commit()
             return redirect(url_for('Vacc'))
-
-            # else:
-            #     id_user = session['id']
-            #     cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)', ("SZCZEPIEIE", "TYP", 0, 1, id_user))
-            #     conn.commit()
-            #     return redirect(url_for('Vacc'))
     else:
         return redirect(url_for('login'))
 
 # http://127.0.0.1:5000/vaccines/delete/ redirect -> /vaccines -todo
-@app.route('/vaccines/delete/', methods=['GET', 'POST'])
+@app.route('/vaccines/delete/<id>', methods=['GET', 'POST'])
 def VaccClear(id):
 
     conn = mysql.connect()
@@ -289,7 +326,7 @@ def VaccClear(id):
     else:
         return redirect(url_for('login'))
 
-# todo
+# todo dopiero jak reszta zadziala
 # http://localhost:5000/check_ups
 @app.route('/check_ups', methods=['GET', 'POST'])
 def Check():
