@@ -10,7 +10,7 @@ from sqlalchemy.ext.automap import automap_base
 app = Flask(__name__)
 app.secret_key = 'secret_key'
 
-# 1 polacznie
+# pymysql
 mysql = MySQL()
 app.config['MYSQL_DATABASE_USER'] = 'harry'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'H4rru5i3k!'
@@ -18,11 +18,12 @@ app.config['MYSQL_DATABASE_DB'] = 'projekt'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
-#2 polaczenie
+#sqlalchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://harry:H4rru5i3k!@localhost:3306/projekt'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+# mapping
 Acc = db.Table('accounts', db.metadata, autoload=True, autoload_with=db.engine)
 acc_res = db.session.query(Acc).all()
 
@@ -38,7 +39,6 @@ prev_res = db.session.query(Prev).all()
 Vacc = db.Table('vacc', db.metadata, autoload=True, autoload_with=db.engine)
 vacc_res = db.session.query(Vacc).all()
 
-#auto-map tables
 Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
@@ -48,84 +48,7 @@ chck = Base.classes.check_ups
 prev = Base.classes.prevention
 vacc = Base.classes.vacc
 
-# Wyniki do wyswietlenia ///bez wpisywania do tabeli // todo
-def Vacc():
-    conn = mysql.connect()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
-    cursor.execute('SELECT * FROM user WHERE id = %s', session['id'])
-
-    wn = cursor.fetchone()
-    var1 = wn['plec']
-    var2 = wn['wiek']
-    if var1 == 1 and var2 > 12:
-        result1 = print ('Rozyczka')
-        return result1
-    return 0
-
-# Basic Form CRUD
-@app.route('/basic', methods=['GET', 'POST'])
-def Basic():
-    conn = mysql.connect()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
-    if 'loggedin' in session:
-
-        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
-        account = cursor.fetchone()
-        return render_template("forms/basicform.html", user=account)
-
-    else:
-        return redirect(url_for('login'))
-
-@app.route('/basic/update', methods=['GET', 'POST'])
-def BasicUpdate():
-    conn = mysql.connect()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
-    msg = ''
-
-    if 'loggedin' in session:
-        cursor.execute('SELECT * FROM user WHERE id = %s', (session['id']))
-
-        if request.method == 'POST':
-            my_data = db.session.query(user).get(request.form.get('id'))
-
-            if my_data is not None:
-                my_data.wiek = request.form['wiek']
-                my_data.waga = request.form['waga']
-                my_data.wzrost = request.form['wzrost']
-                my_data.plec = request.form['plec']
-                my_data.papierosy = request.form['papierosy']
-                my_data.alkohol = request.form['alkohol']
-                my_data.aktywnosc = request.form['aktywnosc']
-                db.session.commit()
-                return redirect(url_for('Basic'))
-            else:
-                account_id = session['id']
-                wiek = request.form['wiek']
-                waga = request.form['waga']
-                wzrost = request.form['wzrost']
-                plec = request.form['plec']
-                papierosy = request.form['papierosy']
-                alkohol = request.form['alkohol']
-                aktywnosc = request.form['aktywnosc']
-                cursor.execute('INSERT INTO user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)', (account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc))
-                conn.commit()
-                return redirect(url_for('Basic'))
-    else:
-        return redirect(url_for('login'))
-
-@app.route('/basic/delete/', methods=['GET', 'POST'])
-def BasicDelete():
-
-    conn = mysql.connect()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
-    if 'loggedin' in session:
-
-            cursor.execute('DELETE FROM user WHERE account_id = %s', (session['id']))
-            conn.commit()
-            return redirect(url_for('Basic'))
-    else:
-        return redirect(url_for('login'))
-
+# /////////////////// FUNKCJONALNOSC PODSTAWOWA - REJESTRACJA, LOGOWANIE, STRONA GŁÓWNA
 # http://localhost:5000/login/
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -181,7 +104,8 @@ def register():
         msg = 'Please fill out the form!'
     return render_template('register.html', msg=msg)
 
-# http://localhost:5000/
+
+# http://localhost:5000
 @app.route('/', methods=['GET', 'POST'])
 def home():
     conn = mysql.connect()
@@ -215,6 +139,79 @@ def profile():
     else:
         return redirect(url_for('login'))
 
+
+#/////////////////////////////// ZAKLADKI
+
+# INFORMACJE PODSTAWOWE
+# Wyswietlanie
+# http://127.0.0.1:5000/basic
+@app.route('/basic', methods=['GET', 'POST'])
+def Basic():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    if 'loggedin' in session:
+
+        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
+        account = cursor.fetchone()
+        return render_template("forms/basicform.html", user=account)
+
+    else:
+        return redirect(url_for('login'))
+
+# Dodawanie/zmienianie
+# http://127.0.0.1:5000/basic/update redirect -> /basic
+@app.route('/basic/update', methods=['GET', 'POST'])
+def BasicUpdate():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+        cursor.execute('SELECT * FROM user WHERE id = %s', (session['id']))
+
+        if request.method == 'POST':
+            my_data = db.session.query(user).get(request.form.get('id'))
+
+            if my_data is not None:
+                my_data.wiek = request.form['wiek']
+                my_data.waga = request.form['waga']
+                my_data.wzrost = request.form['wzrost']
+                my_data.plec = request.form['plec']
+                my_data.papierosy = request.form['papierosy']
+                my_data.alkohol = request.form['alkohol']
+                my_data.aktywnosc = request.form['aktywnosc']
+                db.session.commit()
+                return redirect(url_for('Basic'))
+            else:
+                account_id = session['id']
+                wiek = request.form['wiek']
+                waga = request.form['waga']
+                wzrost = request.form['wzrost']
+                plec = request.form['plec']
+                papierosy = request.form['papierosy']
+                alkohol = request.form['alkohol']
+                aktywnosc = request.form['aktywnosc']
+                cursor.execute('INSERT INTO user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)', (account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc))
+                conn.commit()
+                return redirect(url_for('Basic'))
+    else:
+        return redirect(url_for('login'))
+
+# Usuwanie. Czyszczenie rzędu z rekordu.
+# http://127.0.0.1:5000/basic/delete/ redirect -> /basic
+@app.route('/basic/delete/', methods=['GET', 'POST'])
+def BasicDelete():
+
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    if 'loggedin' in session:
+
+            cursor.execute('DELETE FROM user WHERE account_id = %s', (session['id']))
+            conn.commit()
+            return redirect(url_for('Basic'))
+    else:
+        return redirect(url_for('login'))
+
+# SZCZEPIENIA
 # http://localhost:5000/vaccines
 @app.route('/vaccines', methods=['GET', 'POST'])
 def Vacc():
@@ -222,9 +219,9 @@ def Vacc():
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     if 'loggedin' in session:
 
-        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
+        cursor.execute('SELECT * FROM vacc WHERE id_user = %s', [session['id']])
         account = cursor.fetchone()
-        return render_template("forms/vaccines.html", user=account)
+        return render_template("forms/vaccines.html", vacc=account)
     else:
         return redirect(url_for('login'))
 

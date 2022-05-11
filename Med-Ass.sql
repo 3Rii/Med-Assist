@@ -51,15 +51,18 @@ create table projekt.user
         unique (id)
 );
 
-create table projekt.vacc
+create table vacc
 (
-    id             int                    not null,
+    id             int                    not null
+        primary key,
     nazwa          char(20)   default '0' not null,
     typ            char(20)   default '0' not null,
     current_status tinyint(1) default 0   null,
     todo_status    tinyint(1) default 0   null,
-    primary key (id),
+    id_user        int                    null,
     constraint vacc_id_uindex
-        unique (id)
+        unique (id),
+    constraint vacc_accounts_id_fk
+        foreign key (id_user) references accounts (id)
 );
 

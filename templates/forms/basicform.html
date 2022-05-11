@@ -113,13 +113,15 @@
                         {% endif %}>
                       <label>Kobieta</label>
                   </div>
+
                   <div class="input-group-prepend">
-			  <input type="radio" name="plec" id="plec" value="0"
+			        <input type="radio" name="plec" id="plec" value="0"
                      {% if user['plec'] == 0 %}
                      checked
                      {% endif %}>
                           <label>Mezczyzna</label>
                   </div>
+
                </div>
 
                <div class="radio-group">
@@ -190,14 +192,14 @@
 
                 <div id="msg">{{ msg }}</div>
                <div class="form-group">
-                  <button class="btn btn-primary" type="submit">Update</button>
+                  <button class="btn btn-primary" type="submit">Wyślij</button>
                </div>
 
             </form>
          </div>
 
          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
          </div>
       </div>
    </div>
