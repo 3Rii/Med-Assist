@@ -3,11 +3,13 @@
 {% block title %} Basic Form {% endblock %}
 {% block content %}
 
+    {# TABELA #}
 <div class="container">
     <div class="row">
         <div class="col md-12">
 
             <div class="jumbotron p-3" style="background: transparent; opacity: 0.90">
+
                 <h2 style="justify-content: center"><i class="fas fa-file-invoice" style="color: slategrey"></i><b style="color: darkblue"><i> Informacje Podstawowe</i></b></h2>
 
                 <table class="table align-middle text-center table-bordered" style="border-style: groove">
@@ -67,6 +69,14 @@
                     </tr>
 
 
+
+                </table>
+            </div>
+      </div>
+   </div>
+</div>
+
+{#    FORMULARZ#}
 <div id="modaledit{{ user['id']}}" class="modal fade" role="dialog">
    <div class="modal-dialog">
 
@@ -201,11 +211,6 @@
          <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
          </div>
-      </div>
-   </div>
-</div>
-                </table>
-            </div>
       </div>
    </div>
 </div>
