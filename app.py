@@ -31,9 +31,6 @@ acc_res = db.session.query(Acc).all()
 User = db.Table('user', db.metadata, autoload=True, autoload_with=db.engine)
 user_res = db.session.query(User).all()
 
-User = db.Table('uzytkownik', db.metadata, autoload=True, autoload_with=db.engine)
-user_resyy = db.session.query(User).all()
-
 Chck = db.Table('check_ups', db.metadata, autoload=True, autoload_with=db.engine)
 check_res = db.session.query(Chck).all()
 
@@ -49,11 +46,23 @@ Base.prepare(db.engine, reflect=True)
 
 acc = Base.classes.accounts
 user = Base.classes.user
-uuu = Base.classes.uzytkownik
 chck = Base.classes.check_ups
 prev = Base.classes.prevention
 vacc = Base.classes.vacc
 
+# Wyniki do wyswietlenia ///bez wpisywania do tabeli // todo
+def Vacc():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute('SELECT * FROM user WHERE id = %s', session['id'])
+
+    wn = cursor.fetchone()
+    var1 = wn['plec']
+    var2 = wn['wiek']
+    if var1 == 1 and var2 > 12:
+        result1 = print ('Rozyczka')
+        return result1
+    return 0
 
 # Basic Form CRUD
 @app.route('/basic', methods=['GET', 'POST'])
@@ -180,24 +189,64 @@ def home():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     msg = ''
+    sh = ''
 
-    if 'loggedin' in session:
-        cursor.execute('SELECT * FROM user WHERE id = %s', 4)
-        wn= cursor.fetchone()
-        var1=wn['plec']
-        var2=wn['wiek']
+    cursor.execute('SELECT * FROM user WHERE id = %s', 4)
+    wn = cursor.fetchone()
 
-    if var1 == 1 and var2 > 12:
-        msg = 'Rozyczka'
-    return render_template('home.html', msg=msg)
+    # rozyczka
+    if wn['plec'] == 1 and wn['wiek'] > 12:
+        cursor.execute('UPDATE vacc SET current_status = 1 WHERE id = 1')
+        conn.commit()
+    else:
+        cursor.execute('UPDATE vacc SET current_status = 0 WHERE id = 1')
+        conn.commit()
 
+    # gruzlica
+    if wn['wiek'] > 7:
+        cursor.execute('UPDATE vacc SET current_status = 1 WHERE id = 2')
+        conn.commit()
+    else:
+        cursor.execute('UPDATE vacc SET current_status = 0 WHERE id = 2')
+        conn.commit()
 
+    # mammografia+cytologia
+    if wn['plec'] == 1 and wn['wiek'] > 15:
+        cursor.execute('UPDATE check_ups SET current_status = 1 WHERE id = 1')
+        conn.commit()
+        cursor.execute('UPDATE check_ups SET current_status = 1 WHERE id = 2')
+        conn.commit()
+    else:
+        cursor.execute('UPDATE check_ups SET current_status = 0 WHERE id = 1')
+        conn.commit()
+        cursor.execute('UPDATE check_ups SET current_status = 0 WHERE id = 2')
+        conn.commit()
 
-#    if 'loggedin' in session:
-#        username = cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
-#        account = cursor.fetchone()
-#        return render_template('home.html', username=session['username'], account=account)
-#    return redirect(url_for('login'))
+    # prostata
+    if wn['plec'] == 0 and wn['wiek'] > 40:
+        cursor.execute('UPDATE check_ups SET current_status = 1 WHERE id = 3')
+        conn.commit()
+    else:
+        cursor.execute('UPDATE check_ups SET current_status = 0 WHERE id = 3')
+        conn.commit()
+
+    # lipidogram
+    if (wn['papierosy'] == 1 or wn['alkohol'] == 1 or wn['aktywnosc'] == 0) and wn['wiek'] > 40:
+        cursor.execute('UPDATE check_ups SET current_status = 1 WHERE id = 4')
+        conn.commit()
+    else:
+        cursor.execute('UPDATE check_ups SET current_status = 0 WHERE id = 4')
+        conn.commit()
+
+    cursor.execute('SELECT nazwa FROM vacc WHERE current_status = 1')
+    vac = cursor.fetchall()
+    return render_template('home.html', sh=vac)
+
+    #    if 'loggedin' in session:
+    #        username = cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
+    #        account = cursor.fetchone()
+    #        return render_template('home.html', username=session['username'], account=account)
+    #    return redirect(url_for('login'))
 
 # http://localhost:5000/logout
 @app.route('/logout')
@@ -220,5 +269,7 @@ def profile():
     else:
         return redirect(url_for('login'))
 
+
 if __name__ == '__main__':
     app.run(debug=True)
+
