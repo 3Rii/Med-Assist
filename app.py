@@ -189,7 +189,7 @@ def home():
     msg = ''
 
     if 'loggedin' in session:
-        username = cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
+        cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
         account = cursor.fetchone()
         return render_template('home.html', username=session['username'], account=account)
     return redirect(url_for('login'))
