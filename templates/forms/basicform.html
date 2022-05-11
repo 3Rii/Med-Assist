@@ -73,8 +73,14 @@
       <div class="modal-content">
 
          <div class="modal-header">
-            <h4 class="modal-title">Uzupełnij wszystkie pola</h4>
+
+             {% if user %}
+                <h1 >Edycja formularza</h1><br>
+             {% else %}
+                <h1 >Uzupełnienie formularza</h1><br>
+             {% endif %}
          </div>
+                <p><i>(Pamiętaj, żeby uzupełnić wszystkie pola)</i></p>
          <div class="modal-body">
 
             <form action="{{url_for('BasicUpdate')}}" method="POST">
