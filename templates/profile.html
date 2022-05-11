@@ -3,27 +3,39 @@
 {% block title %}Profil{% endblock %}
  
 {% block content %}
-<h1>Mój profil</h1>
 
-<div>
-    <p>Dane użytkownika:</p>
-    <table>
-        <tr>
-            <td>Imię:</td>
-            <td>{{ account['fullname'] }}</td>
-        </tr>
-  <tr>
-            <td>Nazwa Użytkownika:</td>
-            <td>{{ account['username'] }}</td>
-        </tr>
-        <tr>
-            <td>Hasło:</td>
-            <td>{{ account['password'] }}</td>
-        </tr>
-        <tr>
-            <td>E-mail:</td>
-            <td>{{ account['email'] }}</td>
-        </tr>
-    </table>
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+
+            <div class="jumbotron p-3" style="background: transparent; opacity: 0.90">
+
+                    <h2 style="justify-content: center"><i class="fas fa-user-circle" style="color: slategrey"></i><b style="color: darkblue"><i> Twój Profil </i></b></h2>
+                    <table class="table table-borderless">
+                    <tr>
+                        <th>Imię</th>
+
+                        <td>{{ account['fullname'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nazwa Użytkownika</th>
+
+                        <td>{{ account['username'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Hasło</th>
+
+                        <td>{{ account['password'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>E-mail</th>
+                        <td>{{ account['email'] }}</td>
+                    </tr>
+                    </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 {% endblock %}
