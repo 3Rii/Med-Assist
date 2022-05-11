@@ -1,6 +1,6 @@
 use projekt;
 
-create table projekt.accounts
+create table accounts
 (
     id       int auto_increment
         primary key,
@@ -9,60 +9,63 @@ create table projekt.accounts
     password char(20) not null,
     email    char(40) not null
 )
-    auto_increment = 6;
+    auto_increment = 8;
 
-create table projekt.check_ups
+create table check_ups
 (
-    id             int                    not null,
-    nazwa          char(20)   default '0' null,
-    current_status tinyint(1) default 0   null,
-    todo_status    tinyint(1) default 0   null,
-    primary key (id),
-    constraint check_ups_id_uindex
-        unique (id)
-);
-
-create table projekt.prevention
-(
-    id             int                    not null,
-    nazwa          char(20)   default '0' not null,
-    link_gov       char(20)   default '0' not null,
-    current_status tinyint(1) default 0   null,
-    todo_status    tinyint(1) default 0   null,
-    primary key (id),
-    constraint prevention_id_uindex
-        unique (id)
-);
-
-create table projekt.user
-(
-    id          int        auto_increment primary key,
-    account_id  int        not null,
-    wiek        float      default 0 null,
-    waga        float      default 0 null,
-    wzrost      float      default 0 null,
-    plec        tinyint(1) default 0 null,
-    papierosy   tinyint(1) default 0 null,
-    alkohol     tinyint(1) default 0 null,
-    aktywnosc   tinyint(1) default 0 null,
-    foreign key (account_id)
-        references accounts(id),
-    constraint user_u_id_uindex
-        unique (id)
-);
-
-create table vacc
-(
-    id             int                    not null
+    id             int auto_increment
         primary key,
-    nazwa          char(20)   default '0' not null,
-    typ            char(20)   default '0' not null,
+    id_user        int                    null,
     current_status tinyint(1) default 0   null,
     todo_status    tinyint(1) default 0   null,
-    id_user        int                    null,
-    constraint vacc_id_uindex
-        unique (id),
-    constraint vacc_accounts_id_fk
+    nazwa          char(20)   default '0' null,
+    constraint check_ups_accounts_id_fk
         foreign key (id_user) references accounts (id)
 );
 
+create table prevention
+(
+    id             int auto_increment
+        primary key,
+    id_user        int                    null,
+    link_gov       char(20)   default '0' not null,
+    current_status tinyint(1) default 0   null,
+    todo_status    tinyint(1) default 0   null,
+    nazwa          char(20)   default '0' not null,
+    constraint prevention_accounts_id_fk
+        foreign key (id_user) references accounts (id)
+);
+
+create table user
+(
+    id         int auto_increment
+        primary key,
+    account_id int                  not null,
+    wiek       float      default 0 null,
+    waga       float      default 0 null,
+    wzrost     float      default 0 null,
+    plec       tinyint(1) default 0 null,
+    papierosy  tinyint(1) default 0 null,
+    alkohol    tinyint(1) default 0 null,
+    aktywnosc  tinyint(1) default 0 null,
+    constraint user_u_id_uindex
+        unique (id),
+    constraint user_ibfk_1
+        foreign key (account_id) references accounts (id),
+    constraint user_accounts_id_fk
+        foreign key (account_id) references accounts (id)
+)
+    auto_increment = 10;
+
+create table vacc
+(
+    id             int auto_increment
+        primary key,
+    id_user        int                    null,
+    typ            char(20)   default '0' not null,
+    current_status tinyint(1) default 0   null,
+    todo_status    tinyint(1) default 0   null,
+    nazwa          char(20)   default '0' not null,
+    constraint vacc_accounts_id_fk
+        foreign key (id_user) references accounts (id)
+);

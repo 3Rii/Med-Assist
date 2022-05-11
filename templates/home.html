@@ -5,46 +5,61 @@
 {% block content %}
 
 
-    <div class="hometable" style="background-image: url(/static/korek.jpg)">
 
-                 <header>
+<div class="dropdown-header text-black-50 ">
+                <header>
                 <div class="overlay">
                             <h1 class="display-4 font-weight-bold">Witaj, {{ username }}!</h1>
-                <h2 class="display-4 font-weight-bold">Twój Asystent proponuje:</h2>
+                <h2 class="display-4 font-weight-bold">To Twoja tablica:</h2>
                 </div>
                 </header>
+</div>
 
+<div class="hometable" style="background-image: url(/static/korek.jpg)">
 
     <ul class="kartki" style="list-style: none;">
-              <li>
-                <a class="odnosniki" href="#" contenteditable>
-                  <h2>Title #1</h2>
-                  <p>Text Content #1</p>
-                </a>
-              </li>
 
-              <li>
-                <a class="odnosniki" href="#" contenteditable>
-                  <h2>Title #2</h2>
-                  <p>Text Content #2</p>
-                </a>
-              </li>
+        {% for v in vacc %}
+            {% if v.todo_status == 1 %}
 
-              <li>
-                <a class="odnosniki" href="#" contenteditable>
-                  <h2>Title #3</h2>
-                  <p>Text Content #3</p>
-                </a>
-              </li>
+                  <li>
+                    <a class="odnosniki" href="{{ url_for('Vacc') }}" >
+                      <h1>{{ v.nazwa }}</h1>
+                        <p>{{ v.typ }}</p>
+                    </a>
+                  </li>
 
-              <li>
-                <a class="odnosniki" href="#" contenteditable>
-                  <h2>Title #4</h2>
-                  <p>Text Content #4</p>
-                </a>
-              </li>
+            {% endif %}
+
+        {% endfor %}
+
+        {% for c in check %}
+            {% if  c.todo_status == 1 %}
+
+                  <li>
+                    <a class="odnosniki" href="{{ url_for('Check') }}" >
+                      <h1>{{ c.nazwa }}</h1>
+                    </a>
+                  </li>
+
+            {% endif %}
+
+        {% endfor %}
+
+        {% for p in prev %}
+            {% if  p.todo_status == 1 %}
+
+                  <li>
+                    <a class="odnosniki" href="{{ url_for('Prev') }}" >
+                      <h1>{{ p.nazwa }}</h1>
+                    </a>
+                  </li>
+
+            {% endif %}
+         {% endfor %}
 
     </ul>
+
     </div>
 
 {% endblock %}

@@ -112,12 +112,15 @@ def register():
 def home():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-    msg = ''
 
     if 'loggedin' in session:
-        cursor.execute('SELECT * FROM accounts WHERE id = %s', [session['id']])
-        account = cursor.fetchone()
-        return render_template('home.html', username=session['username'], account=account)
+        cursor.execute('SELECT * FROM vacc WHERE id_user = %s', [session['id']])
+        vacc = cursor.fetchall()
+        cursor.execute('SELECT * FROM check_ups WHERE id_user = %s', [session['id']])
+        check = cursor.fetchall()
+        cursor.execute('SELECT * FROM prevention WHERE id_user = %s', [session['id']])
+        prev = cursor.fetchall()
+        return render_template('home.html', username=session['username'], vacc=vacc, check=check, prev=prev)
     return redirect(url_for('login'))
 
 # http://localhost:5000/logout
@@ -267,9 +270,9 @@ def Vacc():
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     if 'loggedin' in session:
 
+
         cursor.execute('SELECT * FROM vacc WHERE id_user = %s', [session['id']])
         account = cursor.fetchall()
-
         return render_template("forms/vaccines.html", vacc=account)
     else:
         return redirect(url_for('login'))
@@ -309,7 +312,7 @@ def VaccTAB(id):
     else:
         return redirect(url_for('login'))
 
-# http://127.0.0.1:5000/vaccines/delete/ redirect -> /vaccines -todo
+# http://127.0.0.1:5000/vaccines/delete/ redirect -> /vaccines -dziala
 @app.route('/vaccines/delete/<id>', methods=['GET', 'POST'])
 def VaccClear(id):
 
@@ -317,9 +320,7 @@ def VaccClear(id):
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
     if 'loggedin' in session:
-            # my_data = db.session.query(Vacc).get(id)
-            # db.session.delete(my_data)
-            # db.session.commit()
+
             cursor.execute('DELETE FROM vacc WHERE id = %s', (id))
             conn.commit()
             return redirect(url_for('Vacc'))
