@@ -185,7 +185,6 @@ def BasicUpdate():
                 my_data.alkohol = request.form['alkohol']
                 my_data.aktywnosc = request.form['aktywnosc']
                 db.session.commit()
-                # InsertVacc()
                 return redirect(url_for('Basic'))
             else:
                 account_id = session['id']
@@ -198,8 +197,10 @@ def BasicUpdate():
                 aktywnosc = request.form['aktywnosc']
                 cursor.execute('INSERT INTO user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)', (account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc))
                 conn.commit()
-                # InsertVacc()
                 return redirect(url_for('Basic'))
+
+        InsertVacc()
+
     else:
         return redirect(url_for('login'))
 
@@ -220,7 +221,7 @@ def BasicDelete():
 
 # SZCZEPIENIA
 #//// dodawanie po uzupełnieniu formularza basic todo todo todo
-def InsertVacc(id):
+def InsertVacc():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
@@ -284,14 +285,8 @@ def VaccChoice(id):
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
     if 'loggedin' in session:
-        cur = cursor.execute('SELECT current_status FROM vacc WHERE id_user = %s', id)
-        tod = cursor.execute('SELECT todo_status FROM vacc WHERE id_user = %s', id)
         current = request.form.get('current_status')
         todo = request.form.get('todo_status')
-        print('w tablicy cur: ', cur)
-        print('w tablicy tod: ', tod)
-        print('w form cur: ', current)
-        print('w form tod: ', todo)
 
         if request.method == 'POST':
             if current == 'on':
@@ -327,7 +322,10 @@ def VaccClear(id):
     else:
         return redirect(url_for('login'))
 
-# todo dopiero jak reszta zadziala
+
+
+
+# todo na wzor funkcji powyzej!
 # http://localhost:5000/check_ups
 @app.route('/check_ups', methods=['GET', 'POST'])
 def Check():
