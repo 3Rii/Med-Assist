@@ -71,7 +71,7 @@ def login():
             session['username'] = account['username']
             return redirect(url_for('home'))
         else:
-            msg = 'Incorrect username/password!'
+            msg = 'Podano błędne hasło/nazwę użytkownika'
     return render_template('login.html', msg=msg)
 
 # http://localhost:5000/register
@@ -92,19 +92,19 @@ def register():
         account = cursor.fetchone()
 
         if account:
-            msg = 'Account already exists!'
+            msg = 'Konto o podanych danych już istnieje'
         elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
-            msg = 'Invalid email address!'
+            msg = 'Użyj formatu adresu mailowego'
         elif not re.match(r'[A-Za-z0-9]+', username):
-            msg = 'Username must contain only characters and numbers!'
+            msg = 'Nie używaj znaków specjanych'
         elif not username or not password or not email:
-            msg = 'Please fill out the form!'
+            msg = 'Wszystkie pola muszą zostać wypełnione'
         else:
             cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s)', (fullname, username, password, email))
             conn.commit()
-            msg = 'You have successfully registered!'
+            msg = 'Konto założone pomyślnie!'
     elif request.method == 'POST':
-        msg = 'Please fill out the form!'
+        msg = 'Wszystkie pola muszą zostać wypełnione'
     return render_template('register.html', msg=msg)
 
 # http://localhost:5000
@@ -232,7 +232,7 @@ def BasicDelete():
     else:
         return redirect(url_for('login'))
 
-#todo nowe
+# todo//////////////////////////////nowe///////////////////////////////////////////////
 
 # SZCZEPIENIA
 #//// dodawanie po uzupełnieniu formularza basic - dziala, todo dodac wiecej
@@ -407,7 +407,7 @@ def CheckClear(id):
 
 # PROFILAKTYKA
 #//// dodawanie po uzupełnieniu formularza basic dziala, todo dodac wiecej
-def InsertCheck():
+def InsertPrev():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     nazwa = 'def'
