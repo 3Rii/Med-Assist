@@ -15,7 +15,7 @@
                 </header>
 </div>
 {#todo#}
-    {% if (v in vacc == null) and (p in prev == null) and (c in check == null) %}
+    {% if not (vacc or prev or check) %}
     <div>
         <h1>Jeszcze tu nic nie ma!<br> Uzupełnij formularz</h1>
         <a href="{{ url_for('Basic') }}" class="btn btn-success btn-xs" action="{{url_for('Basic')}}" method="POST">Uzupełnij</a>
