@@ -28,7 +28,7 @@ create table prevention
     id             int auto_increment
         primary key,
     id_user        int                    null,
-    link_gov       char(20)   default '0' not null,
+    link_gov       char(100)   default '0' not null,
     current_status tinyint(1) default 0   null,
     todo_status    tinyint(1) default 0   null,
     nazwa          char(20)   default '0' not null,
