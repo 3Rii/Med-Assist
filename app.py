@@ -407,7 +407,7 @@ def CheckClear(id):
 
 # PROFILAKTYKA
 #//// dodawanie po uzupełnieniu formularza basic dziala, todo dodac wiecej
-def InsertCheck():
+def InsertPrev():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     nazwa = 'def'
