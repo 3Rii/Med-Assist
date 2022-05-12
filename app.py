@@ -149,11 +149,23 @@ def profile():
 # //GROUP INSERT
 @app.route('/analyze', methods=['GET', 'POST'])
 def insert():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
     if 'loggedin' in session:
-        InsertVacc()
-        InsertCheck()
-        InsertPrev()
-        return redirect(url_for('Basic'))
+        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
+        account = cursor.fetchone()
+
+        if account is not None:
+            InsertVacc()
+            InsertCheck()
+            InsertPrev()
+            msg = 'Sprawdź stronę główną.'
+
+            return render_template("forms/basicform.html", msg=msg, user=account)
+        else:
+            msg = 'Bez wypełnienia formularza analiza jest niemożliwa!'
+            return render_template("forms/basicform.html", msg=msg, user=account)
     else:
         return redirect(url_for('login'))
 
