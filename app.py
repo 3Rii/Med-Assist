@@ -146,6 +146,16 @@ def profile():
 
 
 #/////////////////////////////// ZAKLADKI
+# //GROUP INSERT
+@app.route('/analyze', methods=['GET', 'POST'])
+def insert():
+    if 'loggedin' in session:
+        InsertVacc()
+        InsertCheck()
+        InsertPrev()
+        return redirect(url_for('Basic'))
+    else:
+        return redirect(url_for('login'))
 
 # ///INFORMACJE PODSTAWOWE///
 # Wyswietlanie
@@ -186,7 +196,7 @@ def BasicUpdate():
                 my_data.aktywnosc = request.form['aktywnosc']
                 db.session.commit()
 
-                InsertVacc()
+                insert()
 
                 return redirect(url_for('Basic'))
             else:
@@ -201,11 +211,9 @@ def BasicUpdate():
                 cursor.execute('INSERT INTO user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)', (account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc))
                 conn.commit()
 
-                InsertVacc()
+                insert()
 
                 return redirect(url_for('Basic'))
-
-
     else:
         return redirect(url_for('login'))
 
@@ -224,8 +232,10 @@ def BasicDelete():
     else:
         return redirect(url_for('login'))
 
+#todo nowe
+
 # SZCZEPIENIA
-#//// dodawanie po uzupełnieniu formularza basic - dziala!
+#//// dodawanie po uzupełnieniu formularza basic - dziala, todo dodac wiecej
 @app.route('/analyze', methods=['GET', 'POST'])
 def InsertVacc():
     conn = mysql.connect()
@@ -241,8 +251,6 @@ def InsertVacc():
         cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
         wn = cursor.fetchone()
 
-        cursor.execute('SELECT * FROM vacc WHERE id_user = %s', [session['id']])
-        nony = cursor.fetchall()
 
         # Różyczka
         if wn['plec'] == 1 and wn['wiek'] > 1:
@@ -264,7 +272,7 @@ def InsertVacc():
     else:
         return redirect(url_for('login'))
 
-# http://localhost:5000/vaccines - dziala!
+# http://localhost:5000/vaccines - done
 @app.route('/vaccines', methods=['GET', 'POST'])
 def Vacc():
     conn = mysql.connect()
@@ -307,7 +315,7 @@ def VaccChoice(id):
     else:
         return redirect(url_for('login'))
 
-# http://127.0.0.1:5000/vaccines/delete/ redirect -> /vaccines -dziala!
+# http://127.0.0.1:5000/vaccines/delete/ redirect -> /vaccines - done
 @app.route('/vaccines/delete/<id>', methods=['GET', 'POST'])
 def VaccClear(id):
 
@@ -323,10 +331,22 @@ def VaccClear(id):
         return redirect(url_for('login'))
 
 
-
-
 # todo na wzor funkcji powyzej!
-# http://localhost:5000/check_ups
+# KONTROLNE
+#//// dodawanie po uzupełnieniu formularza basic todo
+def InsertCheck():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    nazwa = 'def'
+    typ = 'def'
+    current = 0
+    todo = 1
+
+    # todo
+
+    return 0
+
+# http://localhost:5000/check_ups - done
 @app.route('/check_ups', methods=['GET', 'POST'])
 def Check():
     conn = mysql.connect()
@@ -340,7 +360,64 @@ def Check():
     else:
         return redirect(url_for('login'))
 
-# http://localhost:5000/prevention
+# http://localhost:5000/check_ups/update - dziala ale nie do konca todo
+@app.route('/check_ups/update/<id>', methods=['GET', 'POST'])
+def CheckChoice(id):
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+        current = request.form.get('current_status')
+        todo = request.form.get('todo_status')
+
+        if request.method == 'POST':
+            if current == 'on':
+                cursor.execute(""" UPDATE vacc SET current_status=%s WHERE id=%s""", (1, id))
+                conn.commit()
+            else:
+                cursor.execute(""" UPDATE vacc SET current_status=%s WHERE id=%s""", (0, id))
+                conn.commit()
+
+            if todo == 'on':
+                cursor.execute(""" UPDATE vacc SET todo_status=%s WHERE id=%s""", (1, id))
+                conn.commit()
+            else:
+                cursor.execute(""" UPDATE vacc SET todo_status=%s WHERE id=%s""", (0, id))
+                conn.commit()
+
+        return redirect(url_for('Vacc'))
+    else:
+        return redirect(url_for('login'))
+
+# http://127.0.0.1:5000/check_ups/delete/ redirect -> /vaccines - dziala, todo html
+@app.route('/check_ups/delete/<id>', methods=['GET', 'POST'])
+def CheckClear(id):
+
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+
+            cursor.execute('DELETE FROM check_ups WHERE id = %s', (id))
+            conn.commit()
+            return redirect(url_for('Check'))
+    else:
+        return redirect(url_for('login'))
+
+
+# PROFILAKTYKA
+#//// dodawanie po uzupełnieniu formularza basic dziala, todo dodac wiecej
+def InsertCheck():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    nazwa = 'def'
+    typ = 'def'
+    current = 0
+    todo = 1
+
+    return 0
+
+# http://localhost:5000/prevention - done
 @app.route('/prevention', methods=['GET', 'POST'])
 def Prev():
     conn = mysql.connect()
@@ -350,7 +427,51 @@ def Prev():
 
         cursor.execute('SELECT * FROM prevention WHERE id_user = %s', [session['id']])
         account = cursor.fetchall()
-        return render_template("forms/prevention.html", prev=account)
+        return render_template("forms/check_ups.html", prev=account)
+    else:
+        return redirect(url_for('login'))
+
+# http://localhost:5000/vaccines/update - dziala ale nie do konca todo
+@app.route('/prevention/update/<id>', methods=['GET', 'POST'])
+def PrevChoice(id):
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+        # current = request.form.get('current_status')
+        # todo = request.form.get('todo_status')
+        #
+        # if request.method == 'POST':
+        #     if current == 'on':
+        #         cursor.execute(""" UPDATE vacc SET current_status=%s WHERE id=%s""", (1, id))
+        #         conn.commit()
+        #     else:
+        #         cursor.execute(""" UPDATE vacc SET current_status=%s WHERE id=%s""", (0, id))
+        #         conn.commit()
+        #
+        #     if todo == 'on':
+        #         cursor.execute(""" UPDATE vacc SET todo_status=%s WHERE id=%s""", (1, id))
+        #         conn.commit()
+        #     else:
+        #         cursor.execute(""" UPDATE vacc SET todo_status=%s WHERE id=%s""", (0, id))
+        #         conn.commit()
+
+        return redirect(url_for('Prev'))
+    else:
+        return redirect(url_for('login'))
+
+# http://127.0.0.1:5000/prevention/delete/ redirect -> /vaccines - dziala, todo html
+@app.route('/prevention/delete/<id>', methods=['GET', 'POST'])
+def PrevClear(id):
+
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+
+            cursor.execute('DELETE FROM prevention WHERE id = %s', (id))
+            conn.commit()
+            return redirect(url_for('Prev'))
     else:
         return redirect(url_for('login'))
 
