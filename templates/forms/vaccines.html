@@ -10,11 +10,6 @@
 
             <div class="jumbotron p-3" style="background: transparent; opacity: 0.90">
                 <h2 style="justify-content: center"><i class="fas fa-syringe" style="color: slategrey"></i><b>Proponowane </b><b style="color: darkblue"><i>szczepienia</i></b></h2>
-                    <form
-                    {% for v in vacc %}
-                    action="{{ url_for('VaccChoice', id=v.id) }}"
-                    {% endfor %} method="POST">
-
                         <table class="table align-middle text-center table-bordered" style="border-style: groove">
                         <tr>
                             <th>Szczepienia</th>
@@ -22,9 +17,12 @@
                             <th colspan="4">Status</th>
                             <th></th>
                         </tr>
+			</table>
 
         {% for v in vacc %}
+		<form method="POST" action="{{ url_for('VaccChoice', id=v.id) }}">
 
+                        <table class="table align-middle text-center table-bordered" style="border-style: groove">
                         <tr>
                             <td style="vertical-align: center; text-align: center" rowspan="2"><h4>{{ v.nazwa }}</h4></td>
                             <td style="vertical-align: center; text-align: center" rowspan="2"><h4>{{ v.typ }}</h4></td>
@@ -38,9 +36,7 @@
                                          <input type="checkbox" name="current_status" id="current_status"
                                         {% if  v.current_status == 1 %}
                                             checked
-{#                                            value = "0"#}
                                         {% endif %}>
-
                                      </div>
                               </div>
 
@@ -66,16 +62,15 @@
                                          <input type="checkbox" name="todo_status" id="todo_status"
                                         {% if  v.todo_status == 1 %}
                                             checked
-{#                                            value = "0"#}
                                         {% endif %}>
                                      </div>
                               </div>
 
                             </td>
                         </tr>
+		</table>
+	</form>
 {% endfor %}
-                </table>
-                </form>
             </div>
       </div>
    </div>
