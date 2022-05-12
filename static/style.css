@@ -8,8 +8,9 @@
    margin: 0;
    
    
-}*/
+}
 
+*/
 .loggedin
 {
   background: linear-gradient(to bottom, whitesmoke 20%, lightsteelblue 100%);
@@ -75,7 +76,7 @@ hr{
 
 .form-group{
  margin-bottom: 15px;
- text-align: left;
+ text-align: center;
 }
 
 label{
@@ -93,19 +94,18 @@ input::-webkit-input-placeholder {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
-    -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
-
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 }
 .form-control {
     height: auto!important;
 padding: 8px 12px !important;
 }
 .input-group {
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.21)!important;
-    -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.21)!important;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.21)!important;
+  -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+  -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+  box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
 }
 .main-center{
   margin-top: 30px;
@@ -114,10 +114,9 @@ padding: 8px 12px !important;
  background:#009edf;
      color: #FFF;
     text-shadow: none;
- -webkit-box-shadow: 0 3px 5px 0 rgba(0,0,0,0.31);
--moz-box-shadow: 0 3px 5px 0 rgba(0,0,0,0.31);
-box-shadow: 0 3px 5px 0 rgba(0,0,0,0.31);
-
+    -webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+    -moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+    box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
 }
 span.input-group-addon i {
     color: #fff;
@@ -160,6 +159,8 @@ span.input-group-addon i {
   padding: 13px 20px;
   position: relative;
   text-align: center;
+  
+  
 
 }
 .menu-header{
@@ -245,7 +246,7 @@ ul li{
     border-image-repeat: stretch stretch;
     border-image-source: url("/static/frame.jpg");
 }
-.menu li{
+.menu {
     position:relative;
     top:5px;
     background: none;
@@ -253,21 +254,12 @@ ul li{
     text-align: left;
   display: flex;
   flex-wrap: wrap;
-border-radius: 30px;
+
 }
-.menu li a:hover, .menu li a.focus{
+li a:hover, li a.focus{
   box-shadow:10px 10px 7px rgba(0,0,0,.7);
   transform: scale(1.25);
   position:relative;
   z-index:5;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    border-radius: 30px;
-    background: #76d5cb;
 }
-#hedermenu {
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    text-align: center;
-    font-palette: dark;
-}
-

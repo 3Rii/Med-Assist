@@ -5,14 +5,12 @@ from flask_sqlalchemy import SQLAlchemy
 import pymysql
 pymysql.install_as_MySQLdb()
 from sqlalchemy.ext.automap import automap_base
-
+from sqlalchemy import insert
 
 app = Flask(__name__)
-
-# //////////////////// USTAWIENIA
 app.secret_key = 'secret_key'
 
-# pymysql
+# 1 polacznie
 mysql = MySQL()
 app.config['MYSQL_DATABASE_USER'] = 'harry'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'H4rru5i3k!'
@@ -20,10 +18,12 @@ app.config['MYSQL_DATABASE_DB'] = 'projekt'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
-#sqlalchemy
+#2 polaczenie
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://harry:H4rru5i3k!@localhost:3306/projekt'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
+
 
 # mapping
 Acc = db.Table('accounts', db.metadata, autoload=True, autoload_with=db.engine)
@@ -350,11 +350,28 @@ def InsertCheck():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     nazwa = 'def'
-    typ = 'def'
     current = 0
     todo = 1
 
-    # todo
+    if 'loggedin' in session:
+        id_user = session['id']
+
+        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
+        wn = cursor.fetchone()
+
+        # Prostata
+        if wn['plec'] == 0 and wn['wiek'] > 40:
+            nazwa = "Na prostatę"
+
+            cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
+            conn.commit()
+
+        # Lipidogram
+        if (wn['papierosy'] == 1 or wn['alkohol'] == 1 or wn['aktywnosc'] == 0) and wn['wiek'] > 40:
+            nazwa = "Lipidogram"
+
+            cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
+            conn.commit()
 
     return 0
 
@@ -384,20 +401,20 @@ def CheckChoice(id):
 
         if request.method == 'POST':
             if current == 'on':
-                cursor.execute(""" UPDATE vacc SET current_status=%s WHERE id=%s""", (1, id))
+                cursor.execute(""" UPDATE check_ups SET current_status=%s WHERE id=%s""", (1, id))
                 conn.commit()
             else:
-                cursor.execute(""" UPDATE vacc SET current_status=%s WHERE id=%s""", (0, id))
+                cursor.execute(""" UPDATE check_ups SET current_status=%s WHERE id=%s""", (0, id))
                 conn.commit()
 
             if todo == 'on':
-                cursor.execute(""" UPDATE vacc SET todo_status=%s WHERE id=%s""", (1, id))
+                cursor.execute(""" UPDATE check_ups SET todo_status=%s WHERE id=%s""", (1, id))
                 conn.commit()
             else:
-                cursor.execute(""" UPDATE vacc SET todo_status=%s WHERE id=%s""", (0, id))
+                cursor.execute(""" UPDATE check_ups SET todo_status=%s WHERE id=%s""", (0, id))
                 conn.commit()
 
-        return redirect(url_for('Vacc'))
+        return redirect(url_for('Check'))
     else:
         return redirect(url_for('login'))
 
@@ -423,9 +440,23 @@ def InsertPrev():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     nazwa = 'def'
-    typ = 'def'
+    link = 'def'
     current = 0
     todo = 1
+
+    if 'loggedin' in session:
+        id_user = session['id']
+
+        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
+        wn = cursor.fetchone()
+
+        # Udar
+        if wn['wiek'] > 40 and (wn['alkohol']==1 or wn['papierosy'==1]):
+            nazwa = "Przeciwko udarowi"
+            link = 'pacjent.gov.pl/programy-profilaktyczne/program-profilaktyki-udarow'
+
+            cursor.execute('INSERT INTO prevention VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, link, current, todo, nazwa))
+            conn.commit()
 
     return 0
 
@@ -439,7 +470,7 @@ def Prev():
 
         cursor.execute('SELECT * FROM prevention WHERE id_user = %s', [session['id']])
         account = cursor.fetchall()
-        return render_template("forms/check_ups.html", prev=account)
+        return render_template("forms/prevention.html", prev=account)
     else:
         return redirect(url_for('login'))
 
@@ -450,23 +481,23 @@ def PrevChoice(id):
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
     if 'loggedin' in session:
-        # current = request.form.get('current_status')
-        # todo = request.form.get('todo_status')
-        #
-        # if request.method == 'POST':
-        #     if current == 'on':
-        #         cursor.execute(""" UPDATE vacc SET current_status=%s WHERE id=%s""", (1, id))
-        #         conn.commit()
-        #     else:
-        #         cursor.execute(""" UPDATE vacc SET current_status=%s WHERE id=%s""", (0, id))
-        #         conn.commit()
-        #
-        #     if todo == 'on':
-        #         cursor.execute(""" UPDATE vacc SET todo_status=%s WHERE id=%s""", (1, id))
-        #         conn.commit()
-        #     else:
-        #         cursor.execute(""" UPDATE vacc SET todo_status=%s WHERE id=%s""", (0, id))
-        #         conn.commit()
+        current = request.form.get('current_status')
+        todo = request.form.get('todo_status')
+
+        if request.method == 'POST':
+            if current == 'on':
+                cursor.execute(""" UPDATE prevention SET current_status=%s WHERE id=%s""", (1, id))
+                conn.commit()
+            else:
+                cursor.execute(""" UPDATE prevention SET current_status=%s WHERE id=%s""", (0, id))
+                conn.commit()
+
+            if todo == 'on':
+                cursor.execute(""" UPDATE prevention SET todo_status=%s WHERE id=%s""", (1, id))
+                conn.commit()
+            else:
+                cursor.execute(""" UPDATE prevention SET todo_status=%s WHERE id=%s""", (0, id))
+                conn.commit()
 
         return redirect(url_for('Prev'))
     else:
@@ -489,3 +520,4 @@ def PrevClear(id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+

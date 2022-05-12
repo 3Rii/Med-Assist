@@ -31,7 +31,7 @@
 
                               <div>
                                     <div>
-                                         <input type="checkbox" name="current" id="current" action="{{url_for('VaccChoice', id=c.id)}}" method="POST"
+                                         <input type="checkbox" name="current" id="current" action="{{url_for('CheckChoice', id=c.id)}}" method="POST"
 
                                         {% if  c.current_status  == 1 %}
                                             checked
@@ -48,7 +48,7 @@
                             <td rowspan="2" style="vertical-align: center; text-align: center">
 
                                     <div class="justify-content-center">
-                                        <a href="{{ url_for('VaccClear', id=c.id) }}" class="btn btn-danger btn-xs" action="{{url_for('VaccClear', id=c.id)}}" method="POST" onclick="return confirm('Czy na pewno chcesz usunąć tę propozycję?')">Usuń</a>
+                                        <a href="{{ url_for('CheckClear', id=c.id) }}" class="btn btn-danger btn-xs" action="{{url_for('CheckClear', id=c.id)}}" method="POST" onclick="return confirm('Czy na pewno chcesz usunąć tę propozycję?')">Usuń</a>
                                         <button class="btn btn-success justify-content-center" type="submit">Zatwierdź!</button>
                                     </div>
                             </td>
@@ -62,7 +62,7 @@
                             <td style="vertical-align: center; text-align: center">
                               <div>
                                     <div>
-                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('VaccChoice', id=c.id)}}" method="POST"
+                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('CheckChoice', id=c.id)}}" method="POST"
                                         {% if  c.todo_status  == 1 %}
                                             checked
                                             value = "1"
