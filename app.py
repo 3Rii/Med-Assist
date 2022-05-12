@@ -453,7 +453,7 @@ def InsertPrev():
         # Udar
         if wn['wiek'] > 40 and (wn['alkohol']==1 or wn['papierosy'==1]):
             nazwa = "Przeciwko udarowi"
-            link = 'https://pacjent.gov.pl/programy-profilaktyczne/program-profilaktyki-udarow'
+            link = 'pacjent.gov.pl/programy-profilaktyczne/program-profilaktyki-udarow'
 
             cursor.execute('INSERT INTO prevention VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, link, current, todo, nazwa))
             conn.commit()
