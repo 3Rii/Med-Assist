@@ -30,10 +30,12 @@
             {% if v.todo_status == 1 %}
 
                   <li>
+                  <div class="kartka">
                     <a class="odnosniki" href="{{ url_for('Vacc') }}" >
-                      <h1>{{ v.nazwa }}</h1>
+                      <p><b>{{ v.nazwa }}</b></p>
                         <p>{{ v.typ }}</p>
                     </a>
+                  </div>
                   </li>
 
             {% endif %}
@@ -43,9 +45,11 @@
             {% if  c.todo_status == 1 %}
 
                   <li>
+                  <div class="kartka">
                     <a class="odnosniki" href="{{ url_for('Check') }}" >
-                      <h1>{{ c.nazwa }}</h1>
+                      <p><b>{{ c.nazwa }}</b></p>
                     </a>
+                  </div>
                   </li>
 
             {% endif %}
@@ -56,9 +60,11 @@
             {% if  p.todo_status == 1 %}
 
                   <li>
+                  <div class="kartka">
                     <a class="odnosniki" href="{{ url_for('Prev') }}" >
-                      <h1>{{ p.nazwa }}</h1>
+                      <p><b><span style="font-size: 50px">{{ p.nazwa }}</span></b></p>
                     </a>
+                  </div>
                   </li>
 
             {% endif %}
