@@ -578,7 +578,7 @@ def Prev():
     else:
         return redirect(url_for('login'))
 
-# http://localhost:5000/vaccines/update - dziala ale nie do konca todo
+# http://localhost:5000/vaccines/update
 @app.route('/prevention/update/<id>', methods=['GET', 'POST'])
 def PrevChoice(id):
     conn = mysql.connect()
@@ -607,7 +607,7 @@ def PrevChoice(id):
     else:
         return redirect(url_for('login'))
 
-# http://127.0.0.1:5000/prevention/delete/ redirect -> /vaccines - dziala, todo html
+# http://127.0.0.1:5000/prevention/delete/ redirect -> /prevention
 @app.route('/prevention/delete/<id>', methods=['GET', 'POST'])
 def PrevClear(id):
 
