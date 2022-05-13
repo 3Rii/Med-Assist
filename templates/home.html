@@ -17,8 +17,8 @@
 
     {% if not (vacc or prev or check or user) %}
     <div>
-        <h1>Jeszcze tu nic nie ma!</h1><br> <h4>Uzupełnij formularz</h4>
-        <a href="{{ url_for('Basic') }}" class="btn btn-success btn-xs" action="{{url_for('Basic')}}" method="POST">Uzupełnij</a>
+        <h1>Jeszcze tu nic nie ma!</h1><br> <h4>Uzupełnij formularz i wciśnij przycisk "Analiza"</h4>
+        <a href="{{ url_for('Basic') }}" class="btn btn-success btn-xs" action="{{url_for('Basic')}}" method="POST">Do formularza</a>
     </div>
     {% else %}
 
