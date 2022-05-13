@@ -512,9 +512,9 @@ def InsertCheck():
                 cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
                 conn.commit()
 
-        # Platysmografia
+        # Pletysmografia
         if wn['papierosy'] == 1:
-            nazwa = "Platysmografia, badanie czynności płuc"
+            nazwa = "Pletysmografia, badanie czynności płuc"
 
             cursor.execute('SELECT * FROM check_ups where nazwa = %s', nazwa)
             plat = cursor.fetchone()

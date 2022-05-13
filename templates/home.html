@@ -27,25 +27,29 @@
     <ul class="kartki" style="list-style: none;">
 
         {% for v in vacc %}
-            {% if v.todo_status == 1 %}
+            {% if v.todo_status == 1 or v.current_status == 0 %}
 
                   <li>
+                  <div class="kartka">
                     <a class="odnosniki" href="{{ url_for('Vacc') }}" >
-                      <h1>{{ v.nazwa }}</h1>
+                      <p><b>{{ v.nazwa }}</b></p>
                         <p>{{ v.typ }}</p>
                     </a>
+                  </div>
                   </li>
 
             {% endif %}
         {% endfor %}
 
         {% for c in check %}
-            {% if  c.todo_status == 1 %}
+            {% if  c.todo_status == 1 or c.current_status == 0%}
 
                   <li>
+                  <div class="kartka">
                     <a class="odnosniki" href="{{ url_for('Check') }}" >
-                      <h1>{{ c.nazwa }}</h1>
+                      <p><b>{{ c.nazwa }}</b></p>
                     </a>
+                  </div>
                   </li>
 
             {% endif %}
@@ -53,12 +57,14 @@
         {% endfor %}
 
         {% for p in prev %}
-            {% if  p.todo_status == 1 %}
+            {% if  p.todo_status == 1 or p.current_status == 0%}
 
                   <li>
+                  <div class="kartka">
                     <a class="odnosniki" href="{{ url_for('Prev') }}" >
-                      <h1>{{ p.nazwa }}</h1>
+                      <p><b><span style="font-size: 50px">{{ p.nazwa }}</span></b></p>
                     </a>
+                  </div>
                   </li>
 
             {% endif %}
