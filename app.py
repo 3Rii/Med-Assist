@@ -168,6 +168,48 @@ def insert():
     else:
         return redirect(url_for('login'))
 
+# Usuwanie Wszystkich rekordów z vaccines
+@app.route('/vaccines/clear', methods=['GET', 'POST'])
+def ClearVacc():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+
+            cursor.execute('DELETE FROM vacc WHERE id_user = %s', (session['id']))
+            conn.commit()
+            return redirect(url_for('Vacc'))
+    else:
+        return redirect(url_for('login'))
+
+# Usuwanie Wszystkich rekordów z check_ups
+@app.route('/check_ups/clear', methods=['GET', 'POST'])
+def ClearCheck():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+
+            cursor.execute('DELETE FROM check_ups WHERE id_user = %s', (session['id']))
+            conn.commit()
+            return redirect(url_for('Check'))
+    else:
+        return redirect(url_for('login'))
+
+# Usuwanie Wszystkich rekordów z prevention
+@app.route('/prevention/clear', methods=['GET', 'POST'])
+def ClearPrev():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+
+            cursor.execute('DELETE FROM prevention WHERE id_user = %s', (session['id']))
+            conn.commit()
+            return redirect(url_for('Prev'))
+    else:
+        return redirect(url_for('login'))
+
 # ///INFORMACJE PODSTAWOWE///
 # Wyswietlanie
 # http://127.0.0.1:5000/basic
@@ -228,7 +270,8 @@ def BasicUpdate():
                 cursor.execute('INSERT INTO user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)', (account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc))
                 conn.commit()
                 msg1 = 'Formularz uzupełniono pomyślnie!'
-                return redirect(url_for('Basic'))
+                return render_template("forms/basicform.html", msg=msg1, user=row)
+
         elif request.method == 'POST':
             msg1 = "Wszystkie pola formularza muszą zostać wypełnione!"
         return render_template("forms/basicform.html", msg=msg1, user=row)
@@ -257,10 +300,8 @@ def BasicDelete():
     else:
         return redirect(url_for('login'))
 
-# todo//////////////////////////////nowe///////////////////////////////////////////////
-
 # SZCZEPIENIA
-#//// dodawanie po uzupełnieniu formularza basic - dziala, todo dodac wiecej
+#//// dodawanie po przycisku "Analiza"
 @app.route('/analyze', methods=['GET', 'POST'])
 def InsertVacc():
     conn = mysql.connect()
@@ -274,23 +315,78 @@ def InsertVacc():
         cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
         wn = cursor.fetchone()
 
+        # Kleszczowe zapalenie mózgu
+        if wn['wiek'] >= 1.5:
+            nazwa = 'Kleszczowemu zapaleniu mózgu'
+            typ = 'Zalecane'
+            cursor.execute('SELECT * FROM vacc WHERE nazwa = %s', nazwa)
+            kleszcz = cursor.fetchone()
+            if not kleszcz:
+                cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, typ, current, todo, nazwa))
+                conn.commit()
 
-        # Różyczka
-        if wn['plec'] == 1 and wn['wiek'] > 1:
-            nazwa = "Przeciwko Różyczce"
-            typ = "Obowiązkowe"
-            print('liczyl')
+        # Meningokoki
+        if wn['wiek'] >= 0.5:
+            nazwa = 'Meningokokom'
+            typ = 'Zalecane'
+            cursor.execute('SELECT * FROM vacc WHERE nazwa = %s', nazwa)
+            gruzlica = cursor.fetchone()
+            if not gruzlica:
+                cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, typ, current, todo, nazwa))
+                conn.commit()
 
-            cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, typ, current, todo, nazwa))
-            conn.commit()
+        # Ludzki wirus brodawczaka
+        if wn['wiek'] > 12:
+            nazwa = 'Ludzkiemu wirusowi brodawczaka'
+            typ = 'Zalecane'
+            cursor.execute('SELECT * FROM vacc WHERE nazwa = %s', nazwa)
+            hpv = cursor.fetchone()
+            if not hpv:
+                cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, typ, current, todo, nazwa))
+                conn.commit()
 
-        # Gruźlica
-        if wn['wiek'] > 1:
-            nazwa = "Przeciwko Gruźlicy"
-            typ = "Obowiązkowe"
+        # Ospa wietrzna
+        if wn['wiek'] > 1.5:
+            nazwa = 'Na ospę wietrzną'
+            typ = 'Zalecane'
+            cursor.execute('SELECT * FROM vacc WHERE nazwa = %s', nazwa)
+            vzv = cursor.fetchone()
+            if not vzv:
+                cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, typ, current, todo, nazwa))
+                conn.commit()
 
-            cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, typ, current, todo, nazwa))
-            conn.commit()
+        # Błonica
+        if wn['wiek'] > 6:
+            nazwa = 'Na błonicę'
+            typ = 'Przypominające obowiązkowe'
+            cursor.execute('SELECT * FROM vacc WHERE nazwa = %s', nazwa)
+            dtp = cursor.fetchone()
+            if not dtp:
+                cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, typ, current, todo, nazwa))
+                conn.commit()
+
+        # Krzstusiec
+        if wn['wiek'] > 6:
+            nazwa = 'Na krztusiec'
+            typ = 'Przypominające obowiązkowe'
+            cursor.execute('SELECT * FROM vacc WHERE nazwa = %s', nazwa)
+            pert = cursor.fetchone()
+            if not pert:
+                cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)',
+                               (id_user, typ, current, todo, nazwa))
+                conn.commit()
+
+        # Świnka
+        if wn['wiek'] > 6:
+            nazwa = 'Na świnkę'
+            typ = 'Przypominające obowiązkowe'
+            cursor.execute('SELECT * FROM vacc WHERE nazwa = %s', nazwa)
+            pig = cursor.fetchone()
+            if not pig:
+                cursor.execute('INSERT INTO vacc VALUES (NULL, %s, %s, %s, %s, %s)',
+                               (id_user, typ, current, todo, nazwa))
+                conn.commit()
+
         return redirect(url_for('Basic'))
     else:
         return redirect(url_for('login'))

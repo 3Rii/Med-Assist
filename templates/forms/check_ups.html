@@ -16,7 +16,7 @@
                         <tr>
                             <th>Badania</th>
                             <th colspan="4">Status</th>
-                            <th></th>
+                            <th><a href="{{ url_for('ClearCheck')}}" class="btn btn-danger btn-xs" action="{{url_for('ClearCheck')}}" method="POST" onclick="return confirm('Ta akcja spowoduje usunięcie wszystkich rekordów, kontynuować?')">Usuń wszystko</a></th>
                         </tr>
 
         {% for c in check %}
