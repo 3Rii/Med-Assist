@@ -228,7 +228,8 @@ def BasicUpdate():
                 cursor.execute('INSERT INTO user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)', (account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc))
                 conn.commit()
                 msg1 = 'Formularz uzupełniono pomyślnie!'
-                return redirect(url_for('Basic'))
+                return render_template("forms/basicform.html", msg=msg1, user=row)
+
         elif request.method == 'POST':
             msg1 = "Wszystkie pola formularza muszą zostać wypełnione!"
         return render_template("forms/basicform.html", msg=msg1, user=row)
