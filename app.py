@@ -9,20 +9,16 @@ from sqlalchemy.ext.automap import automap_base
 app = Flask(__name__)
 app.secret_key = 'secret_key'
 
-# 1 polacznie
 mysql = MySQL()
 app.config['MYSQL_DATABASE_USER'] = 'harry'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'H4rru5i3k!'
 app.config['MYSQL_DATABASE_DB'] = 'projekt'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-mysql.init_app(app)
-
-#2 polaczenie
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://harry:H4rru5i3k!@localhost:3306/projekt'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
-
+mysql.init_app(app)
 
 # mapping
 Acc = db.Table('accounts', db.metadata, autoload=True, autoload_with=db.engine)
@@ -48,6 +44,15 @@ user = Base.classes.user
 chck = Base.classes.check_ups
 prev = Base.classes.prevention
 vacc = Base.classes.vacc
+
+#Check is request.form is float
+def isfloat(num):
+    try:
+        float(num)
+        return True
+    except ValueError:
+        return False
+
 
 
 # /////////////////// FUNKCJONALNOSC PODSTAWOWA - REJESTRACJA, LOGOWANIE, STRONA GŁÓWNA
@@ -144,74 +149,9 @@ def profile():
         return redirect(url_for('login'))
 
 
+
 #/////////////////////////////// ZAKLADKI
-# //GROUP INSERT
-@app.route('/analyze', methods=['GET', 'POST'])
-def insert():
-    conn = mysql.connect()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
-
-    if 'loggedin' in session:
-        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
-        account = cursor.fetchone()
-
-        if account is not None:
-            InsertVacc()
-            InsertCheck()
-            InsertPrev()
-            msg = 'Sprawdź stronę główną.'
-
-            return render_template("forms/basicform.html", msg=msg, user=account)
-        else:
-            msg = 'Bez wypełnienia formularza analiza jest niemożliwa!'
-            return render_template("forms/basicform.html", msg=msg, user=account)
-    else:
-        return redirect(url_for('login'))
-
-# Usuwanie Wszystkich rekordów z vaccines
-@app.route('/vaccines/clear', methods=['GET', 'POST'])
-def ClearVacc():
-    conn = mysql.connect()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
-
-    if 'loggedin' in session:
-
-            cursor.execute('DELETE FROM vacc WHERE id_user = %s', (session['id']))
-            conn.commit()
-            return redirect(url_for('Vacc'))
-    else:
-        return redirect(url_for('login'))
-
-# Usuwanie Wszystkich rekordów z check_ups
-@app.route('/check_ups/clear', methods=['GET', 'POST'])
-def ClearCheck():
-    conn = mysql.connect()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
-
-    if 'loggedin' in session:
-
-            cursor.execute('DELETE FROM check_ups WHERE id_user = %s', (session['id']))
-            conn.commit()
-            return redirect(url_for('Check'))
-    else:
-        return redirect(url_for('login'))
-
-# Usuwanie Wszystkich rekordów z prevention
-@app.route('/prevention/clear', methods=['GET', 'POST'])
-def ClearPrev():
-    conn = mysql.connect()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
-
-    if 'loggedin' in session:
-
-            cursor.execute('DELETE FROM prevention WHERE id_user = %s', (session['id']))
-            conn.commit()
-            return redirect(url_for('Prev'))
-    else:
-        return redirect(url_for('login'))
-
 # ///INFORMACJE PODSTAWOWE///
-# Wyswietlanie
 # http://127.0.0.1:5000/basic
 @app.route('/basic', methods=['GET', 'POST'])
 def Basic():
@@ -226,14 +166,13 @@ def Basic():
     else:
         return redirect(url_for('login'))
 
-# Dodawanie/zmienianie
-# http://127.0.0.1:5000/basic/update redirect -> /basic
+# BasicForm CRUD
+# http://127.0.0.1:5000/basic/update
 @app.route('/basic/update', methods=['GET', 'POST'])
 def BasicUpdate():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     msg1 = ''
-    msg2 = ''
 
     if 'loggedin' in session:
         cursor.execute('SELECT * FROM user WHERE account_id = %s', (session['id']))
@@ -278,15 +217,7 @@ def BasicUpdate():
     else:
         return redirect(url_for('login'))
 
-def isfloat(num):
-    try:
-        float(num)
-        return True
-    except ValueError:
-        return False
-
-# Usuwanie. Czyszczenie rzędu z rekordu.
-# http://127.0.0.1:5000/basic/delete/ redirect -> /basic
+# http://127.0.0.1:5000/basic/delete/ redirect
 @app.route('/basic/delete/', methods=['GET', 'POST'])
 def BasicDelete():
 
@@ -300,8 +231,9 @@ def BasicDelete():
     else:
         return redirect(url_for('login'))
 
+
+
 # SZCZEPIENIA
-#//// dodawanie po przycisku "Analiza"
 @app.route('/analyze', methods=['GET', 'POST'])
 def InsertVacc():
     conn = mysql.connect()
@@ -391,7 +323,7 @@ def InsertVacc():
     else:
         return redirect(url_for('login'))
 
-# http://localhost:5000/vaccines - done
+# http://localhost:5000/vaccines
 @app.route('/vaccines', methods=['GET', 'POST'])
 def Vacc():
     conn = mysql.connect()
@@ -405,7 +337,7 @@ def Vacc():
     else:
         return redirect(url_for('login'))
 
-# http://localhost:5000/vaccines/update - dziala ale nie do konca todo
+# http://localhost:5000/vaccines/update
 @app.route('/vaccines/update/<id>', methods=['GET', 'POST'])
 def VaccChoice(id):
     conn = mysql.connect()
@@ -434,7 +366,7 @@ def VaccChoice(id):
     else:
         return redirect(url_for('login'))
 
-# http://127.0.0.1:5000/vaccines/delete/ redirect -> /vaccines - done
+# http://127.0.0.1:5000/vaccines/delete/
 @app.route('/vaccines/delete/<id>', methods=['GET', 'POST'])
 def VaccClear(id):
 
@@ -448,6 +380,21 @@ def VaccClear(id):
             return redirect(url_for('Vacc'))
     else:
         return redirect(url_for('login'))
+
+# ClearAll from vaccines
+@app.route('/vaccines/clear', methods=['GET', 'POST'])
+def ClearVacc():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+
+            cursor.execute('DELETE FROM vacc WHERE id_user = %s', (session['id']))
+            conn.commit()
+            return redirect(url_for('Vacc'))
+    else:
+        return redirect(url_for('login'))
+
 
 
 # KONTROLNE
@@ -463,21 +410,98 @@ def InsertCheck():
         cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
         wn = cursor.fetchone()
 
-        # Prostata
+        # Badanie prostaty
         if wn['plec'] == 0 and wn['wiek'] > 40:
-            nazwa = "Na prostatę"
+            nazwa = "Badanie Prostaty"
 
-            cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
-            conn.commit()
+            cursor.execute('SELECT * FROM check_ups where nazwa = %s', nazwa)
+            prst = cursor.fetchone()
+            if not prst:
+                cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
+                conn.commit()
 
         # Lipidogram
         if (wn['papierosy'] == 1 or wn['alkohol'] == 1 or wn['aktywnosc'] == 0) and wn['wiek'] > 40:
             nazwa = "Lipidogram"
 
-            cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
-            conn.commit()
+            cursor.execute('SELECT * FROM check_ups where nazwa = %s', nazwa)
+            lip = cursor.fetchone()
+            if not lip:
+                cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
+                conn.commit()
 
-    return 0
+        # Próby wątrobowe
+        if (wn['papierosy'] == 1 or wn['alkohol'] == 1 or wn['aktywnosc'] == 0) and wn['wiek'] > 30:
+            nazwa = "Próby wątrobowe"
+
+            cursor.execute('SELECT * FROM check_ups where nazwa = %s', nazwa)
+            prw = cursor.fetchone()
+            if not prw:
+                cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
+                conn.commit()
+
+        # EKG
+        if wn['aktywnosc'] == 0 and wn['wiek'] > 40:
+            nazwa = "EKG"
+
+            cursor.execute('SELECT * FROM check_ups where nazwa = %s', nazwa)
+            ekg = cursor.fetchone()
+            if not ekg:
+                cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
+                conn.commit()
+
+        # Mammografia
+        if wn['plec'] == 1 and wn['wiek'] > 15:
+            nazwa = "Mammografia"
+
+            cursor.execute('SELECT * FROM check_ups where nazwa = %s', nazwa)
+            mamm = cursor.fetchone()
+            if not mamm:
+                cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
+                conn.commit()
+
+        # Cytologia
+        if wn['plec'] == 1 and wn['wiek'] > 15:
+            nazwa = "Cytologia"
+
+            cursor.execute('SELECT * FROM check_ups where nazwa = %s', nazwa)
+            prst = cursor.fetchone()
+            if not prst:
+                cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
+                conn.commit()
+
+        # Marker CA 15-3
+        if wn['plec'] == 1 and wn['wiek'] > 20:
+            nazwa = "Badanie markerem nowotworowym CA 15-3"
+
+            cursor.execute('SELECT * FROM check_ups where nazwa = %s', nazwa)
+            ca15 = cursor.fetchone()
+            if not ca15:
+                cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
+                conn.commit()
+
+        # test na antygen sterczowy PSA
+        if wn['plec'] == 0 and wn['wiek'] > 50:
+            nazwa = "Badanie PSA, test na swoisty antygen sterczowy"
+
+            cursor.execute('SELECT * FROM check_ups where nazwa = %s', nazwa)
+            psa = cursor.fetchone()
+            if not psa:
+                cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
+                conn.commit()
+
+        # Platysmografia
+        if wn['papierosy'] == 1:
+            nazwa = "Platysmografia, badanie czynności płuc"
+
+            cursor.execute('SELECT * FROM check_ups where nazwa = %s', nazwa)
+            plat = cursor.fetchone()
+            if not plat:
+                cursor.execute('INSERT INTO check_ups VALUES (NULL, %s, %s, %s, %s)', (id_user, current, todo, nazwa))
+                conn.commit()
+        return redirect(url_for('Basic'))
+    else:
+        return redirect(url_for('login'))
 
 # http://localhost:5000/check_ups
 @app.route('/check_ups', methods=['GET', 'POST'])
@@ -522,7 +546,7 @@ def CheckChoice(id):
     else:
         return redirect(url_for('login'))
 
-# http://127.0.0.1:5000/check_ups/delete/ redirect -> /vaccines - dziala, todo html
+# http://127.0.0.1:5000/check_ups/delete/
 @app.route('/check_ups/delete/<id>', methods=['GET', 'POST'])
 def CheckClear(id):
 
@@ -537,14 +561,26 @@ def CheckClear(id):
     else:
         return redirect(url_for('login'))
 
+# ClearAll from check_ups
+@app.route('/check_ups/clear', methods=['GET', 'POST'])
+def ClearCheck():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
 
-# PROFILAKTYKA
-#//// dodawanie po uzupełnieniu formularza basic dziala, todo dodac wiecej
+    if 'loggedin' in session:
+
+            cursor.execute('DELETE FROM check_ups WHERE id_user = %s', (session['id']))
+            conn.commit()
+            return redirect(url_for('Check'))
+    else:
+        return redirect(url_for('login'))
+
+
+
+# PROFILAKTYKA/PREVENTION
 def InsertPrev():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-    nazwa = 'def'
-    link = 'def'
     current = 0
     todo = 1
 
@@ -554,17 +590,78 @@ def InsertPrev():
         cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
         wn = cursor.fetchone()
 
-        # Udar
+        # Profilaktyka udarów
         if wn['wiek'] > 40 and (wn['alkohol']==1 or wn['papierosy'==1]):
-            nazwa = "Przeciwko udarowi"
+            nazwa = "Profilaktyka udarów"
             link = 'pacjent.gov.pl/programy-profilaktyczne/program-profilaktyki-udarow'
 
-            cursor.execute('INSERT INTO prevention VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, link, current, todo, nazwa))
-            conn.commit()
+            cursor.execute('SELECT * FROM prevention where nazwa = %s', nazwa)
+            udr = cursor.fetchone()
+            if not udr:
+                cursor.execute('INSERT INTO prevention VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, link, current, todo, nazwa))
+                conn.commit()
 
-    return 0
+        # Profilaktyka nowotworów skóry
+        if wn['wiek'] > 50:
+            nazwa = "Profilaktyka nowotworów skóry"
+            link = 'pacjent.gov.pl/programy-profilaktyczne/profilaktyka-nowotworow-skory'
 
-# http://localhost:5000/prevention - done
+            cursor.execute('SELECT * FROM prevention where nazwa = %s', nazwa)
+            mel = cursor.fetchone()
+            if not mel:
+                cursor.execute('INSERT INTO prevention VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, link, current, todo, nazwa))
+                conn.commit()
+
+        # Profilaktyka raka płuca
+        if wn['wiek'] > 55 and wn['papierosy'==1]:
+            nazwa = "Profilaktyka raka płuca"
+            link = 'pacjent.gov.pl/programy-profilaktyczne/profilaktyka-raka-pluca'
+
+            cursor.execute('SELECT * FROM prevention where nazwa = %s', nazwa)
+            rakp = cursor.fetchone()
+            if not rakp:
+                cursor.execute('INSERT INTO prevention VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, link, current, todo, nazwa))
+                conn.commit()
+
+        # Profilaktyka raka płuca
+        if wn['wiek'] > 55 and wn['papierosy'==1]:
+            nazwa = "Profilaktyka raka płuca"
+            link = 'pacjent.gov.pl/programy-profilaktyczne/profilaktyka-raka-pluca'
+
+            cursor.execute('SELECT * FROM prevention where nazwa = %s', nazwa)
+            rakp = cursor.fetchone()
+            if not rakp:
+                cursor.execute('INSERT INTO prevention VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, link, current, todo, nazwa))
+                conn.commit()
+
+        # Profilaktyka osteoporozy
+        if wn['wiek'] > 50 and wn['plec'==1]:
+            nazwa = "Profilaktyka osteoporozy"
+            link = 'pacjent.gov.pl/programy-profilaktyczne/profilaktyka-osteoporozy'
+
+            cursor.execute('SELECT * FROM prevention where nazwa = %s', nazwa)
+            osteo = cursor.fetchone()
+            if not osteo:
+                cursor.execute('INSERT INTO prevention VALUES (NULL, %s, %s, %s, %s, %s)', (id_user, link, current, todo, nazwa))
+                conn.commit()
+
+        # Profilaktyka próchnicy u młodzieży
+        if wn['wiek'] > 15 and wn['wiek'] < 19:
+            nazwa = "Profilaktyka próchnicy u młodzieży"
+            link = 'pacjent.gov.pl/program-profilaktyczny/program-profilaktyki-prochnicy-zebow-dla-mlodziezy'
+
+            cursor.execute('SELECT * FROM prevention where nazwa = %s', nazwa)
+            zab = cursor.fetchone()
+            if not zab:
+                cursor.execute('INSERT INTO prevention VALUES (NULL, %s, %s, %s, %s, %s)',
+                               (id_user, link, current, todo, nazwa))
+                conn.commit()
+
+        return redirect(url_for('Basic'))
+    else:
+        return redirect(url_for('login'))
+
+# http://localhost:5000/prevention
 @app.route('/prevention', methods=['GET', 'POST'])
 def Prev():
     conn = mysql.connect()
@@ -607,7 +704,7 @@ def PrevChoice(id):
     else:
         return redirect(url_for('login'))
 
-# http://127.0.0.1:5000/prevention/delete/ redirect -> /prevention
+# http://127.0.0.1:5000/prevention/delete/
 @app.route('/prevention/delete/<id>', methods=['GET', 'POST'])
 def PrevClear(id):
 
@@ -621,6 +718,60 @@ def PrevClear(id):
             return redirect(url_for('Prev'))
     else:
         return redirect(url_for('login'))
+
+#ClearAll from prevention
+@app.route('/prevention/clear', methods=['GET', 'POST'])
+def ClearPrev():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+
+            cursor.execute('DELETE FROM prevention WHERE id_user = %s', (session['id']))
+            conn.commit()
+            return redirect(url_for('Prev'))
+    else:
+        return redirect(url_for('login'))
+
+#ClearAll from prevention
+@app.route('/prevention/clear', methods=['GET', 'POST'])
+def ClearPrev():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+
+            cursor.execute('DELETE FROM prevention WHERE id_user = %s', (session['id']))
+            conn.commit()
+            return redirect(url_for('Prev'))
+    else:
+        return redirect(url_for('login'))
+
+
+# //GROUP INSERT
+@app.route('/analyze', methods=['GET', 'POST'])
+def insert():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if 'loggedin' in session:
+        cursor.execute('SELECT * FROM user WHERE account_id = %s', [session['id']])
+        account = cursor.fetchone()
+
+        if account is not None:
+            InsertVacc()
+            InsertCheck()
+            InsertPrev()
+            msg = 'Sprawdź stronę główną.'
+
+            return render_template("forms/basicform.html", msg=msg, user=account)
+        else:
+            msg = 'Bez wypełnienia formularza analiza jest niemożliwa!'
+            return render_template("forms/basicform.html", msg=msg, user=account)
+    else:
+        return redirect(url_for('login'))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
