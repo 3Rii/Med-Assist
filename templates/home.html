@@ -6,21 +6,22 @@
 
 
 
-    <div class="dropdown-header text-black-50 ">
+    <div class="dropdown-header text-black-50" style="background-image: url('/static/header.jpeg'); border-style: solid">
                 <header>
                 <div class="overlay">
                             <h1 class="display-4 font-weight-bold">Witaj, {{ username }}!</h1>
                 <h2 class="display-4 font-weight-bold">To Twoja tablica:</h2>
                 </div>
                 </header>
-</div>
-{#todo#}
-    {% if not (vacc or prev or check) %}
+    </div>
+
+    {% if not (vacc or prev or check or user) %}
     <div>
-        <h1>Jeszcze tu nic nie ma!<br> Uzupełnij formularz</h1>
+        <h1>Jeszcze tu nic nie ma!</h1><br> <h4>Uzupełnij formularz</h4>
         <a href="{{ url_for('Basic') }}" class="btn btn-success btn-xs" action="{{url_for('Basic')}}" method="POST">Uzupełnij</a>
     </div>
     {% else %}
+
     <div class="hometable" style="background-image: url(/static/korek.jpg)">
 
     <ul class="kartki" style="list-style: none;">
@@ -36,7 +37,6 @@
                   </li>
 
             {% endif %}
-
         {% endfor %}
 
         {% for c in check %}

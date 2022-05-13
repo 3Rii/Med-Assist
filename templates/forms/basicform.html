@@ -62,11 +62,10 @@
                             {% if user %}
                             <a href="basic/update" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{ user['id']}}">Zmień</a>
                             <a href="basic/delete" class="btn btn-danger btn-xs" action="{{url_for('BasicDelete')}}" method="POST" onclick="return confirm('Are You Sure To Delete ?')">Wyczyść</a>
-{#                                {% if request.method == 'POST' %}#}
-                                <a href="{{ url_for('Basic') }}" class="btn btn-success btn-xs" action="{{url_for('Basic')}}" method="POST">Odśwież</a>
-{#                                {% endif %}#}
+                                <a href="{{ url_for('Basic') }}" class="btn btn-dark btn-xs" action="{{url_for('Basic')}}" method="POST">Odśwież</a>
                             {% else %}
                             <a href="basic/update" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modaledit{{ user['id']}}">Uzupełnij</a>
+                            <a href="{{ url_for('Basic') }}" class="btn btn-dark btn-xs" action="{{url_for('Basic')}}" method="POST">Odśwież</a>
                             {% endif %}
                         </td>
                     </tr>

@@ -256,7 +256,7 @@ ul li{
   flex-wrap: wrap;
 
 }
-li a:hover, li a.focus{
+.kartki #li a:hover, #li a.focus{
   box-shadow:10px 10px 7px rgba(0,0,0,.7);
   transform: scale(1.25);
   position:relative;
