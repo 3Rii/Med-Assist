@@ -5,7 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 import pymysql
 pymysql.install_as_MySQLdb()
 from sqlalchemy.ext.automap import automap_base
-from sqlalchemy import insert
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
@@ -191,13 +190,30 @@ def Basic():
 def BasicUpdate():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
+    msg = ''
 
     if 'loggedin' in session:
-        cursor.execute('SELECT * FROM user WHERE id = %s', (session['id']))
+        cursor.execute('SELECT * FROM user WHERE account_id = %s', (session['id']))
+        row = cursor.fetchone()
 
-        if request.method == 'POST':
+        if request.method == 'POST' and 'wiek' in request.form and 'waga' in request.form and 'wzrost' in request.form and 'plec' in request.form and 'papierosy' in request.form and 'alkohol' in request.form and 'aktywnosc' in request.form:
+            print('uzupelniono wszystkie')
+            wiek = request.form['wiek']
+            waga = request.form['waga']
+            wzrost = request.form['wzrost']
+
+            if not wiek.isnumeric():
+                print('warun dziala')
+                msg = 'Wiek musi być liczbą!'
+                return redirect(url_for('Basic', msg=msg))
+            if not waga.isnumeric():
+                msg = "Waga musi być liczbą!"
+                return redirect(url_for('Basic', msg=msg))
+            if not wzrost.isnumeric():
+                msg = "Wzrost musi być liczba!"
+                return redirect(url_for('Basic', msg=msg))
+
             my_data = db.session.query(user).get(request.form.get('id'))
-
             if my_data is not None:
                 my_data.wiek = request.form['wiek']
                 my_data.waga = request.form['waga']
@@ -208,14 +224,9 @@ def BasicUpdate():
                 my_data.aktywnosc = request.form['aktywnosc']
                 db.session.commit()
 
-                insert()
-
-                return redirect(url_for('Basic'))
+                return redirect(url_for('Basic', msg=msg))
             else:
                 account_id = session['id']
-                wiek = request.form['wiek']
-                waga = request.form['waga']
-                wzrost = request.form['wzrost']
                 plec = request.form['plec']
                 papierosy = request.form['papierosy']
                 alkohol = request.form['alkohol']
@@ -223,9 +234,11 @@ def BasicUpdate():
                 cursor.execute('INSERT INTO user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)', (account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc))
                 conn.commit()
 
-                insert()
+                return redirect(url_for('Basic', msg=msg))
 
-                return redirect(url_for('Basic'))
+        elif request.method == 'POST':
+            msg = "Wszystkie pola formularza muszą zostać wypełnione!"
+        return render_template("forms/basicform.html", msg=msg, user=row)
     else:
         return redirect(url_for('login'))
 
