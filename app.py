@@ -450,9 +450,7 @@ def VaccClear(id):
         return redirect(url_for('login'))
 
 
-# todo na wzor funkcji powyzej!
 # KONTROLNE
-#//// dodawanie po uzupełnieniu formularza basic todo
 def InsertCheck():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -481,7 +479,7 @@ def InsertCheck():
 
     return 0
 
-# http://localhost:5000/check_ups - done
+# http://localhost:5000/check_ups
 @app.route('/check_ups', methods=['GET', 'POST'])
 def Check():
     conn = mysql.connect()
@@ -495,7 +493,7 @@ def Check():
     else:
         return redirect(url_for('login'))
 
-# http://localhost:5000/check_ups/update - dziala ale nie do konca todo
+# http://localhost:5000/check_ups/update
 @app.route('/check_ups/update/<id>', methods=['GET', 'POST'])
 def CheckChoice(id):
     conn = mysql.connect()
