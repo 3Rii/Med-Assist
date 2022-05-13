@@ -190,28 +190,26 @@ def Basic():
 def BasicUpdate():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-    msg = ''
+    msg1 = ''
+    msg2 = ''
 
     if 'loggedin' in session:
         cursor.execute('SELECT * FROM user WHERE account_id = %s', (session['id']))
         row = cursor.fetchone()
 
         if request.method == 'POST' and 'wiek' in request.form and 'waga' in request.form and 'wzrost' in request.form and 'plec' in request.form and 'papierosy' in request.form and 'alkohol' in request.form and 'aktywnosc' in request.form:
-            print('uzupelniono wszystkie')
             wiek = request.form['wiek']
             waga = request.form['waga']
             wzrost = request.form['wzrost']
+            plec = request.form['plec']
+            papierosy = request.form['papierosy']
+            alkohol = request.form['alkohol']
+            aktywnosc = request.form['aktywnosc']
 
-            if not wiek.isnumeric():
-                print('warun dziala')
-                msg = 'Wiek musi być liczbą!'
-                return redirect(url_for('Basic', msg=msg))
-            if not waga.isnumeric():
-                msg = "Waga musi być liczbą!"
-                return redirect(url_for('Basic', msg=msg))
-            if not wzrost.isnumeric():
-                msg = "Wzrost musi być liczba!"
-                return redirect(url_for('Basic', msg=msg))
+            if not isfloat(wiek) or not isfloat(waga) or not isfloat(wzrost):
+                msg1 = "Podano błędnie dane lub nie wprowadzono zmian!"
+                msg2 = "(Proszę, sprawdź jeszcze raz, czy podałeś liczbę.)"
+                return render_template("forms/basicform.html", msg=msg1, msg2=msg2, user=row)
 
             my_data = db.session.query(user).get(request.form.get('id'))
             if my_data is not None:
@@ -223,24 +221,26 @@ def BasicUpdate():
                 my_data.alkohol = request.form['alkohol']
                 my_data.aktywnosc = request.form['aktywnosc']
                 db.session.commit()
-
-                return redirect(url_for('Basic', msg=msg))
+                msg1 = 'Formularz zedytowano pomyślnie!'
+                return render_template("forms/basicform.html", msg=msg1, user=row)
             else:
                 account_id = session['id']
-                plec = request.form['plec']
-                papierosy = request.form['papierosy']
-                alkohol = request.form['alkohol']
-                aktywnosc = request.form['aktywnosc']
                 cursor.execute('INSERT INTO user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)', (account_id, wiek, waga, wzrost, plec, papierosy, alkohol, aktywnosc))
                 conn.commit()
-
-                return redirect(url_for('Basic', msg=msg))
-
+                msg1 = 'Formularz uzupełniono pomyślnie!'
+                return redirect(url_for('Basic'))
         elif request.method == 'POST':
-            msg = "Wszystkie pola formularza muszą zostać wypełnione!"
-        return render_template("forms/basicform.html", msg=msg, user=row)
+            msg1 = "Wszystkie pola formularza muszą zostać wypełnione!"
+        return render_template("forms/basicform.html", msg=msg1, user=row)
     else:
         return redirect(url_for('login'))
+
+def isfloat(num):
+    try:
+        float(num)
+        return True
+    except ValueError:
+        return False
 
 # Usuwanie. Czyszczenie rzędu z rekordu.
 # http://127.0.0.1:5000/basic/delete/ redirect -> /basic
@@ -265,8 +265,6 @@ def BasicDelete():
 def InsertVacc():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-    nazwa = 'def'
-    typ = 'def'
     current = 0
     todo = 1
 
@@ -362,7 +360,6 @@ def VaccClear(id):
 def InsertCheck():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-    nazwa = 'def'
     current = 0
     todo = 1
 

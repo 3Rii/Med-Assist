@@ -62,6 +62,9 @@
                             {% if user %}
                             <a href="basic/update" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{ user['id']}}">Zmień</a>
                             <a href="basic/delete" class="btn btn-danger btn-xs" action="{{url_for('BasicDelete')}}" method="POST" onclick="return confirm('Are You Sure To Delete ?')">Wyczyść</a>
+{#                                {% if request.method == 'POST' %}#}
+                                <a href="{{ url_for('Basic') }}" class="btn btn-success btn-xs" action="{{url_for('Basic')}}" method="POST">Odśwież</a>
+{#                                {% endif %}#}
                             {% else %}
                             <a href="basic/update" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modaledit{{ user['id']}}">Uzupełnij</a>
                             {% endif %}
@@ -99,17 +102,20 @@
 
                <div class="form-group">
                   <label for="wiek">Wiek:</label>
+                   <div id="msg">{{ msg2 }}</div>
                    <input type="hidden"  name="id" value="{{ user['id']}}">
                   <input type="text" class="form-control" name="wiek" value="{{ user['wiek']}}" placeholder="{{ user['wiek']}}">
                </div>
 
                <div class="form-group">
                   <label for="waga">Waga:</label>
+                   <div id="msg">{{ msg2 }}</div>
                   <input type="text" class="form-control" name="waga" value="{{ user['waga']}}" placeholder="{{ user['waga']}}">
                </div>
 
                <div class="form-group">
                   <label for="wzrost">Wzrost:</label>
+                   <div id="msg">{{ msg2 }}</div>
                   <input type="text" class="form-control" name="wzrost" value="{{ user['wzrost']}}" placeholder="{{ user['wzrost']}}">
                </div>
 
