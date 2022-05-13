@@ -18,6 +18,7 @@
                             <th><a href="{{ url_for('ClearVacc')}}" class="btn btn-danger btn-xs" action="{{url_for('ClearVacc')}}" method="POST" onclick="return confirm('Ta akcja spowoduje usunięcie wszystkich rekordów, kontynuować?')">Usuń wszystko</a></th>
                         </tr>
 
+
         {% for v in vacc %}
                 <form method="POST" action="{{ url_for('VaccChoice', id=v.id) }}">
 
