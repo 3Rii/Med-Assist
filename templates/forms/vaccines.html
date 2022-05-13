@@ -10,20 +10,20 @@
 
             <div class="jumbotron p-3" style="background: transparent; opacity: 0.90">
                 <h2 style="justify-content: center"><i class="fas fa-syringe" style="color: slategrey"></i><b>Proponowane </b><b style="color: darkblue"><i>szczepienia</i></b></h2>
-                        <table class="table justify-content-center align-middle text-center table-bordered" style="border-style: groove">
+                <table class="table align-middle text-center table-bordered" style="border-style: groove">
                         <tr>
-                            <th>Szczepienia przeciwko</th>
+                            <th>Szczepienia</th>
                             <th>Typ</th>
                             <th colspan="2">Status</th>
                             <th><a href="{{ url_for('ClearVacc')}}" class="btn btn-danger btn-xs" action="{{url_for('ClearVacc')}}" method="POST" onclick="return confirm('Ta akcja spowoduje usunięcie wszystkich rekordów, kontynuować?')">Usuń wszystko</a></th>
                         </tr>
 
         {% for v in vacc %}
-		                <form method="POST" action="{{ url_for('VaccChoice', id=v.id) }}">
-
+                <form method="POST" action="{{ url_for('VaccChoice', id=v.id) }}">
 
                         <tr>
                             <td style="vertical-align: center; text-align: center" rowspan="2"><h4>{{ v.nazwa }}</h4></td>
+
                             <td style="vertical-align: center; text-align: center" rowspan="2"><h4>{{ v.typ }}</h4></td>
 
                             <td>
@@ -31,7 +31,6 @@
                             </td>
 
                             <td style="vertical-align: center; text-align: center">
-
                               <div>
                                     <div>
                                          <input type="checkbox" name="current_status" id="current_status"
@@ -40,8 +39,8 @@
                                         {% endif %}>
                                      </div>
                               </div>
-
                             </td>
+
                             <td rowspan="2" style="vertical-align: center; text-align: center">
 
                                     <div class="justify-content-center">
@@ -49,6 +48,7 @@
                                         <button class="btn btn-success justify-content-center" type="submit">Zatwierdź!</button>
                                     </div>
                             </td>
+
                         </tr>
 
                         <tr>
@@ -67,11 +67,11 @@
                                      </div>
                               </div>
                             </td>
-
                         </tr>
-  {% endfor %}
-                        </form>
-		                </table>
+
+                    </form>
+        {% endfor %}
+                </table>
             </div>
       </div>
    </div>

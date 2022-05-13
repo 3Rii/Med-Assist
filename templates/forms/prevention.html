@@ -10,10 +10,7 @@
 
             <div class="jumbotron p-3" style="background: transparent; opacity: 0.90">
                 <h2 style="justify-content: center"><i class="fas fa-stethoscope" style="color: slategrey"></i><b>Proponowane </b><b style="color: darkblue"><i>Programy Profilaktyczne</i></b></h2>
-                    <form>
-
-                        <table class="table align-middle text-center table-bordered" style="border-style: groove">
-
+                <table class="table align-middle text-center table-bordered" style="border-style: groove">
                         <tr>
                             <th>Program</th>
                             <th>Link gov</th>
@@ -22,9 +19,11 @@
                         </tr>
 
         {% for p in prev %}
+                <form method="POST" action="{{ url_for('PrevChoice', id=p.id) }}">
 
                         <tr>
                             <td style="vertical-align: center; text-align: center" rowspan="2"><h4>{{ p.nazwa }}</h4></td>
+
                             <td style="vertical-align: center; text-align: center" rowspan="2"><a href="http://{{ p.link_gov }}">Kliknij</a></td>
 
                             <td>
@@ -32,25 +31,17 @@
                             </td>
 
                             <td style="vertical-align: center; text-align: center">
-
                               <div>
                                     <div>
                                          <input type="checkbox" name="current" id="current" action="{{url_for('VaccChoice', id=p.id)}}" method="POST"
-
                                         {% if  p.current_status  == 1 %}
                                             checked
-                                            value = "1"
-                                        {% else %}
-                                            value = "0"
                                         {% endif %}>
-
                                      </div>
                               </div>
-
                             </td>
 
                             <td rowspan="2" style="vertical-align: center; text-align: center">
-
                                     <div class="justify-content-center">
                                         <a href="{{ url_for('VaccClear', id=p.id) }}" class="btn btn-danger btn-xs" action="{{url_for('VaccClear', id=p.id)}}" method="POST" onclick="return confirm('Czy na pewno chcesz usunąć tę propozycję?')">Usuń</a>
                                         <button class="btn btn-success justify-content-center" type="submit">Zatwierdź!</button>
@@ -58,6 +49,7 @@
                             </td>
 
                         </tr>
+
                         <tr>
 
                             <td>
@@ -70,17 +62,15 @@
                                          <input type="checkbox" name="todo" id="todo" action="{{url_for('VaccChoice', id=p.id)}}" method="POST"
                                         {% if  p.todo_status  == 1 %}
                                             checked
-                                            value = "1"
-                                        {% elif p.todo_status  == 0 %}
-                                            value = "0"
                                         {% endif %}>
                                     </div>
                               </div>
                             </td>
                         </tr>
-{% endfor %}
-                </table>
                 </form>
+{% endfor %}
+
+              </table>
             </div>
       </div>
    </div>
