@@ -126,6 +126,7 @@ def home():
         check = cursor.fetchall()
         cursor.execute('SELECT * FROM prevention WHERE id_user = %s', [session['id']])
         prev = cursor.fetchall()
+
         return render_template('home.html', username=session['username'], vacc=vacc, check=check, prev=prev)
     return redirect(url_for('login'))
 

@@ -5,12 +5,13 @@
 {% block content %}
 
 
-
-    <div class="dropdown-header text-black-50" style="background-image: url('/static/header.jpeg'); border-style: solid">
+    <div class="dropdown-header text-black-50" style="background-image: url('/static/header.jpeg'); border-style: solid"
+         xmlns="http://www.w3.org/1999/html">
                 <header>
                 <div class="overlay">
                             <h1 class="display-4 font-weight-bold">Witaj, {{ username }}!</h1>
                 <h2 class="display-4 font-weight-bold">To Twoja tablica:</h2>
+                    <p>{{ vacc.current_status }}</p>
                 </div>
                 </header>
     </div>
@@ -28,7 +29,7 @@
     <ul class="kartki" style="list-style: none;">
 
         {% for v in vacc %}
-            {% if (v.todo_status) == 1 %}
+            {% if v.todo_status == 1 %}
 
                   <li>
                   <div class="kartka">
@@ -38,17 +39,38 @@
                     </a>
                   </div>
                   </li>
+                                {% else %}
 
+
+                  <li>
+                  <div class="kartka">
+                      <a class="odnosniki" href="{{ url_for('Vacc') }}" ><span style="color: green">
+                          <p><b>{{ v.nazwa }}<i class="fas fa-check-circle"></i></b></p></span>
+                          <p>Przejdź by usunąć</p>
+                  </a>
+                  </div>
+                  </li>
             {% endif %}
         {% endfor %}
 
         {% for c in check %}
-            {% if  (c.todo_status) == 1 %}
+            {% if  c.todo_status == 1 %}
                   <li>
                   <div class="kartka">
                     <a class="odnosniki" href="{{ url_for('Check') }}" >
                       <p><b>{{ c.nazwa }}</b></p>
                     </a>
+                  </div>
+                  </li>
+                                {% else %}
+
+
+                  <li>
+                  <div class="kartka">
+                      <a class="odnosniki" href="{{ url_for('Check') }}" ><span style="color: green">
+                          <p><b>{{ c.nazwa }}<i class="fas fa-check-circle"></i></b></p></span>
+                          <p>Przejdź by usunąć</p>
+                  </a>
                   </div>
                   </li>
 
@@ -57,8 +79,7 @@
         {% endfor %}
 
         {% for p in prev %}
-            {% if  (p.todo_status) == 1 %}
-
+            {% if  p.todo_status == 1 %}
                   <li>
                   <div class="kartka">
                     <a class="odnosniki" href="{{ url_for('Prev') }}" >
@@ -66,10 +87,19 @@
                     </a>
                   </div>
                   </li>
+                                                {% else %}
 
+
+                  <li>
+                  <div class="kartka">
+                      <a class="odnosniki" href="{{ url_for('Prev') }}" ><span style="color: green">
+                          <p><b>{{ p.nazwa }}<i class="fas fa-check-circle"></i></b></p></span>
+                          <p>Przejdź by usunąć</p>
+                  </a>
+                  </div>
+                  </li>
             {% endif %}
          {% endfor %}
-
     </ul>
 
     </div>
