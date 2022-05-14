@@ -10,16 +10,15 @@
 
             <div class="jumbotron p-3" style="background: transparent; opacity: 0.90">
                 <h2 style="justify-content: center"><i class="fas fa-check-double" style="color: slategrey"></i><b>Proponowane </b><b style="color: darkblue"><i>badania okresowe</i></b></h2>
-                    <form>
-
-                        <table class="table align-middle text-center table-bordered" style="border-style: groove">
+                <table class="table align-middle text-center table-bordered" style="border-style: groove">
                         <tr>
                             <th>Badania</th>
-                            <th colspan="4">Status</th>
-                            <th></th>
+                            <th colspan="2">Status</th>
+                            <th><a href="{{ url_for('ClearCheck')}}" class="btn btn-danger btn-xs" action="{{url_for('ClearCheck')}}" method="POST" onclick="return confirm('Ta akcja spowoduje usunięcie wszystkich rekordów, kontynuować?')">Usuń wszystko</a></th>
                         </tr>
 
         {% for c in check %}
+                 <form method="POST" action="{{ url_for('CheckChoice', id=c.id) }}">
 
                         <tr>
                             <td style="vertical-align: center; text-align: center" rowspan="2"><h4>{{ c.nazwa }}</h4></td>
@@ -28,21 +27,16 @@
                             </td>
 
                             <td style="vertical-align: center; text-align: center">
-
                               <div>
                                     <div>
-                                         <input type="checkbox" name="current" id="current" action="{{url_for('CheckChoice', id=c.id)}}" method="POST"
+                                         <input type="checkbox" name="current_status" id="current_status"
 
                                         {% if  c.current_status  == 1 %}
                                             checked
-                                            value = "1"
-                                        {% else %}
-                                            value = "0"
                                         {% endif %}>
 
                                      </div>
                               </div>
-
                             </td>
 
                             <td rowspan="2" style="vertical-align: center; text-align: center">
@@ -52,8 +46,8 @@
                                         <button class="btn btn-success justify-content-center" type="submit">Zatwierdź!</button>
                                     </div>
                             </td>
-
                         </tr>
+
                         <tr>
                             <td>
                                 <label>Na <span style="color: darkblue">tablicę</span></label>
@@ -62,20 +56,19 @@
                             <td style="vertical-align: center; text-align: center">
                               <div>
                                     <div>
-                                         <input type="checkbox" name="todo" id="todo" action="{{url_for('CheckChoice', id=c.id)}}" method="POST"
+                                         <input type="checkbox" name="todo_status" id="todo_status"
                                         {% if  c.todo_status  == 1 %}
                                             checked
-                                            value = "1"
-                                        {% elif c.todo_status  == 0 %}
-                                            value = "0"
+                                                    {% elif c.current_status == 1 %}
+                                                disabled
                                         {% endif %}>
                                     </div>
                               </div>
                             </td>
                         </tr>
+            </form>
 {% endfor %}
                 </table>
-                </form>
             </div>
       </div>
    </div>

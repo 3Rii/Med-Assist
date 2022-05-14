@@ -1,52 +1,109 @@
-{% extends 'mainlayout.html' %}
+{% extends 'layouts/mainlayout.html' %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
 
 
-    <div class="hometable" style="background-image: url(/static/korek.jpg)">
-
-                 <header>
+    <div class="dropdown-header text-black-50" style="background-image: url('/static/header.jpeg'); border-style: solid"
+         xmlns="http://www.w3.org/1999/html">
+                <header>
                 <div class="overlay">
                             <h1 class="display-4 font-weight-bold">Witaj, {{ username }}!</h1>
-                <h2 class="display-4 font-weight-bold">Twój Asystent proponuje:</h2>
+                <h2 class="display-4 font-weight-bold">To Twoja tablica:</h2>
+                    <p>{{ vacc.current_status }}</p>
                 </div>
                 </header>
+    </div>
 
+    {% if not (vacc or prev or check or user) %}
+    <div>
+        <h1>Jeszcze tu nic nie ma!</h1><br> <h4>Uzupełnij formularz i wciśnij przycisk "Analiza"</h4>
+        <a href="{{ url_for('Basic') }}" class="btn btn-success btn-xs" action="{{url_for('Basic')}}" method="POST">Do formularza</a>
+    </div>
+
+    {% else %}
+
+    <div class="hometable" style="background-image: url(/static/korek.jpg)">
 
     <ul class="kartki" style="list-style: none;">
-              <li>
-                <a class="odnosniki" href="#" contenteditable>
-                  <h2>Title #1</h2>
-                  <p><div id="msg">{{ sh }}</div></p>
-                </a>
-              </li>
 
-              <li>
-                <a class="odnosniki" href="#" contenteditable>
-                  <h2>Title #2</h2>
-                  <p>Text Content #2</p>
-                </a>
-              </li>
+        {% for v in vacc %}
+            {% if v.todo_status == 1 %}
 
-              <li>
-                <a class="odnosniki" href="#" contenteditable>
-                  <h2>Title #3</h2>
-                  <p>Text Content #3</p>
-                </a>
-              </li>
+                  <li>
+                  <div class="kartka">
+                    <a class="odnosniki" href="{{ url_for('Vacc') }}" >
+                      <p><b>{{ v.nazwa }}</b></p>
+                        <p>{{ v.typ }}</p>
+                    </a>
+                  </div>
+                  </li>
+                                {% else %}
 
-              <li>
-                <a class="odnosniki" href="#" contenteditable>
-                  <h2>Title #4</h2>
-                  <p>Text Content #4</p>
-                </a>
-              </li>
 
+                  <li>
+                  <div class="kartka">
+                      <a class="odnosniki" href="{{ url_for('Vacc') }}" ><span style="color: green">
+                          <p><b>{{ v.nazwa }}<i class="fas fa-check-circle"></i></b></p></span>
+                          <p>Przejdź by usunąć</p>
+                  </a>
+                  </div>
+                  </li>
+            {% endif %}
+        {% endfor %}
+
+        {% for c in check %}
+            {% if  c.todo_status == 1 %}
+                  <li>
+                  <div class="kartka">
+                    <a class="odnosniki" href="{{ url_for('Check') }}" >
+                      <p><b>{{ c.nazwa }}</b></p>
+                    </a>
+                  </div>
+                  </li>
+                                {% else %}
+
+
+                  <li>
+                  <div class="kartka">
+                      <a class="odnosniki" href="{{ url_for('Check') }}" ><span style="color: green">
+                          <p><b>{{ c.nazwa }}<i class="fas fa-check-circle"></i></b></p></span>
+                          <p>Przejdź by usunąć</p>
+                  </a>
+                  </div>
+                  </li>
+
+            {% endif %}
+
+        {% endfor %}
+
+        {% for p in prev %}
+            {% if  p.todo_status == 1 %}
+                  <li>
+                  <div class="kartka">
+                    <a class="odnosniki" href="{{ url_for('Prev') }}" >
+                      <p><b>{{ p.nazwa }}</b></p>
+                    </a>
+                  </div>
+                  </li>
+                                                {% else %}
+
+
+                  <li>
+                  <div class="kartka">
+                      <a class="odnosniki" href="{{ url_for('Prev') }}" ><span style="color: green">
+                          <p><b>{{ p.nazwa }}<i class="fas fa-check-circle"></i></b></p></span>
+                          <p>Przejdź by usunąć</p>
+                  </a>
+                  </div>
+                  </li>
+            {% endif %}
+         {% endfor %}
     </ul>
+
     </div>
-	
+    {% endif %}
 
 {% endblock %}
 

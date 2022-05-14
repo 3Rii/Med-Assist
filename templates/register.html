@@ -1,35 +1,35 @@
-{% extends 'prevlayout.html' %}
+{% extends 'layouts/prevlayout.html' %}
 
-{% block title %}Med-Ass Registration{% endblock %}
+{% block title %}Register{% endblock %}
 
-{% block sublogin %}Zarejestruj się{% endblock %}
+{% block sublogin %}Rejestracja nowego użytkownika{% endblock %}
 
 {% block content %}
-    <h5>Zarejestruj się na naszej stronie!</h5>
+
      <form action="{{ url_for('register') }}" method="post" autocomplete="off">
 
       <div class="form-group">
-       <label for="name" class="cols-sm-2 control-label">Twoje imię</label>
+       <label for="name" class="cols-sm-2 control-label">Imię</label>
        <div class="cols-sm-10">
         <div class="input-group">
          <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-         <input type="text" class="form-control" name="fullname" id="fullname"  placeholder="Podaj swoje imię"/>
+         <input type="text" class="form-control" name="fullname" id="fullname"  placeholder="Podaj imię"/>
         </div>
        </div>
       </div>
 
       <div class="form-group">
-       <label for="email" class="cols-sm-2 control-label">Twój Adres Email</label>
+       <label for="email" class="cols-sm-2 control-label">Adres E-mail</label>
        <div class="cols-sm-10">
         <div class="input-group">
          <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-         <input type="text" class="form-control" name="email" id="email"  placeholder="Podaj swój adres email"/>
+         <input type="text" class="form-control" name="email" id="email"  placeholder="Podaj E-mail"/>
         </div>
        </div>
       </div>
 
       <div class="form-group">
-       <label for="username" class="cols-sm-2 control-label">Nazwa użytkownika</label>
+       <label for="username" class="cols-sm-2 control-label">Nazwa Użytkownika</label>
        <div class="cols-sm-10">
         <div class="input-group">
          <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
@@ -43,15 +43,16 @@
        <div class="cols-sm-10">
         <div class="input-group">
          <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-         <input type="password" class="form-control" name="password" placeholder="Podaj swoje hasło" id="password" required  placeholder="Podaj hasło"/>
+         <input type="password" class="form-control" name="password" placeholder="Podaj Hasło" id="password" required>
         </div>
        </div>
       </div>
 
        <div id="msg">{{ msg }}</div>
-
-       <input type="submit" value="Register" class="signupbtn" name="Zarejestruj">
-       <p><a href="{{ url_for('login') }}" class="signinbtn">Zaloguj</a></p>
+       <h5>Załóż konto</h5>
+       <input type="submit" value="Zarejestruj" class="signupbtn" name="Register">
+       <h5>Masz już konto?</h5>
+       <p><a href="{{ url_for('login') }}" class="signinbtn">Zaloguj się</a></p>
      </form>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

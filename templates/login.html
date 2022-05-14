@@ -1,18 +1,18 @@
-{% extends 'prevlayout.html' %}
+{% extends 'layouts/prevlayout.html' %}
 
-{% block title %}Med-Assistent Login{% endblock %}
+{% block title %}MA Login{% endblock %}
 
-{% block sublogin %}Zaloguj się{% endblock %}
+{% block sublogin %}Witaj!{% endblock %}
 
 {% block content %}
-
+     <p>Zalogują się na swoje konto</p>
    <form class="form-group" action="{{ url_for('login') }}" method="post">
     <div class="form-group">
-    <label for="name" class="cols-sm-2 control-label">Nazwa użytkownika</label>
+    <label for="name" class="cols-sm-2 control-label">Nazwa Użytkownika</label>
     <div class="cols-sm-10">
     <div class="input-group">
     <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-    <input type="text" class="form-control" name="username" placeholder="Nazwa użytkownika" id="username" required>
+    <input type="text" class="form-control" name="username" placeholder="Nazwa Użytkownika" id="username" required>
           </div>
        </div>
       </div>
@@ -28,13 +28,9 @@
       </div>
 
 
-    <input type="checkbox" value="checked"><b> Zapamiętaj</b>
-    <hr>
-    <input type="submit" value="Zaloguj się" class="signinbtn" name="">
-
-
+{#    <input type="checkbox" value="checked"><b>Zapamiętaj</b>#}
+    <input type="submit" value="Zaloguj" class="signinbtn" name="">
    <div id="msg">{{ msg }}</div>
-   <p> Nie masz konta? </p>
-   <p><a href="{{ url_for('register') }}" class="signupbtn">Zarejestruj</a></p>
+   <p>Nie masz jeszcze konta?<br><a href="{{ url_for('register') }}" class="signupbtn">Utwórz nowe konto</a></p>
    </form>
 {% endblock %}
