@@ -386,11 +386,16 @@ def VaccChoice(id):
             if current == 'on':
                 cursor.execute(""" UPDATE vacc SET current_status=%s WHERE id=%s""", (1, id))
                 conn.commit()
+
             else:
                 cursor.execute(""" UPDATE vacc SET current_status=%s WHERE id=%s""", (0, id))
                 conn.commit()
 
-            if todo == 'on':
+            if todo == 'on' and current == 'on':
+                cursor.execute(""" UPDATE vacc SET todo_status=%s WHERE id=%s""", (0, id))
+                conn.commit()
+
+            elif todo == 'on':
                 cursor.execute(""" UPDATE vacc SET todo_status=%s WHERE id=%s""", (1, id))
                 conn.commit()
             else:
@@ -568,11 +573,16 @@ def CheckChoice(id):
             if current == 'on':
                 cursor.execute(""" UPDATE check_ups SET current_status=%s WHERE id=%s""", (1, id))
                 conn.commit()
+
             else:
                 cursor.execute(""" UPDATE check_ups SET current_status=%s WHERE id=%s""", (0, id))
                 conn.commit()
 
-            if todo == 'on':
+            if todo == 'on' and current == 'on':
+                cursor.execute(""" UPDATE check_ups SET todo_status=%s WHERE id=%s""", (0, id))
+                conn.commit()
+
+            elif todo == 'on':
                 cursor.execute(""" UPDATE check_ups SET todo_status=%s WHERE id=%s""", (1, id))
                 conn.commit()
             else:
@@ -725,6 +735,7 @@ def PrevChoice(id):
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
+
     if 'loggedin' in session:
         current = request.form.get('current_status')
         todo = request.form.get('todo_status')
@@ -733,11 +744,16 @@ def PrevChoice(id):
             if current == 'on':
                 cursor.execute(""" UPDATE prevention SET current_status=%s WHERE id=%s""", (1, id))
                 conn.commit()
+
             else:
                 cursor.execute(""" UPDATE prevention SET current_status=%s WHERE id=%s""", (0, id))
                 conn.commit()
 
-            if todo == 'on':
+            if todo == 'on' and current == 'on':
+                cursor.execute(""" UPDATE prevention SET todo_status=%s WHERE id=%s""", (0, id))
+                conn.commit()
+
+            elif todo == 'on':
                 cursor.execute(""" UPDATE prevention SET todo_status=%s WHERE id=%s""", (1, id))
                 conn.commit()
             else:

@@ -62,6 +62,8 @@
                                          <input type="checkbox" name="todo_status" id="todo_status"
                                         {% if  p.todo_status  == 1 %}
                                             checked
+                                                    {% elif p.current_status == 1 %}
+                                                disabled
                                         {% endif %}>
                                     </div>
                               </div>

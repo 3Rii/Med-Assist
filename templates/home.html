@@ -15,7 +15,7 @@
                 </header>
     </div>
 
-    {% if not (vacc or prev or check or user) or (vacc.todo_status or prev.todo_status or check.todostatus) == 0 %}
+    {% if not (vacc or prev or check or user) %}
     <div>
         <h1>Jeszcze tu nic nie ma!</h1><br> <h4>Uzupełnij formularz i wciśnij przycisk "Analiza"</h4>
         <a href="{{ url_for('Basic') }}" class="btn btn-success btn-xs" action="{{url_for('Basic')}}" method="POST">Do formularza</a>
@@ -28,7 +28,7 @@
     <ul class="kartki" style="list-style: none;">
 
         {% for v in vacc %}
-            {% if (v.todo_status) == 1 or (v.current_status) == 1 %}
+            {% if (v.todo_status) == 1 %}
 
                   <li>
                   <div class="kartka">
@@ -43,8 +43,7 @@
         {% endfor %}
 
         {% for c in check %}
-            {% if  (c.todo_status) == 1 or (c.current_status) == 1 %}
-
+            {% if  (c.todo_status) == 1 %}
                   <li>
                   <div class="kartka">
                     <a class="odnosniki" href="{{ url_for('Check') }}" >
@@ -58,7 +57,7 @@
         {% endfor %}
 
         {% for p in prev %}
-            {% if  (p.todo_status) == 1 or (p.current_status) == 1 %}
+            {% if  (p.todo_status) == 1 %}
 
                   <li>
                   <div class="kartka">
